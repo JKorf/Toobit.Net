@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.OrderBook;
@@ -55,7 +58,7 @@ namespace Toobit.Net.SymbolOrderBooks
 
             _strictLevels = false;
             _sequencesAreConsecutive = false;
-
+                
             _clientOwner = socketClient == null;
             _socketClient = socketClient ?? new ToobitSocketClient();
             _restClient = restClient ?? new ToobitRestClient();
@@ -87,12 +90,30 @@ namespace Toobit.Net.SymbolOrderBooks
                 return new CallResult<UpdateSubscription>(bookResult.Error!);
             }
 
-            SetInitialOrderBook(bookResult.Data.Timestamp.Ticks, bookResult.Data.Bids, bookResult.Data.Asks);
+            // Filter duplicates, for some reason the server sometimes returns duplicate prices in the snapshot
+            var bids = new Dictionary<decimal, ISymbolOrderBookEntry>();
+            var asks = new Dictionary<decimal, ISymbolOrderBookEntry>();
+            foreach(var item in bookResult.Data.Bids)
+            {
+                if (!bids.ContainsKey(item.Price))
+                    bids.Add(item.Price, item);
+            }
+
+            foreach (var item in bookResult.Data.Asks)
+            {
+                if (!asks.ContainsKey(item.Price))
+                    asks.Add(item.Price, item);
+            }
+
+            SetInitialOrderBook(bookResult.Data.Timestamp.Ticks, bids.Values.ToArray(), asks.Values.ToArray());
             return new CallResult<UpdateSubscription>(subResult.Data);
         }
 
         private void HandleUpdate(DataEvent<ToobitOrderBookUpdate> data)
         {
+            if (data.Data.Asks.Length == 0 && data.Data.Bids.Length == 0)
+                return;
+
             UpdateOrderBook(data.Data.Timestamp.Ticks, data.Data.Bids, data.Data.Asks);
         }
 
