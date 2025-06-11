@@ -1,0 +1,11 @@
+GET
+/quote/v1/index
+false
+{
+    "index":{
+        "BTCUSDT":"42999.21"
+    },
+    "edp":{
+        "BTCUSDT":"43031.36006"
+    }
+}

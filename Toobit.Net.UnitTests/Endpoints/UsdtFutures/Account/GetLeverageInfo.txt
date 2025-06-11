@@ -1,0 +1,10 @@
+GET
+/api/v1/futures/accountLeverage
+true
+[
+    {
+        "symbol":"BTC-SWAP-USDT",
+        "leverage":"20",
+        "marginType":"CROSS"
+    }
+]

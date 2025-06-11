@@ -1,0 +1,27 @@
+> {"symbol": "ETHUSDT","topic": "kline_1d","event": "sub","params": {"binary": false }}
+= 
+{
+    "symbol": "ETHUSDT",
+    "symbolName": "ETHUSDT",
+    "topic": "kline",
+    "params": {
+        "realtimeInterval": "24h",
+        "klineType": "1d",
+        "binary": "false"
+    },
+    "data": [
+        {
+            "t": 1668753840000,
+            "s": "BTCUSDT",
+            "sn": "BTCUSDT",
+            "c": "445",
+            "h": "445",
+            "l": "445",
+            "o": "445",
+            "v": "0"
+        }
+    ],
+    "f": true,
+    "sendTime": 1668753854576,
+    "shared": false
+}

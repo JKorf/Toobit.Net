@@ -1,0 +1,10 @@
+GET
+/api/v1/futures/fundingRate
+false
+[
+    {
+        "symbol": "BTC-SWAP-USDT",
+        "nextFundingTime": "1668427200000",
+        "rate": "0.0018099173553719" 
+    }
+]

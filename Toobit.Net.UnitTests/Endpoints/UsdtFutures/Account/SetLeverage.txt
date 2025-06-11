@@ -1,0 +1,8 @@
+POST
+/api/v1/futures/leverage
+true
+{
+    "code": 200, 
+    "symbol":"BTC-SWAP-USDT", 
+    "leverage":"20" 
+}

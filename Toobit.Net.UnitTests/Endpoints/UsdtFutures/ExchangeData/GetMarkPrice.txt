@@ -1,0 +1,9 @@
+GET
+/quote/v1/markPrice
+false
+{
+  "exchangeId": 301,
+  "symbolId": "BTC-SWAP-USDT",
+  "price": "17042.54471",
+  "time": 1670897454000
+}

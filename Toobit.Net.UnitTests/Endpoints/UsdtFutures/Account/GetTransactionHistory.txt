@@ -1,0 +1,20 @@
+GET
+/api/v1/futures/balanceFlow
+true
+[
+    {
+        "id": "539870570957903104",
+        "accountId": "122216245228131",
+        "coin": "BTC",
+        "coinId": "BTC",
+        "coinName": "BTC",
+        "symbol": "BTCUSDT", 
+        "symbolId": "BTC-SWAP-USDT",
+        "flowTypeValue": 51, 
+        "flowType": "USER_ACCOUNT_TRANSFER", 
+        "flowName": "Transfer",
+        "change": "-12.5", 
+        "total": "379.624059937852365",
+        "created": "1579093587214"
+    }
+]

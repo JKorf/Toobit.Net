@@ -1,0 +1,31 @@
+GET
+/api/v1/account/balanceFlow
+true
+[
+    {
+        "id": "539870570957903104",
+        "accountId": "122216245228131",
+        "coin": "BTC",
+        "coinId": "BTC",
+        "coinName": "BTC",
+        "flowTypeValue": 51, 
+        "flowType": "USER_ACCOUNT_TRANSFER", 
+        "flowName": "Transfer", 
+        "change": "-12.5", 
+        "total": "379.624059937852365", 
+        "created": "1579093587214"
+    },
+    {
+        "id": "536072393645448960",
+        "accountId": "122216245228131",
+        "coin": "USDT",
+        "coinId": "USDT",
+        "coinName": "USDT",
+        "flowTypeValue": 7,
+        "flowType": "AIRDROP",
+        "flowName": "Airdrop",
+        "change": "-2000",
+        "total": "918662.0917630848",
+        "created": "1578640809195"
+    }
+]

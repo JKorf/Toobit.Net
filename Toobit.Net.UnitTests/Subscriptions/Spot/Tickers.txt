@@ -1,0 +1,29 @@
+> {"symbol": "ETHUSDT","topic": "realtimes","event": "sub","params": {"binary": false }}
+= 
+{
+    "symbol": "ETHUSDT",
+    "symbolName": "ETHUSDT",
+    "topic": "realtimes",
+    "params": {
+        "realtimeInterval": "24h",
+        "binary": "false"
+    },
+    "data": [
+        {
+            "t": 1668753480049,
+            "s": "BTCUSDT",
+            "sn": "BTCUSDT", 
+            "c": "445", 
+            "h": "445",
+            "l": "310",
+            "o": "311",
+            "v": "3747.7597191", 
+            "qv": "1426443.9553995", 
+            "m": "0.4309", 
+            "e": 301 
+        }
+    ],
+    "f": true, 
+    "sendTime": 1668753481048,
+    "shared": false
+}

@@ -1,0 +1,69 @@
+GET
+/api/v1/exchangeInfo
+false
+{
+  "timezone": "UTC",
+  "serverTime": "1668407511495",
+  "symbols": [
+    {
+      "filters":[
+          {
+              "minPrice":"0.01",
+              "maxPrice":"100000.00000000",
+              "tickSize":"0.01",
+              "filterType":"PRICE_FILTER"
+          },
+          {
+              "minQty":"0.0001",
+              "maxQty":"4000",
+              "stepSize":"0.0001",
+              "filterType":"LOT_SIZE"
+          },
+          {
+              "minNotional":"10",
+              "filterType":"MIN_NOTIONAL"
+          },
+              {
+              "minAmount": "10", 
+              "maxAmount": "6600000", 
+              "minBuyPrice": "0.01",
+              "filterType": "TRADE_AMOUNT" 
+          },
+          {
+              "maxSellPrice": "999999999", 
+              "buyPriceUpRate": "0.1", 
+              "sellPriceDownRate": "0.1",
+              "sellPriceDownRate": "0.1", 
+              "maxEntrustNum": "100000", 
+              "maxConditionNum": "100000", 
+              "filterType": "LIMIT_TRADING"
+          },
+          {
+              "buyPriceUpRate": "0.1", 
+              "sellPriceDownRate": "0.1",
+              "filterType": "MARKET_TRADING"
+          },
+          {
+              "noAllowMarketStartTime": "0", 
+              "noAllowMarketEndTime": "0", 
+              "limitOrderStartTime": "0", 
+              "limitOrderEndTime": "0",
+              "limitMinPrice": "0", 
+              "limitMaxPrice": "0", 
+              "filterType": "OPEN_QUOTE"
+          }
+      ], 
+      "symbol": "ETHUSDT",
+      "symbolName": "ETHUSDT",
+      "status": "TRADING",
+      "baseAsset": "ETH",
+      "baseAssetName": "ETH",
+      "baseAssetPrecision": "0.0001",
+      "quoteAsset": "USDT",
+      "quoteAssetName": "USDT",
+      "quotePrecision": "0.01",
+      "icebergAllowed": false,
+      "isAggregate": false,
+      "allowMargin": true
+    }
+]}

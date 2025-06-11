@@ -1,0 +1,22 @@
+GET
+/api/v1/account/depositOrders
+true
+[
+  {
+        "id": 100234,
+        "coin": "EOS",
+        "coinName": "EOS",
+        "address": "deposit2bb",
+        "addressTag": "19012584",
+        "fromAddress": "clarkkent",
+        "fromAddressTag": "19029901",
+        "time": 1499865549590,
+        "quantity": "1.01",
+        "status": "2",
+        "statusCode": "DEPOSIT_CAN_WITHDRAW",
+        "requiredConfirmTimes": "5",
+        "confirmTimes": "5",
+        "txId": "98A3EA560C6B3336D348B6C83F0F95ECE4F1F5919E94BD006E5BF3BF264FACFC",
+        "txIdUrl": ""
+  }
+]

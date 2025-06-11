@@ -1,0 +1,9 @@
+GET
+/api/v1/futures/commissionRate
+true
+{
+    "openMakerFee": "0.000006", 
+    "openTakerFee": "0.0001", 
+    "closeMakerFee": "0.0002", 
+    "closeTakerFee": "0.0004"
+}

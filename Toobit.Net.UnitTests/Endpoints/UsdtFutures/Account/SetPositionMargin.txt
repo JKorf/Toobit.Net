@@ -1,0 +1,10 @@
+POST
+/api/v1/futures/positionMargin
+true
+{
+    "code":200, 
+    "msg":"success",
+    "symbol":"BTC-PERP-REV", 
+    "margin":15, 
+    "timestamp":1541161088303 
+}

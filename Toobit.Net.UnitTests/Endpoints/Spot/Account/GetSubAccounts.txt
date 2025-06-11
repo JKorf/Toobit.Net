@@ -1,0 +1,17 @@
+GET
+/api/v1/account/checkApiKey
+true
+[
+    {
+        "accountId": "122216245228131",
+        "nickName": "",
+        "accountType": 1,
+        "accountIndex": 0 
+    },
+    {
+        "accountId": "482694560475091200",
+        "nickName": "createSubAccountByCurl", 
+        "accountType": 1, 
+        "accountIndex": 1
+    }
+]

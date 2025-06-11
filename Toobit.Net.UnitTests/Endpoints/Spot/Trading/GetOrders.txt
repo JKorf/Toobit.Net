@@ -1,0 +1,23 @@
+GET
+/api/v1/spot/tradeOrders
+true
+[
+  {
+    "symbol": "LTCBTC",
+    "orderId": "1",
+    "clientOrderId": "987yjj2Ym",
+    "price": "0.1",
+    "origQty": "1.0",
+    "executedQty": "0.0",
+    "cumulativeQuoteQty": "0.0",
+    "status": "NEW",
+    "timeInForce": "GTC",
+    "type": "LIMIT",
+    "side": "BUY",
+    "stopPrice": "0.0",
+    "icebergQty": "0.0",
+    "time": "1499827319559",
+    "updateTime": "1499827319559",
+    "isWorking": true
+  }
+]

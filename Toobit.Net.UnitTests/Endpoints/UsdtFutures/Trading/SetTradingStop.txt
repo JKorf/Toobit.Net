@@ -1,0 +1,11 @@
+POST
+/api/v1/futures/position/trading-stop
+true
+{
+    "symbol":"BTC-SWAP-USDT",
+    "side":"LONG",
+    "takeProfit":"29037.2",
+    "stopLoss":"27037",
+    "tpTriggerBy":"CONTRACT_PRICE",
+    "slTriggerBy":"CONTRACT_PRICE"
+}

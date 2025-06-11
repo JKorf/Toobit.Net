@@ -1,0 +1,11 @@
+GET
+/api/v1/futures/historyFundingRate
+false
+[
+  { 
+    "id": "3434343434343",
+    "symbol": "BTC-PERP-REV",
+    "settleTime": "1570708800000", 
+    "settleRate": "0.00321" 
+  }
+]

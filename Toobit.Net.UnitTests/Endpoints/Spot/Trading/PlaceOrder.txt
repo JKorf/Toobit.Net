@@ -1,0 +1,18 @@
+POST
+/api/v1/spot/order
+true
+{
+    "accountId": "1287091689761137921",
+    "symbol": "BTCUSDT",
+    "symbolName": "BTCUSDT",
+    "clientOrderId": "1668483032042259",
+    "orderId": "1289723583082363136",
+    "transactTime": "1668483032058",
+    "price": "400",
+    "origQty": "1",
+    "executedQty": "0",
+    "status": "FILLED",
+    "timeInForce": "GTC",
+    "type": "LIMIT",
+    "side": "SELL"
+}

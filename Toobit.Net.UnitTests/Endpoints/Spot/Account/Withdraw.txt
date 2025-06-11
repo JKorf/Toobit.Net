@@ -1,0 +1,10 @@
+POST
+/api/v1/account/withdraw
+true
+{
+	"status": 0,
+	"success": true,
+	"needBrokerAudit": false,
+	"id": "423885103582776064",
+	"refuseReason":""
+}

@@ -1,0 +1,6 @@
+DELETE
+/api/v1/spot/openOrders
+true
+{
+  "success":true
+}

@@ -1,0 +1,9 @@
+GET
+/quote/v1/ticker/price
+false
+[
+  {
+    "s": "LTCBTC",     
+    "p": "4.00000200"  
+  }
+]

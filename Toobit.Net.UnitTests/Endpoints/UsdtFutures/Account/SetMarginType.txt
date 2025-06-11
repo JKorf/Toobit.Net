@@ -1,0 +1,8 @@
+POST
+/api/v1/futures/marginType
+true
+{
+    "code":200, 
+    "symbolId":"BTC-SWAP-USDT",
+    "marginType":"CROSS"
+}

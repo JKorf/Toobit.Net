@@ -1,0 +1,16 @@
+DELETE
+/api/v1/spot/order
+true
+{
+  "symbol": "LTCBTC",
+  "orderId": "1",
+  "clientOrderId": "9t1M2K0Ya092",
+  "price": "0.1",
+  "origQty": "1.0",
+  "executedQty": "0.0",
+  "status": "CANCELED",
+  "timeInForce": "GTC",
+  "type": "LIMIT",
+  "side": "BUY",
+  "transactTime": "1499827319559"
+}

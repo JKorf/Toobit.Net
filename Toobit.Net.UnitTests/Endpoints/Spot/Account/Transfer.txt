@@ -1,0 +1,7 @@
+POST
+/api/v1/subAccount/transfer
+true
+{
+    "code": 200,
+    "msg": "success"
+}

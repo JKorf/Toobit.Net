@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+
+namespace Toobit.Net.Objects.Models
+{
+    /// <summary>
+    /// Cancel result
+    /// </summary>
+    public record ToobitCancelResult
+    {
+        /// <summary>
+        /// Order id
+        /// </summary>
+        [JsonPropertyName("orderId")]
+        public long OrderId { get; set; }
+        /// <summary>
+        /// Error code
+        /// </summary>
+        [JsonPropertyName("code")]
+        public int Code { get; set; }
+    }
+}

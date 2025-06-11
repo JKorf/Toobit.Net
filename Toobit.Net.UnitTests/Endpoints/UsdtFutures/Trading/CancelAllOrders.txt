@@ -1,0 +1,8 @@
+DELETE
+/api/v1/futures/batchOrders
+true
+{
+  "code": 200,
+  "message":"success",
+  "timestamp":1541161088303
+}

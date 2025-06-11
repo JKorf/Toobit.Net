@@ -1,0 +1,15 @@
+GET
+/api/v1/account
+true
+{
+    "balances": [
+        {
+            "asset": "BTC", 
+            "assetId": "BTC", 
+            "assetName": "BTC",  
+            "total": "995.899",
+            "free": "995.899", 
+            "locked": "0" 
+        }
+    ]
+}

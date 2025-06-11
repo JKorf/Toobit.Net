@@ -1,0 +1,28 @@
+GET
+/api/v1/account/withdrawOrders
+true
+[
+    {
+        "time":"1536232111669",
+        "id ":"90161227158286336",
+        "accountId":"517256161325920",
+        "coinId ":"BHC",
+        "coinName":"BHC",
+        "address":"0x815bF1c3cc0f49b8FC66B21A7e48fCb476051209",
+        "addressExt":"address tag",
+        "quantity":"14",
+        "arriveQuantity":"14",
+        "statusCode":"PROCESSING_STATUS",
+        "status":3,
+        "txId ":"",
+        "txIdUrl ":"",
+        "walletHandleTime":"1536232111669",
+        "feeCoinId ":"BHC",
+        "feeCoinName ":"BHC",
+        "fee":"0.1",
+        "requiredConfirmTimes ":0, 
+        "confirmTimes ":0,
+        "kernelId":"", 
+        "isInternalTransfer": false 
+    }
+]
