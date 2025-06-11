@@ -626,14 +626,19 @@ namespace Toobit.Net.Clients.SpotApi
 
         #region Deposit client
 
-        EndpointOptions<GetDepositAddressesRequest> IDepositRestClient.GetDepositAddressesOptions { get; } = new EndpointOptions<GetDepositAddressesRequest>(true);
+        EndpointOptions<GetDepositAddressesRequest> IDepositRestClient.GetDepositAddressesOptions { get; } = new EndpointOptions<GetDepositAddressesRequest>(true)
+        {
+            RequiredOptionalParameters = new List<ParameterDescription> { 
+                new ParameterDescription(nameof(GetDepositAddressesRequest.Network), typeof(string), "Network to use", "ETH")
+            }
+        };
         async Task<ExchangeWebResult<SharedDepositAddress[]>> IDepositRestClient.GetDepositAddressesAsync(GetDepositAddressesRequest request, CancellationToken ct)
         {
             var validationError = ((IDepositRestClient)this).GetDepositAddressesOptions.ValidateRequest(Exchange, request, TradingMode.Spot, SupportedTradingModes);
             if (validationError != null)
                 return new ExchangeWebResult<SharedDepositAddress[]>(Exchange, validationError);
 
-            var depositAddresses = await Account.GetDepositAddressAsync(request.Asset, request.Network, ct: ct).ConfigureAwait(false);
+            var depositAddresses = await Account.GetDepositAddressAsync(request.Asset, request.Network!, ct: ct).ConfigureAwait(false);
             if (!depositAddresses)
                 return depositAddresses.AsExchangeResult<SharedDepositAddress[]>(Exchange, null, default);
 
