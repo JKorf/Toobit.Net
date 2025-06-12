@@ -129,6 +129,10 @@ A Discord server is available [here](https://discord.gg/MSpeEtSY8t). For discuss
 ## Support the project
 Any support is greatly appreciated.
 
+### Referal
+If you do not yet have an account please consider using this referal link to sign up:  
+[Link](https://www.toobit.com/en-US/register?invite_code=zsV19h)
+
 ### Donate
 Make a one time donation in a crypto currency of your choice. If you prefer to donate a currency not listed here please contact me.
 
