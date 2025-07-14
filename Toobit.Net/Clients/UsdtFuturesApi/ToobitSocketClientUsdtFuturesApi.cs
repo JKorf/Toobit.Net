@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 using CryptoExchange.Net;
@@ -66,7 +67,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #endregion
 
         /// <inheritdoc />
-        protected override IByteMessageAccessor CreateAccessor() => new SystemTextJsonByteMessageAccessor(SerializerOptions.WithConverters(ToobitExchange._serializerContext));
+        protected override IByteMessageAccessor CreateAccessor(WebSocketMessageType type) => new SystemTextJsonByteMessageAccessor(SerializerOptions.WithConverters(ToobitExchange._serializerContext));
         /// <inheritdoc />
         protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(ToobitExchange._serializerContext));
 

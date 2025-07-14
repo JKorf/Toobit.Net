@@ -149,7 +149,7 @@
             ctor
             </summary>
         </member>
-        <member name="M:Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi.CreateAccessor">
+        <member name="M:Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi.CreateAccessor(System.Net.WebSockets.WebSocketMessageType)">
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi.CreateSerializer">
@@ -458,7 +458,7 @@
             ctor
             </summary>
         </member>
-        <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.CreateAccessor">
+        <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.CreateAccessor(System.Net.WebSockets.WebSocketMessageType)">
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.CreateSerializer">
