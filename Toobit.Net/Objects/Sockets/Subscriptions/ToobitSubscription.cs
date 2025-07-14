@@ -46,7 +46,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             _topic = topic + (interval == null ? "" : ("_" + EnumConverter.GetString(interval.Value)));
             _interval = interval;
             if (symbols?.Any() == true)
-                ListenerIdentifiers = new HashSet<string>(symbols.Select(x => topic + "-" + x + (_interval == null ? "" :  ("-" + EnumConverter.GetString(_interval.Value)))));
+                ListenerIdentifiers = new HashSet<string>(symbols.Select(x => topic + "-" + x + (_interval == null ? "" : ("-" + EnumConverter.GetString(_interval.Value)))));
             else
                 ListenerIdentifiers = new HashSet<string> { topic };
         }
@@ -77,7 +77,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             {
                 Symbols = _symbols == null ? null : string.Join(",", _symbols),
                 Topic = _topic,
-                Event = "unsub",
+                Event = "cancel",
                 Parameters = new Dictionary<string, object>
                 {
                     { "binary", false }
