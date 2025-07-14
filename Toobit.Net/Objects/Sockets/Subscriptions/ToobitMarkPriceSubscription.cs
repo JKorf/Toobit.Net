@@ -70,7 +70,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             {
                 Symbols = string.Join(",", _symbols),
                 Topic = _topic,
-                Event = "unsub",
+                Event = "cancel",
                 Parameters = new Dictionary<string, object>
                 {
                     { "binary", false }
