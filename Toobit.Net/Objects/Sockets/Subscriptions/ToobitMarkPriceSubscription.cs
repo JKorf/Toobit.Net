@@ -20,15 +20,6 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         private readonly string[] _symbols;
         private readonly string _topic;
 
-        ///// <inheritdoc />
-        //public override Type? GetMessageType(IMessageAccessor message)
-        //{
-        //    if (message.GetNodeType(MessagePath.Get().Property("data")) == NodeType.Array)
-        //        return typeof(SocketUpdate<ToobitMarkPriceUpdate[]>);
-
-        //    return typeof(SocketUpdate<ToobitMarkPriceUpdate>);
-        //}
-
         /// <summary>
         /// ctor
         /// </summary>
@@ -42,7 +33,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             _symbols = symbols;
             _topic = "markPrice";
 
-#warning subscription doesn't seem to work
+            // Subscription doesn't seem to work although it's implemented as documented
             MessageMatcher = MessageMatcher.Create(
                 symbols.Select(x => new MessageHandlerLink<SocketUpdate<ToobitMarkPriceUpdate[]>>( "markPrice-" + x, DoHandleMessageArray)).ToArray()
                 );
