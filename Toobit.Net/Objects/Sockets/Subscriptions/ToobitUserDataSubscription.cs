@@ -15,27 +15,9 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
     /// <inheritdoc />
     internal class ToobitUserDataSubscription : Subscription<object, object>
     {
-        /// <inheritdoc />
-        public override HashSet<string> ListenerIdentifiers { get; set; }
-
-        private readonly MessagePath _typePath = MessagePath.Get().Index(0).Property("e");
         private readonly Action<DataEvent<ToobitAccountUpdate>>? _accountHandler;
         private readonly Action<DataEvent<ToobitOrderUpdate[]>>? _orderHandler;
         private readonly Action<DataEvent<ToobitUserTradeUpdate[]>>? _userTradeHandler;
-
-        /// <inheritdoc />
-        public override Type? GetMessageType(IMessageAccessor message)
-        {
-            var type = message.GetValue<string>(_typePath);
-            if (type == "outboundAccountInfo")
-                return typeof(ToobitAccountUpdate[]);
-            else if (type == "executionReport")
-                return typeof(ToobitOrderUpdate[]);
-            else if (type == "ticketInfo")
-                return typeof(ToobitUserTradeUpdate[]);
-
-            return null;
-        }
 
         /// <summary>
         /// ctor
@@ -50,7 +32,11 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             _orderHandler = orderHandler;
             _userTradeHandler = tradeHandler;
 
-            ListenerIdentifiers = new HashSet<string> { "user" };
+            MessageMatcher = MessageMatcher.Create([
+                new MessageHandlerLink<ToobitAccountUpdate[]>(MessageLinkType.Full, "outboundAccountInfo", HandleAccountInfo),
+                new MessageHandlerLink<ToobitOrderUpdate[]>(MessageLinkType.Full, "executionReport", HandleOrderUpdate),
+                new MessageHandlerLink<ToobitUserTradeUpdate[]>(MessageLinkType.Full, "ticketInfo", HandleUserTrade)
+                ]);
         }
 
         /// <inheritdoc />
@@ -59,17 +45,22 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         /// <inheritdoc />
         public override Query? GetUnsubQuery() => null;
 
-        /// <inheritdoc />
-        public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
+        public CallResult HandleAccountInfo(SocketConnection connection, DataEvent<ToobitAccountUpdate[]> message)
         {
-            if (message.Data is ToobitAccountUpdate[] accountUpdate)
-                _accountHandler?.Invoke(message.As(accountUpdate.First(), "SpotAccount", null, SocketUpdateType.Update).WithDataTimestamp(accountUpdate.Any() ? accountUpdate.Max(x => x.EventTime) : null));
-            else if (message.Data is ToobitOrderUpdate[] orderUpdate)
-                _orderHandler?.Invoke(message.As(orderUpdate, "SpotOrder", null, SocketUpdateType.Update).WithDataTimestamp(orderUpdate.Any() ? orderUpdate.Max(x => x.EventTime) : null));
-            else if (message.Data is ToobitUserTradeUpdate[] userTradeUpdate)
-                _userTradeHandler?.Invoke(message.As(userTradeUpdate, "SpotUserTrade", null, SocketUpdateType.Update).WithDataTimestamp(userTradeUpdate.Any() ? userTradeUpdate.Max(x => x.EventTime) : null));
+            _accountHandler?.Invoke(message.As(message.Data.First(), "SpotAccount", null, SocketUpdateType.Update).WithDataTimestamp(message.Data.Any() ? message.Data.Max(x => x.EventTime) : null));
+            return CallResult.SuccessResult;
+        }
 
-            return new CallResult(null);
+        public CallResult HandleOrderUpdate(SocketConnection connection, DataEvent<ToobitOrderUpdate[]> message)
+        {
+            _orderHandler?.Invoke(message.As(message.Data, "SpotOrder", null, SocketUpdateType.Update).WithDataTimestamp(message.Data.Any() ? message.Data.Max(x => x.EventTime) : null));
+            return CallResult.SuccessResult;
+        }
+
+        public CallResult HandleUserTrade(SocketConnection connection, DataEvent<ToobitUserTradeUpdate[]> message)
+        {
+            _userTradeHandler?.Invoke(message.As(message.Data, "SpotUserTrade", null, SocketUpdateType.Update).WithDataTimestamp(message.Data.Any() ? message.Data.Max(x => x.EventTime) : null));
+            return CallResult.SuccessResult;
         }
     }
 }

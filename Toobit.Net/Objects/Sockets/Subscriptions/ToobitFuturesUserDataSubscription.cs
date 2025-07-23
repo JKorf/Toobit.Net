@@ -15,30 +15,10 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
     /// <inheritdoc />
     internal class ToobitFuturesUserDataSubscription : Subscription<object, object>
     {
-        /// <inheritdoc />
-        public override HashSet<string> ListenerIdentifiers { get; set; }
-
-        private readonly MessagePath _typePath = MessagePath.Get().Index(0).Property("e");
         private readonly Action<DataEvent<ToobitAccountUpdate>>? _accountHandler;
         private readonly Action<DataEvent<ToobitFuturesOrderUpdate[]>>? _orderHandler;
         private readonly Action<DataEvent<ToobitPositionUpdate[]>>? _positionHandler;
         private readonly Action<DataEvent<ToobitUserTradeUpdate[]>>? _userTradeHandler;
-
-        /// <inheritdoc />
-        public override Type? GetMessageType(IMessageAccessor message)
-        {
-            var type = message.GetValue<string>(_typePath);
-            if (type == "outboundContractAccountInfo")
-                return typeof(ToobitAccountUpdate[]);
-            if (type == "outboundContractPositionInfo")
-                return typeof(ToobitPositionUpdate[]);
-            else if (type == "contractExecutionReport")
-                return typeof(ToobitFuturesOrderUpdate[]);
-            else if (type == "ticketInfo")
-                return typeof(ToobitUserTradeUpdate[]);
-
-            return null;
-        }
 
         /// <summary>
         /// ctor
@@ -55,7 +35,12 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             _positionHandler = positionHandler;
             _userTradeHandler = tradeHandler;
 
-            ListenerIdentifiers = new HashSet<string> { "user" };
+            MessageMatcher = MessageMatcher.Create([
+                new MessageHandlerLink<ToobitAccountUpdate[]>(MessageLinkType.Full, "outboundContractAccountInfo", HandleAccountInfo),
+                new MessageHandlerLink<ToobitPositionUpdate[]>(MessageLinkType.Full, "outboundContractPositionInfo", HandlePositionUpdate),
+                new MessageHandlerLink<ToobitFuturesOrderUpdate[]>(MessageLinkType.Full, "contractExecutionReport", HandleOrderUpdate),
+                new MessageHandlerLink<ToobitUserTradeUpdate[]>(MessageLinkType.Full, "ticketInfo", HandleUserTradeUpdate)
+                ]);
         }
 
         /// <inheritdoc />
@@ -64,19 +49,29 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         /// <inheritdoc />
         public override Query? GetUnsubQuery() => null;
 
-        /// <inheritdoc />
-        public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
-        {
-            if (message.Data is ToobitAccountUpdate[] accountUpdate)
-                _accountHandler?.Invoke(message.As(accountUpdate.First(), "FuturesAccount", null, SocketUpdateType.Update).WithDataTimestamp(accountUpdate.Any() ? accountUpdate.Max(x => x.EventTime) : null));
-            else if (message.Data is ToobitFuturesOrderUpdate[] orderUpdate)
-                _orderHandler?.Invoke(message.As(orderUpdate, "FuturesOrder", null, SocketUpdateType.Update).WithDataTimestamp(orderUpdate.Any() ? orderUpdate.Max(x => x.EventTime) : null));
-            else if (message.Data is ToobitPositionUpdate[] positionUpdate)
-                _positionHandler?.Invoke(message.As(positionUpdate, "FuturesPosition", null, SocketUpdateType.Update).WithDataTimestamp(positionUpdate.Any() ? positionUpdate.Max(x => x.EventTime) : null));
-            else if (message.Data is ToobitUserTradeUpdate[] userTradeUpdate)
-                _userTradeHandler?.Invoke(message.As(userTradeUpdate, "UserTrade", null, SocketUpdateType.Update).WithDataTimestamp(userTradeUpdate.Any() ? userTradeUpdate.Max(x => x.EventTime) : null));
 
-            return new CallResult(null);
+        public CallResult HandleAccountInfo(SocketConnection connection, DataEvent<ToobitAccountUpdate[]> message)
+        {
+            _accountHandler?.Invoke(message.As(message.Data.First(), "FuturesAccount", null, SocketUpdateType.Update).WithDataTimestamp(message.Data.Any() ? message.Data.Max(x => x.EventTime) : null));
+            return CallResult.SuccessResult;
+        }
+
+        public CallResult HandleOrderUpdate(SocketConnection connection, DataEvent<ToobitFuturesOrderUpdate[]> message)
+        {
+            _orderHandler?.Invoke(message.As(message.Data, "FuturesOrder", null, SocketUpdateType.Update).WithDataTimestamp(message.Data.Any() ? message.Data.Max(x => x.EventTime) : null));
+            return CallResult.SuccessResult;
+        }
+
+        public CallResult HandleUserTradeUpdate(SocketConnection connection, DataEvent<ToobitUserTradeUpdate[]> message)
+        {
+            _userTradeHandler?.Invoke(message.As(message.Data, "UserTrade", null, SocketUpdateType.Update).WithDataTimestamp(message.Data.Any() ? message.Data.Max(x => x.EventTime) : null));
+            return CallResult.SuccessResult;
+        }
+
+        public CallResult HandlePositionUpdate(SocketConnection connection, DataEvent<ToobitPositionUpdate[]> message)
+        {
+            _positionHandler?.Invoke(message.As(message.Data, "FuturesPosition", null, SocketUpdateType.Update).WithDataTimestamp(message.Data.Any() ? message.Data.Max(x => x.EventTime) : null));
+            return CallResult.SuccessResult;
         }
     }
 }

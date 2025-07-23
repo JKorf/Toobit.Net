@@ -177,8 +177,9 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             var topic = message.GetValue<string?>(_topicPath);
             if (topic == null)
             {
-                if (message.GetValue<string?>(_userEventPath) != null)
-                    return "user";
+                var userEvent = message.GetValue<string?>(_userEventPath);
+                if (userEvent != null)
+                    return userEvent;
 
                 if (message.GetValue<long>(_pongPath) != 0)
                     return "pong";

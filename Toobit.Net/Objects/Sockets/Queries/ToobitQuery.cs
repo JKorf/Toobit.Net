@@ -9,12 +9,11 @@ namespace Toobit.Net.Objects.Sockets
 {
     internal class ToobitQuery<T> : Query<T>
     {
-        public override HashSet<string> ListenerIdentifiers { get; set; }
-
         public ToobitQuery(SocketRequest request, bool authenticated, int weight = 1) : base(request, authenticated, weight)
         {
-            ExpectsResponse = false;
-            ListenerIdentifiers = new HashSet<string>();
+            ExpectsResponse = false;;
+
+            MessageMatcher = MessageMatcher.Create([]);
         }
     }
 }

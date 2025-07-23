@@ -16,21 +16,18 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
     /// <inheritdoc />
     internal class ToobitMarkPriceSubscription : Subscription<object, object>
     {
-        /// <inheritdoc />
-        public override HashSet<string> ListenerIdentifiers { get; set; }
-
         private readonly Action<DataEvent<ToobitMarkPriceUpdate>> _handler;
         private readonly string[] _symbols;
         private readonly string _topic;
 
-        /// <inheritdoc />
-        public override Type? GetMessageType(IMessageAccessor message)
-        {
-            if (message.GetNodeType(MessagePath.Get().Property("data")) == NodeType.Array)
-                return typeof(SocketUpdate<ToobitMarkPriceUpdate[]>);
+        ///// <inheritdoc />
+        //public override Type? GetMessageType(IMessageAccessor message)
+        //{
+        //    if (message.GetNodeType(MessagePath.Get().Property("data")) == NodeType.Array)
+        //        return typeof(SocketUpdate<ToobitMarkPriceUpdate[]>);
 
-            return typeof(SocketUpdate<ToobitMarkPriceUpdate>);
-        }
+        //    return typeof(SocketUpdate<ToobitMarkPriceUpdate>);
+        //}
 
         /// <summary>
         /// ctor
@@ -44,7 +41,11 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             _handler = handler;
             _symbols = symbols;
             _topic = "markPrice";
-            ListenerIdentifiers = new HashSet<string>(symbols.Select(x => "markPrice-" + x));
+
+#warning subscription doesn't seem to work
+            MessageMatcher = MessageMatcher.Create(
+                symbols.Select(x => new MessageHandlerLink<SocketUpdate<ToobitMarkPriceUpdate[]>>( "markPrice-" + x, DoHandleMessageArray)).ToArray()
+                );
         }
 
         /// <inheritdoc />
@@ -80,13 +81,16 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         }
 
         /// <inheritdoc />
-        public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
+        public CallResult DoHandleMessageSingle(SocketConnection connection, DataEvent<SocketUpdate<ToobitMarkPriceUpdate>> message)
         {
-            if (message.Data is SocketUpdate<ToobitMarkPriceUpdate> singleUpdate)
-                _handler.Invoke(message.As(singleUpdate.Data, singleUpdate.Topic, singleUpdate.Symbol, singleUpdate.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update).WithDataTimestamp(singleUpdate.SendTime));
-            else if(message.Data is SocketUpdate<ToobitMarkPriceUpdate[]> arrayUpdate)
-                _handler.Invoke(message.As(arrayUpdate.Data.Single(), arrayUpdate.Topic, arrayUpdate.Symbol, arrayUpdate.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update).WithDataTimestamp(arrayUpdate.SendTime));
+            _handler.Invoke(message.As(message.Data.Data, message.Data.Topic, message.Data.Symbol, message.Data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update).WithDataTimestamp(message.Data.SendTime));
+            return new CallResult(null);
+        }
 
+        /// <inheritdoc />
+        public CallResult DoHandleMessageArray(SocketConnection connection, DataEvent<SocketUpdate<ToobitMarkPriceUpdate[]>> message)
+        {
+            _handler.Invoke(message.As(message.Data.Data.Single(), message.Data.Topic, message.Data.Symbol, message.Data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update).WithDataTimestamp(message.Data.SendTime));
             return new CallResult(null);
         }
     }

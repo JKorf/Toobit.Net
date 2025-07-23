@@ -10,12 +10,10 @@ namespace Toobit.Net.Objects.Sockets
 {
     internal class PingQuery : Query<PingResponse>
     {
-        public override HashSet<string> ListenerIdentifiers { get; set; }
-
         public PingQuery() : base(new PingRequest() { Ping = DateTimeConverter.ConvertToMilliseconds(DateTime.UtcNow).Value }, false, 1)
         {
             RequestTimeout = TimeSpan.FromSeconds(5);
-            ListenerIdentifiers = new HashSet<string> { "pong" };
+            MessageMatcher = MessageMatcher.Create<PingResponse>("pong");
         }
     }
 }

@@ -16,19 +16,10 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
     /// <inheritdoc />
     internal class ToobitSubscription<T> : Subscription<object, object>
     {
-        /// <inheritdoc />
-        public override HashSet<string> ListenerIdentifiers { get; set; }
-
         private readonly Action<DataEvent<T>> _handler;
         private readonly string[]? _symbols;
         private readonly string _topic;
         private readonly KlineInterval? _interval;
-
-        /// <inheritdoc />
-        public override Type? GetMessageType(IMessageAccessor message)
-        {
-            return typeof(SocketUpdate<T>);
-        }
 
         /// <summary>
         /// ctor
@@ -46,9 +37,9 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             _topic = topic + (interval == null ? "" : ("_" + EnumConverter.GetString(interval.Value)));
             _interval = interval;
             if (symbols?.Any() == true)
-                ListenerIdentifiers = new HashSet<string>(symbols.Select(x => topic + "-" + x + (_interval == null ? "" : ("-" + EnumConverter.GetString(_interval.Value)))));
+                MessageMatcher = MessageMatcher.Create<SocketUpdate<T>>(symbols.Select(x => topic + "-" + x + (_interval == null ? "" : ("-" + EnumConverter.GetString(_interval.Value)))), DoHandleMessage);
             else
-                ListenerIdentifiers = new HashSet<string> { topic };
+                MessageMatcher = MessageMatcher.Create<SocketUpdate<T>>(topic, DoHandleMessage);
         }
 
         /// <inheritdoc />
@@ -90,11 +81,9 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         }
 
         /// <inheritdoc />
-        public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
+        public CallResult DoHandleMessage(SocketConnection connection, DataEvent<SocketUpdate<T>> message)
         {
-            var dataMessage = (SocketUpdate<T>)message.Data;
-
-            _handler.Invoke(message.As(dataMessage.Data, dataMessage.Topic, dataMessage.Symbol, dataMessage.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update).WithDataTimestamp(dataMessage.SendTime));
+            _handler.Invoke(message.As(message.Data.Data, message.Data.Topic, message.Data.Symbol, message.Data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update).WithDataTimestamp(message.Data.SendTime));
             return new CallResult(null);
         }
     }

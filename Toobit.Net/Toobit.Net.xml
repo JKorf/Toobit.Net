@@ -5826,12 +5826,6 @@
         <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription">
             <inheritdoc />
         </member>
-        <member name="P:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription.ListenerIdentifiers">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription.GetMessageType(CryptoExchange.Net.Interfaces.IMessageAccessor)">
-            <inheritdoc />
-        </member>
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription.#ctor(Microsoft.Extensions.Logging.ILogger,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitAccountUpdate}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitFuturesOrderUpdate[]}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitPositionUpdate[]}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitUserTradeUpdate[]}})">
             <summary>
             ctor
@@ -5843,16 +5837,7 @@
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription.GetUnsubQuery">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{System.Object})">
-            <inheritdoc />
-        </member>
         <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription">
-            <inheritdoc />
-        </member>
-        <member name="P:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.ListenerIdentifiers">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.GetMessageType(CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.#ctor(Microsoft.Extensions.Logging.ILogger,System.String[],System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitMarkPriceUpdate}},System.Boolean)">
@@ -5866,16 +5851,13 @@
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.GetUnsubQuery">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{System.Object})">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.DoHandleMessageSingle(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Sockets.SocketUpdate{Toobit.Net.Objects.Models.ToobitMarkPriceUpdate}})">
+            <inheritdoc />
+        </member>
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.DoHandleMessageArray(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Sockets.SocketUpdate{Toobit.Net.Objects.Models.ToobitMarkPriceUpdate[]}})">
             <inheritdoc />
         </member>
         <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitPingSubscription">
-            <inheritdoc />
-        </member>
-        <member name="P:Toobit.Net.Objects.Sockets.Subscriptions.ToobitPingSubscription.ListenerIdentifiers">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitPingSubscription.GetMessageType(CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitPingSubscription.#ctor(Microsoft.Extensions.Logging.ILogger)">
@@ -5883,16 +5865,10 @@
             ctor
             </summary>
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitPingSubscription.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{System.Object})">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitPingSubscription.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Sockets.PingRequest})">
             <inheritdoc />
         </member>
         <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1">
-            <inheritdoc />
-        </member>
-        <member name="P:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.ListenerIdentifiers">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.GetMessageType(CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.#ctor(Microsoft.Extensions.Logging.ILogger,System.String[],System.String,System.Nullable{Toobit.Net.Enums.KlineInterval},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{`0}},System.Boolean)">
@@ -5906,16 +5882,10 @@
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.GetUnsubQuery">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{System.Object})">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Sockets.SocketUpdate{`0}})">
             <inheritdoc />
         </member>
         <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription">
-            <inheritdoc />
-        </member>
-        <member name="P:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription.ListenerIdentifiers">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription.GetMessageType(CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription.#ctor(Microsoft.Extensions.Logging.ILogger,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitAccountUpdate}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitOrderUpdate[]}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitUserTradeUpdate[]}})">
@@ -5927,9 +5897,6 @@
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription.GetUnsubQuery">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{System.Object})">
             <inheritdoc />
         </member>
         <member name="T:Toobit.Net.Objects.ToobitApiAddresses">

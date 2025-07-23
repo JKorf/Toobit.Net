@@ -17,25 +17,16 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
     /// <inheritdoc />
     internal class ToobitPingSubscription : SystemSubscription
     {
-        /// <inheritdoc />
-        public override HashSet<string> ListenerIdentifiers { get; set; }
-
-        /// <inheritdoc />
-        public override Type? GetMessageType(IMessageAccessor message)
-        {
-            return typeof(PingRequest);
-        }
-
         /// <summary>
         /// ctor
         /// </summary>
         public ToobitPingSubscription(ILogger logger) : base(logger, false)
         {
-                ListenerIdentifiers = new HashSet<string> { "ping" };
+            MessageMatcher = MessageMatcher.Create<PingRequest>("ping", DoHandleMessage);
         }
 
         /// <inheritdoc />
-        public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
+        public CallResult DoHandleMessage(SocketConnection connection, DataEvent<PingRequest> message)
         {
             var dataMessage = (PingRequest)message.Data;
             connection.Send(ExchangeHelpers.NextId(), new PingResponse { Pong = dataMessage.Ping }, 1);
