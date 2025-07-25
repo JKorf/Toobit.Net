@@ -44,7 +44,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </summary>
         /// <param name="orders">Orders to place</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<CallResult<ToobitFuturesOrder>[]>> PlaceMultipleOrdersAsync(ToobitFuturesOrderRequest[] orders, CancellationToken ct = default);
+        Task<WebCallResult<CallResult<ToobitFuturesOrder>[]>> PlaceMultipleOrdersAsync(IEnumerable<ToobitFuturesOrderRequest> orders, CancellationToken ct = default);
 
         /// <summary>
         /// Get order info

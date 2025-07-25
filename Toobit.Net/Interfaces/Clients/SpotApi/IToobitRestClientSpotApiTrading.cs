@@ -49,7 +49,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// </summary>
         /// <param name="orders">Orders to place</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<CallResult<ToobitOrder>[]>> PlaceMultipleOrdersAsync(ToobitOrderRequest[] orders, CancellationToken ct = default);
+        Task<WebCallResult<CallResult<ToobitOrder>[]>> PlaceMultipleOrdersAsync(IEnumerable<ToobitOrderRequest> orders, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel an open order

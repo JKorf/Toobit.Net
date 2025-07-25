@@ -115,7 +115,7 @@
         <member name="M:Toobit.Net.Clients.SpotApi.ToobitRestClientSpotApiTrading.PlaceOrderAsync(System.String,Toobit.Net.Enums.OrderSide,Toobit.Net.Enums.OrderType,System.Decimal,System.Nullable{Toobit.Net.Enums.TimeInForce},System.Nullable{System.Decimal},System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Clients.SpotApi.ToobitRestClientSpotApiTrading.PlaceMultipleOrdersAsync(Toobit.Net.Objects.Models.ToobitOrderRequest[],System.Threading.CancellationToken)">
+        <member name="M:Toobit.Net.Clients.SpotApi.ToobitRestClientSpotApiTrading.PlaceMultipleOrdersAsync(System.Collections.Generic.IEnumerable{Toobit.Net.Objects.Models.ToobitOrderRequest},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Clients.SpotApi.ToobitRestClientSpotApiTrading.CancelOrderAsync(System.Nullable{System.Int64},System.String,System.Threading.CancellationToken)">
@@ -418,7 +418,7 @@
         <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitRestClientUsdtFuturesApiTrading.PlaceOrderAsync(System.String,Toobit.Net.Enums.FuturesOrderSide,Toobit.Net.Enums.FuturesNewOrderType,System.Int64,System.Nullable{System.Decimal},System.Nullable{Toobit.Net.Enums.PriceType},System.Nullable{System.Decimal},System.Nullable{Toobit.Net.Enums.TimeInForce},System.String,System.Nullable{System.Decimal},System.Nullable{Toobit.Net.Enums.TriggerType},System.Nullable{System.Decimal},System.Nullable{Toobit.Net.Enums.OrderType},System.Nullable{System.Decimal},System.Nullable{Toobit.Net.Enums.TriggerType},System.Nullable{System.Decimal},System.Nullable{Toobit.Net.Enums.OrderType},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitRestClientUsdtFuturesApiTrading.PlaceMultipleOrdersAsync(Toobit.Net.Objects.Models.ToobitFuturesOrderRequest[],System.Threading.CancellationToken)">
+        <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitRestClientUsdtFuturesApiTrading.PlaceMultipleOrdersAsync(System.Collections.Generic.IEnumerable{Toobit.Net.Objects.Models.ToobitFuturesOrderRequest},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitRestClientUsdtFuturesApiTrading.GetOrderAsync(System.Nullable{System.Int64},System.String,System.Nullable{Toobit.Net.Enums.FuturesOrderType},System.Threading.CancellationToken)">
@@ -2170,7 +2170,7 @@
             <param name="clientOrderId">Client order id</param>
             <param name="ct">Cancellation token</param>
         </member>
-        <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiTrading.PlaceMultipleOrdersAsync(Toobit.Net.Objects.Models.ToobitOrderRequest[],System.Threading.CancellationToken)">
+        <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiTrading.PlaceMultipleOrdersAsync(System.Collections.Generic.IEnumerable{Toobit.Net.Objects.Models.ToobitOrderRequest},System.Threading.CancellationToken)">
             <summary>
             Place multiple orders. Orders have to be for the same symbol.
             <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#place-multiple-orders-trade" /></para>
@@ -2667,7 +2667,7 @@
             <param name="stopLossOrderType">Stop loss order type</param>
             <param name="ct">Cancellation token</param>
         </member>
-        <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiTrading.PlaceMultipleOrdersAsync(Toobit.Net.Objects.Models.ToobitFuturesOrderRequest[],System.Threading.CancellationToken)">
+        <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiTrading.PlaceMultipleOrdersAsync(System.Collections.Generic.IEnumerable{Toobit.Net.Objects.Models.ToobitFuturesOrderRequest},System.Threading.CancellationToken)">
             <summary>
             Place multiple new orders
             <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#place-multiple-orders-trade" /></para>

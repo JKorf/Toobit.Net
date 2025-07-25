@@ -60,13 +60,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Place Multiple Orders
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CallResult<ToobitFuturesOrder>[]>> PlaceMultipleOrdersAsync(ToobitFuturesOrderRequest[] orders, CancellationToken ct = default)
+        public async Task<WebCallResult<CallResult<ToobitFuturesOrder>[]>> PlaceMultipleOrdersAsync(IEnumerable<ToobitFuturesOrderRequest> orders, CancellationToken ct = default)
         {
             foreach (var order in orders.Where(x => x.ClientOrderId == null))
                 order.ClientOrderId = ExchangeHelpers.RandomString(24);
 
             var parameters = new ParameterCollection();
-            parameters.SetBody(orders);
+            parameters.SetBody(orders.ToArray());
             var request = _definitions.GetOrCreate(HttpMethod.Post, "/api/v1/futures/batchOrders", ToobitExchange.RateLimiter.Toobit, 2, true, requestBodyFormat: RequestBodyFormat.Json);
             var resultData = await _baseClient.SendAsync<ToobitDataResult<ToobitFuturesOrderResult[]>>(request, parameters, ct).ConfigureAwait(false);
             if (!resultData)

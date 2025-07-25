@@ -71,13 +71,13 @@ namespace Toobit.Net.Clients.SpotApi
         #region Place Multiple Orders
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CallResult<ToobitOrder>[]>> PlaceMultipleOrdersAsync(ToobitOrderRequest[] orders, CancellationToken ct = default)
+        public async Task<WebCallResult<CallResult<ToobitOrder>[]>> PlaceMultipleOrdersAsync(IEnumerable<ToobitOrderRequest> orders, CancellationToken ct = default)
         {
             foreach (var order in orders.Where(x => string.IsNullOrEmpty(x.ClientOrderId)))
                 order.ClientOrderId = ExchangeHelpers.RandomString(24);
 
             var parameters = new ParameterCollection();
-            parameters.SetBody(orders);
+            parameters.SetBody(orders.ToArray());
             var request = _definitions.GetOrCreate(HttpMethod.Post, "/api/v1/spot/batchOrders", ToobitExchange.RateLimiter.Toobit, 2, true, requestBodyFormat: RequestBodyFormat.Json);
             var resultData = await _baseClient.SendAsync<ToobitDataResult<ToobitOrderResult[]>>(request, parameters, ct).ConfigureAwait(false);
             if (!resultData)
