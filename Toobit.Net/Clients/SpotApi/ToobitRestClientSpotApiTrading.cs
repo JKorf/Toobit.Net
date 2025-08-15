@@ -12,6 +12,7 @@ using Toobit.Net.Objects.Internal;
 using System.Collections.Generic;
 using System.Linq;
 using CryptoExchange.Net;
+using CryptoExchange.Net.Objects.Errors;
 
 namespace Toobit.Net.Clients.SpotApi
 {
@@ -89,11 +90,11 @@ namespace Toobit.Net.Clients.SpotApi
                 if (item.Order != null)
                     result.Add(new CallResult<ToobitOrder>(item.Order));
                 else
-                    result.Add(new CallResult<ToobitOrder>(new ServerError(item.Code, item.Message!)));
+                    result.Add(new CallResult<ToobitOrder>(new ServerError(item.Code, _baseClient.GetErrorInfo(item.Code, item.Message!))));
             }
 
             if (result.All(x => !x.Success))
-                return resultData.AsErrorWithData(new ServerError("All orders failed"), result.ToArray());
+                return resultData.AsErrorWithData(new ServerError(new ErrorInfo(ErrorType.AllOrdersFailed, "All orders failed")), result.ToArray());
 
             return resultData.As(result.ToArray());
         }
@@ -129,7 +130,7 @@ namespace Toobit.Net.Clients.SpotApi
                 return result.AsDataless();
 
             if (!result.Data.Success)
-                return result.AsDatalessError(new ServerError("Failed"));
+                return result.AsDatalessError(new ServerError(new ErrorInfo(ErrorType.Unknown, "Failed")));
 
             return result.AsDataless();
         }
@@ -149,7 +150,7 @@ namespace Toobit.Net.Clients.SpotApi
                 return result.As<ToobitCancelResult[]>(default);
 
             if (result.Data.Code != 0)
-                return result.AsError<ToobitCancelResult[]>(new ServerError(result.Data.Code, "Failed"));
+                return result.AsError<ToobitCancelResult[]>(new ServerError(result.Data.Code, _baseClient.GetErrorInfo(result.Data.Code, "Failed")));
 
             return result.As<ToobitCancelResult[]>(result.Data.Result.ToArray());
         }

@@ -127,7 +127,7 @@ namespace Toobit.Net.Clients.SpotApi
                 return result.AsDataless();
 
             if (result.Data.Code != 200)
-                return result.AsDatalessError(new ServerError(result.Data.Code, result.Data.Message));
+                return result.AsDatalessError(new ServerError(result.Data.Code, _baseClient.GetErrorInfo(result.Data.Code, result.Data.Message)));
 
             return result.AsDataless();
         }
