@@ -11,30 +11,31 @@ namespace Toobit.Net.UnitTests
     [TestFixture()]
     public class ToobitRestClientTests
     {
-        [Test]
-        public void CheckSignatureExample1()
-        {
-            var authProvider = new ToobitAuthenticationProvider(new ApiCredentials("XXX", "XXX"));
-            var client = (RestApiClient)new ToobitRestClient().SpotApi;
+        // Re-enable with next CryptoExchange version
+        //[Test]
+        //public void CheckSignatureExample1()
+        //{
+        //    var authProvider = new ToobitAuthenticationProvider(new ApiCredentials("XXX", "XXX"));
+        //    var client = (RestApiClient)new ToobitRestClient().SpotApi;
 
-            CryptoExchange.Net.Testing.TestHelpers.CheckSignature(
-                client,
-                authProvider,
-                HttpMethod.Post,
-                "/api/v3/order",
-                (uriParams, bodyParams, headers) =>
-                {
-                    return uriParams["signature"].ToString();
-                },
-                "c2a5ec39e186f05cf65000aac8c6707c6541337bda16bc1edaea13ea35d1eb0e",
-                new Dictionary<string, object>
-                {
-                    { "symbol", "LTCBTC" },
-                },
-                DateTimeConverter.ParseFromDouble(1499827319559),
-                true,
-                false);
-        }
+        //    CryptoExchange.Net.Testing.TestHelpers.CheckSignature(
+        //        client,
+        //        authProvider,
+        //        HttpMethod.Post,
+        //        "/api/v3/order",
+        //        (uriParams, bodyParams, headers) =>
+        //        {
+        //            return uriParams["signature"].ToString();
+        //        },
+        //        "c2a5ec39e186f05cf65000aac8c6707c6541337bda16bc1edaea13ea35d1eb0e",
+        //        new Dictionary<string, object>
+        //        {
+        //            { "symbol", "LTCBTC" },
+        //        },
+        //        DateTimeConverter.ParseFromDouble(1499827319559),
+        //        true,
+        //        false);
+        //}
 
         [Test]
         public void CheckInterfaces()

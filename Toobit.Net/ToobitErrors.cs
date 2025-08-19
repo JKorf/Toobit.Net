@@ -9,7 +9,7 @@ namespace Toobit.Net
 {
     internal static class ToobitErrors
     {
-        public static ErrorCollection Errors { get; } = new ErrorCollection([
+        public static ErrorMapping Errors { get; } = new ErrorMapping([
 
             new ErrorInfo(ErrorType.SystemError, true, "Internal error", "-1001"),
 
@@ -44,6 +44,7 @@ namespace Toobit.Net
             new ErrorInfo(ErrorType.InvalidParameter, false, "Invalid side", "-1117"),
             new ErrorInfo(ErrorType.InvalidParameter, false, "Invalid time range", "-1127"),
             new ErrorInfo(ErrorType.InvalidParameter, false, "Invalid parameter combination", "-1128"),
+            new ErrorInfo(ErrorType.InvalidParameter, false, "Invalid listen key", "-1125"),
 
             new ErrorInfo(ErrorType.MissingParameter, false, "Parameter missing or invalid", "-1102"),
             new ErrorInfo(ErrorType.MissingParameter, false, "Parameter empty", "-1105"),
@@ -59,8 +60,6 @@ namespace Toobit.Net
             new ErrorInfo(ErrorType.InvalidQuantity, false, "Order value too low", "-1140", "-1206"),
 
             new ErrorInfo(ErrorType.DuplicateClientOrderId, false, "Duplicate client order id", "-1141"),
-
-            new ErrorInfo(ErrorType.InvalidListenKey, false, "Invalid listen key", "-1125"),
 
             new ErrorInfo(ErrorType.InsufficientBalance, false, "Insufficient balance", "-1131"),
             new ErrorInfo(ErrorType.InsufficientBalance, false, "Insufficient margin available", "-3130"),

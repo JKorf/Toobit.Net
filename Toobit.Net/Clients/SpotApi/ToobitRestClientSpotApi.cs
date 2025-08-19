@@ -25,7 +25,7 @@ namespace Toobit.Net.Clients.SpotApi
         #region fields 
         internal static TimeSyncState _timeSyncState = new TimeSyncState("Spot Api");
 
-        protected override ErrorCollection ErrorMapping => ToobitErrors.Errors;
+        protected override ErrorMapping ErrorMapping => ToobitErrors.Errors;
         #endregion
 
         #region Api clients
