@@ -854,6 +854,16 @@
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
+        <member name="P:Toobit.Net.Converters.ToobitSourceGenerationContext.ToobitFuturesOrderRequest">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Toobit.Net.Converters.ToobitSourceGenerationContext.ToobitFuturesOrderRequestArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
         <member name="P:Toobit.Net.Converters.ToobitSourceGenerationContext.ToobitFuturesOrderUpdate">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.

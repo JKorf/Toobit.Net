@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 using CryptoExchange.Net;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using Toobit.Net.Objects.Options;
 
 namespace Toobit.Net
@@ -20,56 +19,28 @@ namespace Toobit.Net
         {
         }
 
-        public override void AuthenticateRequest(
-            RestApiClient apiClient,
-            Uri uri,
-            HttpMethod method,
-            ref IDictionary<string, object>? uriParameters,
-            ref IDictionary<string, object>? bodyParameters,
-            ref Dictionary<string, string>? headers,
-            bool auth,
-            ArrayParametersSerialization arraySerialization,
-            HttpMethodParameterPosition parameterPosition,
-            RequestBodyFormat requestBodyFormat)
+        public override void ProcessRequest(RestApiClient apiClient, RestRequestConfiguration request)
         {
-            headers ??= new Dictionary<string, string>();
-            headers.Add("X-BB-APIKEY", ApiKey);
+            request.Headers.Add("X-BB-APIKEY", ApiKey);
 
-            if (!auth)
+            if (!request.Authenticated)
                 return;
 
-            IDictionary<string, object> parameters;
-            if (parameterPosition == HttpMethodParameterPosition.InUri)
-            {
-                uriParameters ??= new Dictionary<string, object>();
-                parameters = uriParameters;
-            }
-            else
-            {
-                if (requestBodyFormat != RequestBodyFormat.Json)
-                {
-                    // When the body is json (batch endpoint) use uri
-                    parameters = uriParameters ??= new Dictionary<string, object>();
-                }
-                else
-                {
-                    bodyParameters ??= new Dictionary<string, object>();
-                    parameters = bodyParameters;
-                }
-            }
+            var timestamp = GetMillisecondTimestampLong(apiClient) - 1000;
+            var receiveWindow = ((ToobitRestOptions)apiClient.ClientOptions).ReceiveWindow.TotalMilliseconds;
 
-            var timestamp = long.Parse(GetMillisecondTimestamp(apiClient)) - 1000;
-            parameters.Add("timestamp", timestamp);
-            parameters.Add("recvWindow", ((ToobitRestOptions)apiClient.ClientOptions).ReceiveWindow.TotalMilliseconds);
+            request.QueryParameters.Add("timestamp", timestamp);
+            request.QueryParameters.Add("recvWindow", receiveWindow);
 
-            if (uriParameters != null)
-                uri = uri.SetParameters(uriParameters, arraySerialization);
+            var queryString = request.GetQueryString();
+            var body = request.BodyFormat == RequestBodyFormat.FormData ? request.BodyParameters.ToFormData() : "";
+            var signString = $"{queryString}{body}";
+            var signature = SignHMACSHA256(signString).ToLowerInvariant();
 
-            var parameterData = uri.Query.Replace("?", "");
-            if (requestBodyFormat != RequestBodyFormat.Json)
-                parameterData += requestBodyFormat == RequestBodyFormat.FormData ? bodyParameters?.ToFormData() : GetSerializedBody(_serializer, bodyParameters ?? new Dictionary<string, object>());
-            
-            parameters.Add("signature", SignHMACSHA256(parameterData).ToLowerInvariant());            
+            request.QueryParameters.Add("signature", signature);
+            request.SetQueryString($"{queryString}{(!string.IsNullOrEmpty(queryString) ? "&" : "")}signature={signature}");
+            if (request.BodyFormat == RequestBodyFormat.FormData)
+                request.SetBodyContent(body);
         }
     }
 }

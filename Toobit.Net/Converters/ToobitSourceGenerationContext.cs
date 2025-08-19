@@ -19,6 +19,7 @@ namespace Toobit.Net.Converters
     [JsonSerializable(typeof(decimal?))]
     [JsonSerializable(typeof(DateTime))]
     [JsonSerializable(typeof(DateTime?))]
+    [JsonSerializable(typeof(ToobitFuturesOrderRequest[]))]
 
     [JsonSerializable(typeof(ToobitServerTime))]
     [JsonSerializable(typeof(ToobitExchangeInfo))]
