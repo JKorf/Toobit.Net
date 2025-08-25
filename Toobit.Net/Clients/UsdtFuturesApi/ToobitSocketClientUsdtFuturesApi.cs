@@ -38,6 +38,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         private static readonly MessagePath _symbolPath2 = MessagePath.Get().Property("data").Property("symbolId");
         private static readonly MessagePath _userEventPath = MessagePath.Get().Index(0).Property("e");
         private static readonly MessagePath _intervalPath = MessagePath.Get().Property("params").Property("klineType");
+
+        private readonly TimeSpan _waitForErrorTimeout;
         #endregion
 
         #region constructor/destructor
@@ -48,6 +50,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         internal ToobitSocketClientUsdtFuturesApi(ILogger logger, ToobitSocketOptions options) :
             base(logger, options.Environment.SocketClientAddress!, options, options.UsdtFuturesOptions)
         {
+            _waitForErrorTimeout = options.SubscribeMaxWaitForError;
+
             RegisterPeriodicQuery("Ping",
                 TimeSpan.FromSeconds(30),
                 x => new PingQuery(),
@@ -89,7 +93,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitTradeUpdate[]>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new ToobitSubscription<ToobitTradeUpdate[]>(_logger, symbols.ToArray(), "trade", null, onMessage, false);
+            var subscription = new ToobitSubscription<ToobitTradeUpdate[]>(_logger, this, symbols.ToArray(), "trade", null, onMessage, false, _waitForErrorTimeout);
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -100,7 +104,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToMarkPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitMarkPriceUpdate>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new ToobitMarkPriceSubscription(_logger, symbols.ToArray(), onMessage, false);
+            var subscription = new ToobitMarkPriceSubscription(_logger, this, symbols.ToArray(), onMessage, false, _waitForErrorTimeout);
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -111,7 +115,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(IEnumerable<string> symbols, KlineInterval interval, Action<DataEvent<ToobitKlineUpdate>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new ToobitSubscription<ToobitKlineUpdate[]>(_logger, symbols.ToArray(), "kline", interval, x => onMessage(x.As(x.Data.First())), false);
+            var subscription = new ToobitSubscription<ToobitKlineUpdate[]>(_logger, this, symbols.ToArray(), "kline", interval, x => onMessage(x.As(x.Data.First())), false, _waitForErrorTimeout);
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -122,7 +126,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToPartialOrderBookUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitOrderBookUpdate>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new ToobitSubscription<ToobitOrderBookUpdate[]>(_logger, symbols.ToArray(), "depth", null, x => onMessage(x.As(x.Data.First())), false);
+            var subscription = new ToobitSubscription<ToobitOrderBookUpdate[]>(_logger, this, symbols.ToArray(), "depth", null, x => onMessage(x.As(x.Data.First())), false, _waitForErrorTimeout);
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -133,7 +137,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitOrderBookUpdate>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new ToobitSubscription<ToobitOrderBookUpdate[]>(_logger, symbols.ToArray(), "diffDepth", null, x => onMessage(x.As(x.Data.First())), false);
+            var subscription = new ToobitSubscription<ToobitOrderBookUpdate[]>(_logger, this, symbols.ToArray(), "diffDepth", null, x => onMessage(x.As(x.Data.First())), false, _waitForErrorTimeout);
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -144,7 +148,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitTickerUpdate>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new ToobitSubscription<ToobitTickerUpdate[]>(_logger, symbols.ToArray(), "realtimes", null, x => onMessage(x.As(x.Data.First())), false);
+            var subscription = new ToobitSubscription<ToobitTickerUpdate[]>(_logger, this, symbols.ToArray(), "realtimes", null, x => onMessage(x.As(x.Data.First())), false, _waitForErrorTimeout);
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -155,7 +159,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitIndexUpdate>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new ToobitSubscription<ToobitIndexUpdate[]>(_logger, symbols.ToArray(), "index", null, x => onMessage(x.As(x.Data.First())), false);
+            var subscription = new ToobitSubscription<ToobitIndexUpdate[]>(_logger, this, symbols.ToArray(), "index", null, x => onMessage(x.As(x.Data.First())), false, _waitForErrorTimeout);
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
         }
 

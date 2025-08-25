@@ -32,12 +32,17 @@ namespace Toobit.Net.Clients.SpotApi
     internal partial class ToobitSocketClientSpotApi : SocketApiClient, IToobitSocketClientSpotApi
     {
         #region fields
+        private static readonly MessagePath _codePath = MessagePath.Get().Property("code");
         private static readonly MessagePath _topicPath = MessagePath.Get().Property("topic");
         private static readonly MessagePath _pongPath = MessagePath.Get().Property("pong");
         private static readonly MessagePath _pingPath = MessagePath.Get().Property("ping");
         private static readonly MessagePath _symbolPath = MessagePath.Get().Property("symbol");
         private static readonly MessagePath _userEventPath = MessagePath.Get().Index(0).Property("e");
         private static readonly MessagePath _intervalPath = MessagePath.Get().Property("params").Property("klineType");
+
+        private readonly TimeSpan _waitForErrorTimeout;
+
+        protected override ErrorMapping ErrorMapping => ToobitErrors.Errors;
         #endregion
 
         #region constructor/destructor
@@ -48,6 +53,8 @@ namespace Toobit.Net.Clients.SpotApi
         internal ToobitSocketClientSpotApi(ILogger logger, ToobitSocketOptions options) :
             base(logger, options.Environment.SocketClientAddress!, options, options.SpotOptions)
         {
+            _waitForErrorTimeout = options.SubscribeMaxWaitForError;
+
             RegisterPeriodicQuery("Ping",
                 TimeSpan.FromSeconds(30),
                 x => new PingQuery(),
@@ -83,7 +90,7 @@ namespace Toobit.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitTradeUpdate[]>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new ToobitSubscription<ToobitTradeUpdate[]>(_logger, symbols.ToArray(), "trade", null, onMessage, false);
+            var subscription = new ToobitSubscription<ToobitTradeUpdate[]>(_logger, this, symbols.ToArray(), "trade", null, onMessage, false, _waitForErrorTimeout);
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -94,7 +101,7 @@ namespace Toobit.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitTickerUpdate>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new ToobitSubscription<ToobitTickerUpdate[]>(_logger, symbols.ToArray(), "realtimes", null, x => onMessage(x.As(x.Data.First())), false);
+            var subscription = new ToobitSubscription<ToobitTickerUpdate[]>(_logger, this, symbols.ToArray(), "realtimes", null, x => onMessage(x.As(x.Data.First())), false, _waitForErrorTimeout);
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -105,7 +112,7 @@ namespace Toobit.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(IEnumerable<string> symbols, KlineInterval interval, Action<DataEvent<ToobitKlineUpdate>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new ToobitSubscription<ToobitKlineUpdate[]>(_logger, symbols.ToArray(), "kline", interval, x => onMessage(x.As(x.Data.First())), false);
+            var subscription = new ToobitSubscription<ToobitKlineUpdate[]>(_logger, this, symbols.ToArray(), "kline", interval, x => onMessage(x.As(x.Data.First())), false, _waitForErrorTimeout);
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -116,7 +123,7 @@ namespace Toobit.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToPartialOrderBookUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitOrderBookUpdate>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new ToobitSubscription<ToobitOrderBookUpdate[]>(_logger, symbols.ToArray(), "depth", null, x => onMessage(x.As(x.Data.First())), false);
+            var subscription = new ToobitSubscription<ToobitOrderBookUpdate[]>(_logger, this, symbols.ToArray(), "depth", null, x => onMessage(x.As(x.Data.First())), false, _waitForErrorTimeout);
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -127,7 +134,7 @@ namespace Toobit.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitOrderBookUpdate>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new ToobitSubscription<ToobitOrderBookUpdate[]>(_logger, symbols.ToArray(), "diffDepth", null, x => onMessage(x.As(x.Data.First())), false);
+            var subscription = new ToobitSubscription<ToobitOrderBookUpdate[]>(_logger, this, symbols.ToArray(), "diffDepth", null, x => onMessage(x.As(x.Data.First())), false, _waitForErrorTimeout);
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -146,6 +153,10 @@ namespace Toobit.Net.Clients.SpotApi
         /// <inheritdoc />
         public override string? GetListenerIdentifier(IMessageAccessor message)
         {
+            var code = message.GetValue<string?>(_codePath);
+            if (code != null)
+                return code;
+
             var topic = message.GetValue<string?>(_topicPath);
             if (topic == null)
             {

@@ -28,7 +28,7 @@ namespace Toobit.Net
 
             new ErrorInfo(ErrorType.RateLimitOrder, false, "Too many open orders", "-1015", "-1193"),
 
-            new ErrorInfo(ErrorType.UnknownSymbol, false, "Unknown symbol", "-100011", "-1121"),
+            new ErrorInfo(ErrorType.UnknownSymbol, false, "Unknown symbol", "-100010", "-100011", "-1121"),
 
             new ErrorInfo(ErrorType.UnknownOrder, false, "Order not found in order book", "-1143"),
             new ErrorInfo(ErrorType.UnknownOrder, false, "Order does not exist", "-2013"),

@@ -1,3 +1,4 @@
+using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Converters.MessageParsing;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using CryptoExchange.Net.Interfaces;
@@ -16,6 +17,8 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
     /// <inheritdoc />
     internal class ToobitSubscription<T> : Subscription<object, object>
     {
+        private readonly TimeSpan _waitForErrorTimeout;
+        private readonly SocketApiClient _client;
         private readonly Action<DataEvent<T>> _handler;
         private readonly string[]? _symbols;
         private readonly string _topic;
@@ -26,16 +29,20 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         /// </summary>
         public ToobitSubscription(
             ILogger logger,
+            SocketApiClient client,
             string[]? symbols,
             string topic,
             KlineInterval? interval,
             Action<DataEvent<T>> handler,
-            bool auth) : base(logger, auth)
+            bool auth,
+            TimeSpan waitForErrorTimeout) : base(logger, auth)
         {
+            _client = client;
             _handler = handler;
             _symbols = symbols;
             _topic = topic + (interval == null ? "" : ("_" + EnumConverter.GetString(interval.Value)));
             _interval = interval;
+            _waitForErrorTimeout = waitForErrorTimeout;
             if (symbols?.Any() == true)
                 MessageMatcher = MessageMatcher.Create<SocketUpdate<T>>(symbols.Select(x => topic + "-" + x + (_interval == null ? "" : ("-" + EnumConverter.GetString(_interval.Value)))), DoHandleMessage);
             else
@@ -43,7 +50,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         }
 
         /// <inheritdoc />
-        public override Query? GetSubQuery(SocketConnection connection)
+        protected override Query? GetSubQuery(SocketConnection connection)
         {
             var request = new SocketRequest
             {
@@ -58,11 +65,11 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             if (_interval != null)
                 request.Parameters.Add("klineType", EnumConverter.GetString(_interval.Value));
 
-            return new ToobitQuery<object>(request, Authenticated);
+            return new ToobitQuery<object>(_client, request, Authenticated, _waitForErrorTimeout);
         }
 
         /// <inheritdoc />
-        public override Query? GetUnsubQuery()
+        protected override Query? GetUnsubQuery(SocketConnection connection)
         {
             var request = new SocketRequest
             {
@@ -77,7 +84,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             if (_interval != null)
                 request.Parameters.Add("klineType", EnumConverter.GetString(_interval.Value));
 
-            return new ToobitQuery<object>(request, Authenticated);
+            return new ToobitQuery<object>(_client, request, Authenticated, _waitForErrorTimeout);
         }
 
         /// <inheritdoc />

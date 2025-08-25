@@ -20,6 +20,7 @@ namespace Toobit.Net.Converters
     [JsonSerializable(typeof(DateTime))]
     [JsonSerializable(typeof(DateTime?))]
     [JsonSerializable(typeof(ToobitFuturesOrderRequest[]))]
+    [JsonSerializable(typeof(SocketError))]
 
     [JsonSerializable(typeof(ToobitServerTime))]
     [JsonSerializable(typeof(ToobitExchangeInfo))]

@@ -289,6 +289,9 @@
         <member name="M:Toobit.Net.Clients.ToobitUserClientProvider.InitializeUserClient(System.String,CryptoExchange.Net.Authentication.ApiCredentials,Toobit.Net.ToobitEnvironment)">
             <inheritdoc />
         </member>
+        <member name="M:Toobit.Net.Clients.ToobitUserClientProvider.ClearUserClients(System.String)">
+            <inheritdoc />
+        </member>
         <member name="M:Toobit.Net.Clients.ToobitUserClientProvider.GetRestClient(System.String,CryptoExchange.Net.Authentication.ApiCredentials,Toobit.Net.ToobitEnvironment)">
             <inheritdoc />
         </member>
@@ -1244,6 +1247,11 @@
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
+        <member name="P:Toobit.Net.Converters.ToobitSourceGenerationContext.SocketError">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
         <member name="P:Toobit.Net.Converters.ToobitSourceGenerationContext.SocketRequest">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
@@ -1903,6 +1911,11 @@
             <param name="userIdentifier">The identifier for the user</param>
             <param name="credentials">The credentials for the user</param>
             <param name="environment">The environment to use</param>
+        </member>
+        <member name="M:Toobit.Net.Interfaces.Clients.IToobitUserClientProvider.ClearUserClients(System.String)">
+            <summary>
+            Reset the cached clients for a user. This can be useful when a user changes API credentials.
+            </summary>
         </member>
         <member name="M:Toobit.Net.Interfaces.Clients.IToobitUserClientProvider.GetRestClient(System.String,CryptoExchange.Net.Authentication.ApiCredentials,Toobit.Net.ToobitEnvironment)">
             <summary>
@@ -5823,6 +5836,13 @@
             ctor
             </summary>
         </member>
+        <member name="P:Toobit.Net.Objects.Options.ToobitSocketOptions.SubscribeMaxWaitForError">
+            <summary>
+            The server only replies with a message when there is an error in the subscription, not when it's successful. This timeout determines how
+            long to wait at max for an error message before the subscription is assumed successful. Note that when data is received on the subscription
+            before this timeout it is also deemed successful
+            </summary>
+        </member>
         <member name="P:Toobit.Net.Objects.Options.ToobitSocketOptions.UsdtFuturesOptions">
             <summary>
             UsdtFutures API options
@@ -5844,13 +5864,13 @@
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription.GetSubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription.GetUnsubQuery">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription.GetUnsubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
             <inheritdoc />
         </member>
         <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.#ctor(Microsoft.Extensions.Logging.ILogger,System.String[],System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitMarkPriceUpdate}},System.Boolean)">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.#ctor(Microsoft.Extensions.Logging.ILogger,CryptoExchange.Net.Clients.SocketApiClient,System.String[],System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitMarkPriceUpdate}},System.Boolean,System.TimeSpan)">
             <summary>
             ctor
             </summary>
@@ -5858,7 +5878,7 @@
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.GetSubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.GetUnsubQuery">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.GetUnsubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.DoHandleMessageSingle(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Sockets.SocketUpdate{Toobit.Net.Objects.Models.ToobitMarkPriceUpdate}})">
@@ -5881,7 +5901,7 @@
         <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.#ctor(Microsoft.Extensions.Logging.ILogger,System.String[],System.String,System.Nullable{Toobit.Net.Enums.KlineInterval},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{`0}},System.Boolean)">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.#ctor(Microsoft.Extensions.Logging.ILogger,CryptoExchange.Net.Clients.SocketApiClient,System.String[],System.String,System.Nullable{Toobit.Net.Enums.KlineInterval},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{`0}},System.Boolean,System.TimeSpan)">
             <summary>
             ctor
             </summary>
@@ -5889,7 +5909,7 @@
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.GetSubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.GetUnsubQuery">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.GetUnsubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Sockets.SocketUpdate{`0}})">
@@ -5906,7 +5926,7 @@
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription.GetSubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription.GetUnsubQuery">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription.GetUnsubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
             <inheritdoc />
         </member>
         <member name="T:Toobit.Net.Objects.ToobitApiAddresses">

@@ -1,6 +1,3 @@
-using CryptoExchange.Net.Converters.MessageParsing;
-using CryptoExchange.Net.Converters.SystemTextJson;
-using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.Sockets;
@@ -44,10 +41,10 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         }
 
         /// <inheritdoc />
-        public override Query? GetSubQuery(SocketConnection connection) => null;
+        protected override Query? GetSubQuery(SocketConnection connection) => null;
 
         /// <inheritdoc />
-        public override Query? GetUnsubQuery() => null;
+        protected override Query? GetUnsubQuery(SocketConnection connection) => null;
 
 
         public CallResult HandleAccountInfo(SocketConnection connection, DataEvent<ToobitAccountUpdate[]> message)
