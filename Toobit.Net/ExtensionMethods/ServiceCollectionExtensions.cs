@@ -103,6 +103,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<ICryptoSocketClient, CryptoSocketClient>();
             services.AddTransient<IToobitOrderBookFactory, ToobitOrderBookFactory>();
             services.AddTransient<IToobitTrackerFactory, ToobitTrackerFactory>();
+            services.AddTransient<ITrackerFactory, ToobitTrackerFactory>();
             services.AddSingleton<IToobitUserClientProvider, ToobitUserClientProvider>(x => 
             new ToobitUserClientProvider(
                 x.GetRequiredService<HttpClient>(),

@@ -3002,25 +3002,6 @@
             Tracker factory
             </summary>
         </member>
-        <member name="M:Toobit.Net.Interfaces.IToobitTrackerFactory.CreateKlineTracker(CryptoExchange.Net.SharedApis.SharedSymbol,CryptoExchange.Net.SharedApis.SharedKlineInterval,System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
-            <summary>
-            Create a new kline tracker
-            </summary>
-            <param name="symbol">The symbol</param>
-            <param name="interval">Kline interval</param>
-            <param name="limit">The max amount of klines to retain</param>
-            <param name="period">The max period the data should be retained</param>
-            <returns></returns>
-        </member>
-        <member name="M:Toobit.Net.Interfaces.IToobitTrackerFactory.CreateTradeTracker(CryptoExchange.Net.SharedApis.SharedSymbol,System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
-            <summary>
-            Create a new trade tracker for a symbol
-            </summary>
-            <param name="symbol">The symbol</param>
-            <param name="limit">The max amount of klines to retain</param>
-            <param name="period">The max period the data should be retained</param>
-            <returns></returns>
-        </member>
         <member name="P:Toobit.Net.Objects.Internal.ToobitDataResult`1.Code">
             <summary>
             Code
@@ -6168,6 +6149,12 @@
             ctor
             </summary>
             <param name="serviceProvider">Service provider for resolving logging and clients</param>
+        </member>
+        <member name="M:Toobit.Net.ToobitTrackerFactory.CanCreateKlineTracker(CryptoExchange.Net.SharedApis.SharedSymbol,CryptoExchange.Net.SharedApis.SharedKlineInterval)">
+            <inheritdoc />
+        </member>
+        <member name="M:Toobit.Net.ToobitTrackerFactory.CanCreateTradeTracker(CryptoExchange.Net.SharedApis.SharedSymbol)">
+            <inheritdoc />
         </member>
         <member name="M:Toobit.Net.ToobitTrackerFactory.CreateKlineTracker(CryptoExchange.Net.SharedApis.SharedSymbol,CryptoExchange.Net.SharedApis.SharedKlineInterval,System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
             <inheritdoc />
