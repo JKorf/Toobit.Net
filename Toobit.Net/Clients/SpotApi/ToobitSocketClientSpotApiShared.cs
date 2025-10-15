@@ -167,6 +167,7 @@ namespace Toobit.Net.Clients.SpotApi
                         TimeInForce = x.TimeInForce == Enums.TimeInForce.ImmediateOrCancel ? SharedTimeInForce.ImmediateOrCancel : x.TimeInForce == Enums.TimeInForce.FillOrKill ? SharedTimeInForce.FillOrKill : SharedTimeInForce.GoodTillCanceled,
                         LastTrade = x.LastFillQuantity > 0 ? new SharedUserTrade(ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol, x.OrderId.ToString(), x.LastTradeId!.ToString()!, x.OrderSide == Enums.OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell, x.LastFillQuantity.Value, x.LastFillPrice!.Value, x.EventTime)
                         {
+                            ClientOrderId = x.ClientOrderId,
                             Role = x.IsMaker ? SharedRole.Maker : SharedRole.Taker
                         } : null
                     }
@@ -222,6 +223,7 @@ namespace Toobit.Net.Clients.SpotApi
                             x.Price,
                             x.Timestamp)
                         {
+                            ClientOrderId = x.ClientOrderId,
                             Role = x.IsMaker ? SharedRole.Maker : SharedRole.Taker
                         }
                     ).ToArray()));

@@ -169,6 +169,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                         IsCloseOrder = x.IsCloseOrder,
                         LastTrade = x.LastFillQuantity > 0 ? new SharedUserTrade(ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol, x.OrderId.ToString(), x.LastTradeId?.ToString()!, x.OrderSide == Enums.OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell, x.LastFillQuantity ?? 0, x.LastFillPrice ?? 0, x.UpdateTime)
                         {
+                            ClientOrderId = x.ClientOrderId,
                             Role = x.IsMaker ? SharedRole.Maker : SharedRole.Taker
                         } : null
                     }
@@ -244,6 +245,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                             x.Price,
                             x.Timestamp)
                         {
+                            ClientOrderId = x.ClientOrderId,
                             Role = x.IsMaker ? SharedRole.Maker : SharedRole.Taker
                         }
                     ).ToArray()));
