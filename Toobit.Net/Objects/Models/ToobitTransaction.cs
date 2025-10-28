@@ -66,7 +66,7 @@ namespace Toobit.Net.Objects.Models
         /// Create time
         /// </summary>
         [JsonPropertyName("created")]
-        public decimal CreateTime { get; set; }
+        public DateTime CreateTime { get; set; }
     }
 
 
