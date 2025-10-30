@@ -1,4 +1,6 @@
-﻿using CryptoExchange.Net.Converters.SystemTextJson;
+﻿using CryptoExchange.Net;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -78,7 +80,7 @@ namespace Toobit.Net.Converters
                     };
                     break;
                 default:
-                    Trace.WriteLine($"{DateTime.Now:yyyy/MM/dd HH:mm:ss:fff} | Warning | Can't parse symbol filter of type: " + obj.GetProperty("filterType").GetString());
+                    LibraryHelpers.StaticLogger?.LogWarning("Can't parse symbol filter of type: " + obj.GetProperty("filterType").GetString());
                     result = new ToobitSymbolFilter();
                     break;
             }
