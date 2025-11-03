@@ -6106,6 +6106,11 @@
             Type of exchange
             </summary>
         </member>
+        <member name="P:Toobit.Net.ToobitExchange.AssetAliases">
+            <summary>
+            Aliases for Toobit assets
+            </summary>
+        </member>
         <member name="M:Toobit.Net.ToobitExchange.FormatSymbol(System.String,System.String,CryptoExchange.Net.SharedApis.TradingMode,System.Nullable{System.DateTime})">
             <summary>
             Format a base and quote asset to an Toobit recognized symbol 

@@ -52,6 +52,17 @@ namespace Toobit.Net
         internal static JsonSerializerContext _serializerContext = new ToobitSourceGenerationContext();
 
         /// <summary>
+        /// Aliases for Toobit assets
+        /// </summary>
+        public static AssetAliasConfiguration AssetAliases { get; } = new AssetAliasConfiguration
+        {
+            Aliases =
+            [
+                new AssetAlias("USDT", SharedSymbol.UsdOrStable.ToUpperInvariant(), AliasType.OnlyToExchange)
+            ]
+        };
+
+        /// <summary>
         /// Format a base and quote asset to an Toobit recognized symbol 
         /// </summary>
         /// <param name="baseAsset">Base asset</param>
@@ -61,10 +72,13 @@ namespace Toobit.Net
         /// <returns></returns>
         public static string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverTime = null)
         {
-            if (tradingMode == TradingMode.Spot)
-                return baseAsset.ToUpperInvariant() + quoteAsset.ToUpperInvariant();
+            baseAsset = AssetAliases.CommonToExchangeName(baseAsset.ToUpperInvariant());
+            quoteAsset = AssetAliases.CommonToExchangeName(quoteAsset.ToUpperInvariant());
 
-            return $"{baseAsset.ToUpperInvariant()}-SWAP-{quoteAsset.ToUpperInvariant()}";
+            if (tradingMode == TradingMode.Spot)
+                return baseAsset + quoteAsset;
+
+            return $"{baseAsset}-SWAP-{quoteAsset}";
         }
 
         /// <summary>
