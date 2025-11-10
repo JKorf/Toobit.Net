@@ -8,7 +8,7 @@ namespace Toobit.Net.Interfaces
     /// <summary>
     /// Toobit local order book factory
     /// </summary>
-    public interface IToobitOrderBookFactory
+    public interface IToobitOrderBookFactory : IExchangeService
     {
         
         /// <summary>

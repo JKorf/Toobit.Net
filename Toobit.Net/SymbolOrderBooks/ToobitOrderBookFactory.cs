@@ -17,6 +17,9 @@ namespace Toobit.Net.SymbolOrderBooks
     {
         private readonly IServiceProvider _serviceProvider;
 
+        /// <inheritdoc />
+        public string ExchangeName => ToobitExchange.ExchangeName;
+
         /// <summary>
         /// ctor
         /// </summary>
