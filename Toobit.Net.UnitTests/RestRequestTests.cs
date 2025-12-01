@@ -13,11 +13,13 @@ namespace Toobit.Net.UnitTests
     [TestFixture]
     public class RestRequestTests
     {
-        [Test]
-        public async Task ValidateSpotAccountCalls()
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task ValidateSpotAccountCalls(bool useUpdatedDeserialization)
         {
             var client = new ToobitRestClient(opts =>
             {
+                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.AutoTimestamp = false;
                 opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
             });
@@ -32,11 +34,13 @@ namespace Toobit.Net.UnitTests
             await tester.ValidateAsync(client => client.SpotApi.Account.GetSubAccountsAsync(), "GetSubAccounts");
         }
 
-        [Test]
-        public async Task ValidateSpotExchangeDataCalls()
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task ValidateSpotExchangeDataCalls(bool useUpdatedDeserialization)
         {
             var client = new ToobitRestClient(opts =>
             {
+                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.AutoTimestamp = false;
                 opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
             });
@@ -50,11 +54,13 @@ namespace Toobit.Net.UnitTests
             await tester.ValidateAsync(client => client.SpotApi.ExchangeData.GetBookTickersAsync(), "GetBookTickers");
         }
 
-        [Test]
-        public async Task ValidateSpotTradingCalls()
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task ValidateSpotTradingCalls(bool useUpdatedDeserialization)
         {
             var client = new ToobitRestClient(opts =>
             {
+                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.AutoTimestamp = false;
                 opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
             });
@@ -68,11 +74,13 @@ namespace Toobit.Net.UnitTests
             await tester.ValidateAsync(client => client.SpotApi.Trading.GetUserTradesAsync("ETHUSDT"), "GetUserTrades");
         }
 
-        [Test]
-        public async Task ValidateUsdtFuturesAccountCalls()
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task ValidateUsdtFuturesAccountCalls(bool useUpdatedDeserialization)
         {
             var client = new ToobitRestClient(opts =>
             {
+                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.AutoTimestamp = false;
                 opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
             });
@@ -86,11 +94,13 @@ namespace Toobit.Net.UnitTests
             await tester.ValidateAsync(client => client.UsdtFuturesApi.Account.GetFeesAsync("123"), "GetFees");
         }
 
-        [Test]
-        public async Task ValidateUsdtFuturesExchangeDataCalls()
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task ValidateUsdtFuturesExchangeDataCalls(bool useUpdatedDeserialization)
         {
             var client = new ToobitRestClient(opts =>
             {
+                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.AutoTimestamp = false;
                 opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
             });
@@ -101,12 +111,13 @@ namespace Toobit.Net.UnitTests
             await tester.ValidateAsync(client => client.UsdtFuturesApi.ExchangeData.GetFundingRateHistoryAsync("123"), "GetFundingRateHistory");
         }
 
-
-        [Test]
-        public async Task ValidateUsdtFuturesTradingCalls()
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task ValidateUsdtFuturesTradingCalls(bool useUpdatedDeserialization)
         {
             var client = new ToobitRestClient(opts =>
             {
+                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.AutoTimestamp = false;
                 opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
             });

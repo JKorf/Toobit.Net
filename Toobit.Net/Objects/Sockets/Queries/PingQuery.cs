@@ -14,6 +14,7 @@ namespace Toobit.Net.Objects.Sockets
         {
             RequestTimeout = TimeSpan.FromSeconds(5);
             MessageMatcher = MessageMatcher.Create<PingResponse>("pong");
+            MessageRouter = MessageRouter.CreateWithoutHandler<PingResponse>("pong");
         }
     }
 }

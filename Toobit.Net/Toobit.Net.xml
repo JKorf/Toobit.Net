@@ -485,12 +485,6 @@
         <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitTradeUpdate[]}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.SubscribeToMarkPriceUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitMarkPriceUpdate}},System.Threading.CancellationToken)">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.SubscribeToMarkPriceUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitMarkPriceUpdate}},System.Threading.CancellationToken)">
-            <inheritdoc />
-        </member>
         <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.SubscribeToKlineUpdatesAsync(System.String,Toobit.Net.Enums.KlineInterval,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitKlineUpdate}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
@@ -2818,26 +2812,6 @@
             <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#latest-contract-price-stream" /></para>
             </summary>
             <param name="symbols">Symbols to subscribe</param>
-            <param name="onMessage">The event handler for the received data</param>
-            <param name="ct">Cancellation token for closing this subscription</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitSocketClientUsdtFuturesApi.SubscribeToMarkPriceUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitMarkPriceUpdate}},System.Threading.CancellationToken)">
-            <summary>
-            Subscribe to live mark price updates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#mark-price-stream" /></para>
-            </summary>
-            <param name="symbol">Symbol to subscribe</param>
-            <param name="onMessage">The event handler for the received data</param>
-            <param name="ct">Cancellation token for closing this subscription</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitSocketClientUsdtFuturesApi.SubscribeToMarkPriceUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitMarkPriceUpdate}},System.Threading.CancellationToken)">
-            <summary>
-            Subscribe to live mark price updates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#mark-price-stream" /></para>
-            </summary>
-            <param name="symbols">Symbol to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
@@ -5851,26 +5825,6 @@
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription.GetUnsubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
             <inheritdoc />
         </member>
-        <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.#ctor(Microsoft.Extensions.Logging.ILogger,CryptoExchange.Net.Clients.SocketApiClient,System.String[],System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitMarkPriceUpdate}},System.Boolean,System.TimeSpan)">
-            <summary>
-            ctor
-            </summary>
-        </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.GetSubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.GetUnsubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.DoHandleMessageSingle(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Sockets.SocketUpdate{Toobit.Net.Objects.Models.ToobitMarkPriceUpdate}})">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitMarkPriceSubscription.DoHandleMessageArray(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Sockets.SocketUpdate{Toobit.Net.Objects.Models.ToobitMarkPriceUpdate[]}})">
-            <inheritdoc />
-        </member>
         <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitPingSubscription">
             <inheritdoc />
         </member>
@@ -5879,13 +5833,13 @@
             ctor
             </summary>
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitPingSubscription.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Sockets.PingRequest})">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitPingSubscription.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,System.DateTime,System.String,Toobit.Net.Objects.Sockets.PingRequest)">
             <inheritdoc />
         </member>
         <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.#ctor(Microsoft.Extensions.Logging.ILogger,CryptoExchange.Net.Clients.SocketApiClient,System.String[],System.String,System.Nullable{Toobit.Net.Enums.KlineInterval},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{`0}},System.Boolean,System.TimeSpan)">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.#ctor(Microsoft.Extensions.Logging.ILogger,CryptoExchange.Net.Clients.SocketApiClient,System.String[],System.String,System.Nullable{Toobit.Net.Enums.KlineInterval},System.Action{System.DateTime,System.String,Toobit.Net.Objects.Sockets.SocketUpdate{`0}},System.Boolean,System.TimeSpan)">
             <summary>
             ctor
             </summary>
@@ -5896,7 +5850,7 @@
         <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.GetUnsubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Sockets.SocketUpdate{`0}})">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,System.DateTime,System.String,Toobit.Net.Objects.Sockets.SocketUpdate{`0})">
             <inheritdoc />
         </member>
         <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription">
@@ -6215,6 +6169,9 @@
         </member>
         <member name="M:Microsoft.Extensions.Configuration.Binder.SourceGeneration.BindingExtensions.Bind_ToobitOptions(Microsoft.Extensions.Configuration.IConfiguration,System.Object)">
             <summary>Attempts to bind the given object instance to configuration values by matching property names against configuration keys recursively.</summary>
+        </member>
+        <member name="M:Microsoft.Extensions.Configuration.Binder.SourceGeneration.BindingExtensions.TryGetConfigurationValue(Microsoft.Extensions.Configuration.IConfiguration,System.String,System.String@)">
+            <summary>Tries to get the configuration value for the specified key.</summary>
         </member>
         <member name="M:Microsoft.Extensions.Configuration.Binder.SourceGeneration.BindingExtensions.ValidateConfigurationKeys(System.Type,System.Lazy{System.Collections.Generic.HashSet{System.String}},Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Configuration.BinderOptions)">
             <summary>If required by the binder options, validates that there are no unknown keys in the input configuration object.</summary>

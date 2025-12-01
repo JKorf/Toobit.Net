@@ -23,13 +23,13 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         public ToobitPingSubscription(ILogger logger) : base(logger, false)
         {
             MessageMatcher = MessageMatcher.Create<PingRequest>("ping", DoHandleMessage);
+            MessageRouter = MessageRouter.CreateWithoutTopicFilter<PingRequest>("ping", DoHandleMessage);
         }
 
         /// <inheritdoc />
-        public CallResult DoHandleMessage(SocketConnection connection, DataEvent<PingRequest> message)
+        public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, PingRequest message)
         {
-            var dataMessage = (PingRequest)message.Data;
-            connection.Send(ExchangeHelpers.NextId(), new PingResponse { Pong = dataMessage.Ping }, 1);
+            _ = connection.SendAsync(ExchangeHelpers.NextId(), new PingResponse { Pong = message.Ping }, 1);
             return CallResult.SuccessResult;
         }
     }

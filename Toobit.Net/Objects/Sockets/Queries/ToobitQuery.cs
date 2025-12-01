@@ -21,11 +21,12 @@ namespace Toobit.Net.Objects.Sockets
             TimeoutBehavior = TimeoutBehavior.Succeed;
 
             MessageMatcher = MessageMatcher.Create<SocketError>("-100010", HandleSymbolError);
+            MessageRouter = MessageRouter.CreateWithoutTopicFilter<SocketError>("-100010", HandleSymbolError);
         }
 
-        private CallResult HandleSymbolError(SocketConnection connection, DataEvent<SocketError> @event)
+        private CallResult HandleSymbolError(SocketConnection connection, DateTime receiveTime, string? originalData, SocketError @event)
         {
-            return new CallResult(new ServerError(@event.Data.Code, _client.GetErrorInfo(@event.Data.Code, @event.Data.Description)));
+            return new CallResult(new ServerError(@event.Code, _client.GetErrorInfo(@event.Code, @event.Description)));
         }
     }
 }

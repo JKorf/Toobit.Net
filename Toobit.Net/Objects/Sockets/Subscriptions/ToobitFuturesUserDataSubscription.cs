@@ -38,6 +38,13 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
                 new MessageHandlerLink<ToobitFuturesOrderUpdate[]>(MessageLinkType.Full, "contractExecutionReport", HandleOrderUpdate),
                 new MessageHandlerLink<ToobitUserTradeUpdate[]>(MessageLinkType.Full, "ticketInfo", HandleUserTradeUpdate)
                 ]);
+
+            MessageRouter = MessageRouter.Create([
+                MessageRoute<ToobitAccountUpdate[]>.CreateWithoutTopicFilter("outboundContractAccountInfo", HandleAccountInfo),
+                MessageRoute<ToobitPositionUpdate[]>.CreateWithoutTopicFilter("outboundContractPositionInfo", HandlePositionUpdate),
+                MessageRoute<ToobitFuturesOrderUpdate[]>.CreateWithoutTopicFilter("contractExecutionReport", HandleOrderUpdate),
+                MessageRoute<ToobitUserTradeUpdate[]>.CreateWithoutTopicFilter("ticketInfo", HandleUserTradeUpdate)
+                ]);
         }
 
         /// <inheritdoc />
@@ -47,27 +54,51 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         protected override Query? GetUnsubQuery(SocketConnection connection) => null;
 
 
-        public CallResult HandleAccountInfo(SocketConnection connection, DataEvent<ToobitAccountUpdate[]> message)
+        public CallResult HandleAccountInfo(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitAccountUpdate[] message)
         {
-            _accountHandler?.Invoke(message.As(message.Data.First(), "FuturesAccount", null, SocketUpdateType.Update).WithDataTimestamp(message.Data.Any() ? message.Data.Max(x => x.EventTime) : null));
+            _accountHandler?.Invoke(
+                    new DataEvent<ToobitAccountUpdate>(message.First(), receiveTime, originalData)
+                        .WithStreamId("FuturesAccount")
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
+                );
+            
             return CallResult.SuccessResult;
         }
 
-        public CallResult HandleOrderUpdate(SocketConnection connection, DataEvent<ToobitFuturesOrderUpdate[]> message)
+        public CallResult HandleOrderUpdate(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitFuturesOrderUpdate[] message)
         {
-            _orderHandler?.Invoke(message.As(message.Data, "FuturesOrder", null, SocketUpdateType.Update).WithDataTimestamp(message.Data.Any() ? message.Data.Max(x => x.EventTime) : null));
+            _orderHandler?.Invoke(
+                    new DataEvent<ToobitFuturesOrderUpdate[]>(message, receiveTime, originalData)
+                        .WithStreamId("FuturesOrder")
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
+                );
+            
             return CallResult.SuccessResult;
         }
 
-        public CallResult HandleUserTradeUpdate(SocketConnection connection, DataEvent<ToobitUserTradeUpdate[]> message)
+        public CallResult HandleUserTradeUpdate(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitUserTradeUpdate[] message)
         {
-            _userTradeHandler?.Invoke(message.As(message.Data, "UserTrade", null, SocketUpdateType.Update).WithDataTimestamp(message.Data.Any() ? message.Data.Max(x => x.EventTime) : null));
+            _userTradeHandler?.Invoke(
+                    new DataEvent<ToobitUserTradeUpdate[]>(message, receiveTime, originalData)
+                        .WithStreamId("UserTrade")
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
+                );
+
             return CallResult.SuccessResult;
         }
 
-        public CallResult HandlePositionUpdate(SocketConnection connection, DataEvent<ToobitPositionUpdate[]> message)
+        public CallResult HandlePositionUpdate(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitPositionUpdate[] message)
         {
-            _positionHandler?.Invoke(message.As(message.Data, "FuturesPosition", null, SocketUpdateType.Update).WithDataTimestamp(message.Data.Any() ? message.Data.Max(x => x.EventTime) : null));
+            _positionHandler?.Invoke(
+                    new DataEvent<ToobitPositionUpdate[]>(message, receiveTime, originalData)
+                        .WithStreamId("FuturesPosition")
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
+                );
+
             return CallResult.SuccessResult;
         }
     }

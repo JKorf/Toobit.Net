@@ -9,11 +9,13 @@ namespace Toobit.Net.UnitTests
     [TestFixture]
     public class SocketSubscriptionTests
     {
-        [Test]
-        public async Task ValidateSpotSubscriptions()
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task ValidateSpotSubscriptions(bool useUpdatedDeserialization)
         {
             var client = new ToobitSocketClient(opts =>
             {
+                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
             });
             var tester = new SocketSubscriptionValidator<ToobitSocketClient>(client, "Subscriptions/Spot", "wss://stream.toobit.com");
@@ -27,11 +29,13 @@ namespace Toobit.Net.UnitTests
             await tester.ValidateAsync<ToobitUserTradeUpdate[]>((client, handler) => client.SpotApi.SubscribeToUserDataUpdatesAsync("123", null, null, handler), "UserTrade");
         }
 
-        [Test]
-        public async Task ValidateFuturesSubscriptions()
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task ValidateFuturesSubscriptions(bool useUpdatedDeserialization)
         {
             var client = new ToobitSocketClient(opts =>
             {
+                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
             });
             var tester = new SocketSubscriptionValidator<ToobitSocketClient>(client, "Subscriptions/UsdtFutures", "wss://stream.toobit.com");
