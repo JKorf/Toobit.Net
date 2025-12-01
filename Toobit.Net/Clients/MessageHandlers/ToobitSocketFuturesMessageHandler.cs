@@ -6,7 +6,7 @@ using Toobit.Net;
 using Toobit.Net.Objects.Models;
 using Toobit.Net.Objects.Sockets;
 
-namespace Mexc.Net.Clients.MessageHandlers
+namespace Toobit.Net.Clients.MessageHandlers
 {
     internal class ToobitSocketFuturesMessageHandler : JsonSocketMessageHandler
     {
