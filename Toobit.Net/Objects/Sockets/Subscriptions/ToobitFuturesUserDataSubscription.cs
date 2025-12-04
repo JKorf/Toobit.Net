@@ -10,7 +10,7 @@ using Toobit.Net.Objects.Models;
 namespace Toobit.Net.Objects.Sockets.Subscriptions
 {
     /// <inheritdoc />
-    internal class ToobitFuturesUserDataSubscription : Subscription<object, object>
+    internal class ToobitFuturesUserDataSubscription: Subscription
     {
         private readonly Action<DataEvent<ToobitAccountUpdate>>? _accountHandler;
         private readonly Action<DataEvent<ToobitFuturesOrderUpdate[]>>? _orderHandler;

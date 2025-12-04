@@ -14,7 +14,7 @@ using Toobit.Net.Objects.Models;
 namespace Toobit.Net.Objects.Sockets.Subscriptions
 {
     /// <inheritdoc />
-    internal class ToobitUserDataSubscription : Subscription<object, object>
+    internal class ToobitUserDataSubscription : Subscription
     {
         private readonly Action<DataEvent<ToobitAccountUpdate>>? _accountHandler;
         private readonly Action<DataEvent<ToobitOrderUpdate[]>>? _orderHandler;

@@ -15,7 +15,7 @@ using Toobit.Net.Objects.Models;
 namespace Toobit.Net.Objects.Sockets.Subscriptions
 {
     /// <inheritdoc />
-    internal class ToobitSubscription<T> : Subscription<object, object>
+    internal class ToobitSubscription<T> : Subscription
     {
         private readonly TimeSpan _waitForErrorTimeout;
         private readonly SocketApiClient _client;
