@@ -18,41 +18,36 @@ namespace Toobit.Net.Clients.MessageHandlers
             AddTopicMapping<SocketUpdate>(x => x.Symbol);
         }
 
-        protected override MessageEvaluator[] TypeEvaluators { get; } = [ 
-            new MessageEvaluator {
-                Priority = 1,
+        protected override MessageTypeDefinition[] TypeEvaluators { get; } = [ 
+            new MessageTypeDefinition {
                 Fields = [
                     new PropertyFieldReference("code"),
                 ],
-                IdentifyMessageCallback = x => x.FieldValue("code")!
+                TypeIdentifierCallback = x => x.FieldValue("code")!
             },
 
-             new MessageEvaluator {
-                Priority = 2,
+             new MessageTypeDefinition {
                 Fields = [
                     new PropertyFieldReference("topic"),
                 ],
-                IdentifyMessageCallback = x => x.FieldValue("topic")!
+                TypeIdentifierCallback = x => x.FieldValue("topic")!
             },
 
-            new MessageEvaluator {
-                Priority = 3,
+            new MessageTypeDefinition {
                 Fields = [
                     new PropertyFieldReference("e") { Depth = 2 },
                 ],
-                IdentifyMessageCallback = x => x.FieldValue("e")!
+                TypeIdentifierCallback = x => x.FieldValue("e")!
             },
 
-            new MessageEvaluator {
-                Priority = 4,
+            new MessageTypeDefinition {
                 Fields = [
                     new PropertyFieldReference("pong"),
                 ],
                 StaticIdentifier = "pong"
             },
 
-            new MessageEvaluator {
-                Priority = 5,
+            new MessageTypeDefinition {
                 Fields = [
                     new PropertyFieldReference("ping"),
                 ],

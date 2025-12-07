@@ -1,14 +1,39 @@
+using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Testing;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using System.Threading.Tasks;
 using Toobit.Net.Clients;
 using Toobit.Net.Objects.Models;
+using Toobit.Net.Objects.Options;
 
 namespace Toobit.Net.UnitTests
 {
     [TestFixture]
     public class SocketSubscriptionTests
     {
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task ValidateConcurrentFuturesSubscriptions(bool newDeserialization)
+        {
+            var logger = new LoggerFactory();
+            logger.AddProvider(new TraceLoggerProvider());
+
+            var client = new ToobitSocketClient(Options.Create(new ToobitSocketOptions
+            {
+                OutputOriginalData = true,
+                UseUpdatedDeserialization = newDeserialization,
+
+            }), logger);
+
+            var tester = new SocketSubscriptionValidator<ToobitSocketClient>(client, "Subscriptions/Spot", "wss://stream.toobit.com");
+            await tester.ValidateConcurrentAsync<ToobitKlineUpdate>(
+                (client, handler) => client.SpotApi.SubscribeToKlineUpdatesAsync("ETHUSDT", Enums.KlineInterval.OneDay, handler),
+                (client, handler) => client.SpotApi.SubscribeToKlineUpdatesAsync("ETHUSDT", Enums.KlineInterval.OneHour, handler),
+                "Concurrent");
+        }
+
         [TestCase(false)]
         [TestCase(true)]
         public async Task ValidateSpotSubscriptions(bool useUpdatedDeserialization)
