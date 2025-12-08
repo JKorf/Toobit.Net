@@ -1,4 +1,4 @@
-using CryptoExchange.Net.Interfaces;
+using CryptoExchange.Net.Interfaces.Clients;
 using Toobit.Net.Clients;
 using Toobit.Net.Interfaces.Clients;
 

@@ -194,7 +194,7 @@
         <member name="M:Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi.GetListenerIdentifier(CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi.GetAuthenticationRequestAsync(CryptoExchange.Net.Sockets.SocketConnection)">
+        <member name="M:Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi.GetAuthenticationRequestAsync(CryptoExchange.Net.Sockets.Default.SocketConnection)">
             <inheritdoc />
         </member>
         <member name="P:Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi.SharedClient">
@@ -473,7 +473,7 @@
         <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.GetAuthenticationRequestAsync(CryptoExchange.Net.Sockets.SocketConnection)">
+        <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.GetAuthenticationRequestAsync(CryptoExchange.Net.Sockets.Default.SocketConnection)">
             <inheritdoc />
         </member>
         <member name="P:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.SharedClient">
@@ -5819,10 +5819,10 @@
             ctor
             </summary>
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription.GetSubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription.GetSubQuery(CryptoExchange.Net.Sockets.Default.SocketConnection)">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription.GetUnsubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription.GetUnsubQuery(CryptoExchange.Net.Sockets.Default.SocketConnection)">
             <inheritdoc />
         </member>
         <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitPingSubscription">
@@ -5833,7 +5833,7 @@
             ctor
             </summary>
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitPingSubscription.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,System.DateTime,System.String,Toobit.Net.Objects.Sockets.PingRequest)">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitPingSubscription.DoHandleMessage(CryptoExchange.Net.Sockets.Default.SocketConnection,System.DateTime,System.String,Toobit.Net.Objects.Sockets.PingRequest)">
             <inheritdoc />
         </member>
         <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1">
@@ -5844,13 +5844,13 @@
             ctor
             </summary>
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.GetSubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.GetSubQuery(CryptoExchange.Net.Sockets.Default.SocketConnection)">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.GetUnsubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.GetUnsubQuery(CryptoExchange.Net.Sockets.Default.SocketConnection)">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,System.DateTime,System.String,Toobit.Net.Objects.Sockets.SocketUpdate{`0})">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitSubscription`1.DoHandleMessage(CryptoExchange.Net.Sockets.Default.SocketConnection,System.DateTime,System.String,Toobit.Net.Objects.Sockets.SocketUpdate{`0})">
             <inheritdoc />
         </member>
         <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription">
@@ -5861,10 +5861,10 @@
             ctor
             </summary>
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription.GetSubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription.GetSubQuery(CryptoExchange.Net.Sockets.Default.SocketConnection)">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription.GetUnsubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription.GetUnsubQuery(CryptoExchange.Net.Sockets.Default.SocketConnection)">
             <inheritdoc />
         </member>
         <member name="T:Toobit.Net.Objects.ToobitApiAddresses">
@@ -6132,14 +6132,14 @@
             Extensions for the ICryptoRestClient and ICryptoSocketClient interfaces
             </summary>
         </member>
-        <member name="M:CryptoExchange.Net.Interfaces.CryptoClientExtensions.Toobit(CryptoExchange.Net.Interfaces.ICryptoRestClient)">
+        <member name="M:CryptoExchange.Net.Interfaces.CryptoClientExtensions.Toobit(CryptoExchange.Net.Interfaces.Clients.ICryptoRestClient)">
             <summary>
             Get the Toobit REST Api client
             </summary>
             <param name="baseClient"></param>
             <returns></returns>
         </member>
-        <member name="M:CryptoExchange.Net.Interfaces.CryptoClientExtensions.Toobit(CryptoExchange.Net.Interfaces.ICryptoSocketClient)">
+        <member name="M:CryptoExchange.Net.Interfaces.CryptoClientExtensions.Toobit(CryptoExchange.Net.Interfaces.Clients.ICryptoSocketClient)">
             <summary>
             Get the Toobit Websocket Api client
             </summary>

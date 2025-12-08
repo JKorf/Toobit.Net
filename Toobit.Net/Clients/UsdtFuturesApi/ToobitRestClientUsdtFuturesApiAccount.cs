@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Toobit.Net.Clients.UsdtFuturesApi;
 using Toobit.Net.Enums;
 using Toobit.Net.Interfaces.Clients.UsdtFuturesApi;
 using Toobit.Net.Objects.Models;

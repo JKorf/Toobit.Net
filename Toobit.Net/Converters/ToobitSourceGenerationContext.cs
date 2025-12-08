@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.Json.Serialization;
 using Toobit.Net.Enums;
 using Toobit.Net.Objects.Internal;

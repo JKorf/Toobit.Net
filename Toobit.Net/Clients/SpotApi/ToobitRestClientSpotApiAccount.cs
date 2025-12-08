@@ -2,7 +2,6 @@ using CryptoExchange.Net.Objects;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Threading;
-using Toobit.Net.Clients.SpotApi;
 using Toobit.Net.Interfaces.Clients.SpotApi;
 using Toobit.Net.Objects.Models;
 using CryptoExchange.Net;

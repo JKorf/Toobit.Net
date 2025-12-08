@@ -1,7 +1,6 @@
 using CryptoExchange.Net.SharedApis;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using Toobit.Net.Interfaces.Clients.SpotApi;
@@ -9,7 +8,6 @@ using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net;
 using System.Linq;
 using CryptoExchange.Net.Objects;
-using System.Security.Principal;
 using Toobit.Net.Enums;
 
 namespace Toobit.Net.Clients.SpotApi

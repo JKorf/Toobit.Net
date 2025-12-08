@@ -6,7 +6,6 @@ using System.Threading;
 using Toobit.Net.Interfaces.Clients.SpotApi;
 using Toobit.Net.Objects.Models;
 using Toobit.Net.Enums;
-using System.Drawing;
 using System;
 using Toobit.Net.Objects.Internal;
 using System.Collections.Generic;

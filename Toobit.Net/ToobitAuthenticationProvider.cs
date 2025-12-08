@@ -4,9 +4,7 @@ using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
-using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using Toobit.Net.Objects.Options;
 
 namespace Toobit.Net

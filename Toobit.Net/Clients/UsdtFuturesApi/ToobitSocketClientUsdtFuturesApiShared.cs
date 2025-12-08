@@ -1,14 +1,12 @@
 using CryptoExchange.Net.SharedApis;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using Toobit.Net.Interfaces.Clients.UsdtFuturesApi;
 using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net;
 using System.Linq;
-using System.Security.Principal;
 using CryptoExchange.Net.Objects;
 using Toobit.Net.Enums;
 

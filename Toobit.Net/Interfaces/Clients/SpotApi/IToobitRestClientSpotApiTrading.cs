@@ -3,8 +3,6 @@ using System.Threading;
 using Toobit.Net.Objects.Models;
 using CryptoExchange.Net.Objects;
 using Toobit.Net.Enums;
-using System.Drawing;
-using Toobit.Net.Objects.Internal;
 using System;
 using System.Collections.Generic;
 
