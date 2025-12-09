@@ -11,7 +11,7 @@ namespace Toobit.Net
 {
     internal class ToobitAuthenticationProvider : AuthenticationProvider
     {
-        private static IMessageSerializer _serializer = new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(ToobitExchange._serializerContext));
+        public override ApiCredentialsType[] SupportedCredentialTypes => [ApiCredentialsType.Hmac];
 
         public ToobitAuthenticationProvider(ApiCredentials credentials) : base(credentials)
         {
