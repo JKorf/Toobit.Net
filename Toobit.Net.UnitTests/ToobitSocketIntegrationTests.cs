@@ -32,7 +32,7 @@ namespace Toobit.Net.UnitTests
             }), loggerFactory);
         }
 
-        private ToobitRestClient GetRestClient(bool useUpdatedDeserialization)
+        private ToobitRestClient GetRestClient()
         {
             var key = Environment.GetEnvironmentVariable("APIKEY");
             var sec = Environment.GetEnvironmentVariable("APISECRET");
@@ -40,7 +40,6 @@ namespace Toobit.Net.UnitTests
             Authenticated = key != null && sec != null;
             return new ToobitRestClient(x =>
             {
-                x.UseUpdatedDeserialization = useUpdatedDeserialization;
                 x.ApiCredentials = Authenticated ? new CryptoExchange.Net.Authentication.ApiCredentials(key, sec) : null;
             });
         }
@@ -49,7 +48,7 @@ namespace Toobit.Net.UnitTests
         [TestCase(true)]
         public async Task TestSubscriptions(bool useUpdatedDeserialization)
         {
-            var listenKey = await GetRestClient(useUpdatedDeserialization).SpotApi.Account.StartUserStreamAsync();
+            var listenKey = await GetRestClient().SpotApi.Account.StartUserStreamAsync();
             await RunAndCheckUpdate<ToobitAccountUpdate>(useUpdatedDeserialization, (client, updateHandler) => client.SpotApi.SubscribeToUserDataUpdatesAsync(listenKey.Data, updateHandler, default, default, default), false, true);
             
             await RunAndCheckUpdate<ToobitTickerUpdate>(useUpdatedDeserialization, (client, updateHandler) => client.SpotApi.SubscribeToTickerUpdatesAsync("ETHUSDT", updateHandler, default), true, false);
