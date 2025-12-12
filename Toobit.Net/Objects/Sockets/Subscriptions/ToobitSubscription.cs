@@ -40,6 +40,9 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             _topic = topic + (interval == null ? "" : ("_" + EnumConverter.GetString(interval.Value)));
             _interval = interval;
             _waitForErrorTimeout = waitForErrorTimeout;
+
+            IndividualSubscriptionCount = symbols?.Length ?? 1;
+
             if (symbols?.Any() == true)
                 MessageMatcher = MessageMatcher.Create<SocketUpdate<T>>(symbols.Select(x => topic + "-" + x + (_interval == null ? "" : ("-" + EnumConverter.GetString(_interval.Value)))), DoHandleMessage);
             else
