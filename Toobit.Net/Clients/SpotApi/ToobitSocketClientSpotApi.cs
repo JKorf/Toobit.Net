@@ -97,7 +97,7 @@ namespace Toobit.Net.Clients.SpotApi
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitTradeUpdate[]>>((receiveTime, originalData, data) =>
             {
                 onMessage(
-                    new DataEvent<ToobitTradeUpdate[]>(data.Data, receiveTime, originalData)
+                    new DataEvent<ToobitTradeUpdate[]>(ToobitExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
                         .WithDataTimestamp(data.SendTime)
                         .WithStreamId(data.Topic)
@@ -119,7 +119,7 @@ namespace Toobit.Net.Clients.SpotApi
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitTickerUpdate[]>>((receiveTime, originalData, data) =>
             {
                 onMessage(
-                    new DataEvent<ToobitTickerUpdate>(data.Data.First(), receiveTime, originalData)
+                    new DataEvent<ToobitTickerUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
                         .WithDataTimestamp(data.SendTime)
                         .WithStreamId(data.Topic)
@@ -141,7 +141,7 @@ namespace Toobit.Net.Clients.SpotApi
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitKlineUpdate[]>>((receiveTime, originalData, data) =>
             {
                 onMessage(
-                    new DataEvent<ToobitKlineUpdate>(data.Data.First(), receiveTime, originalData)
+                    new DataEvent<ToobitKlineUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
                         .WithDataTimestamp(data.SendTime)
                         .WithStreamId(data.Topic)
@@ -163,7 +163,7 @@ namespace Toobit.Net.Clients.SpotApi
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitOrderBookUpdate[]>>((receiveTime, originalData, data) =>
             {
                 onMessage(
-                    new DataEvent<ToobitOrderBookUpdate>(data.Data.First(), receiveTime, originalData)
+                    new DataEvent<ToobitOrderBookUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
                         .WithDataTimestamp(data.SendTime)
                         .WithStreamId(data.Topic)
@@ -185,7 +185,7 @@ namespace Toobit.Net.Clients.SpotApi
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitOrderBookUpdate[]>>((receiveTime, originalData, data) =>
             {
                 onMessage(
-                    new DataEvent<ToobitOrderBookUpdate>(data.Data.First(), receiveTime, originalData)
+                    new DataEvent<ToobitOrderBookUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
                         .WithDataTimestamp(data.SendTime)
                         .WithStreamId(data.Topic)

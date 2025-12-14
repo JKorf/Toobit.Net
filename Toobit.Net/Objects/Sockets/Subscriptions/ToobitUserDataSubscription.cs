@@ -51,7 +51,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         public CallResult HandleAccountInfo(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitAccountUpdate[] message)
         {
             _accountHandler?.Invoke(
-                    new DataEvent<ToobitAccountUpdate>(message.First(), receiveTime, originalData)
+                    new DataEvent<ToobitAccountUpdate>(ToobitExchange.ExchangeName, message.First(), receiveTime, originalData)
                         .WithStreamId("SpotAccount")
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
@@ -64,7 +64,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         public CallResult HandleOrderUpdate(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitOrderUpdate[] message)
         {
             _orderHandler?.Invoke(
-                    new DataEvent<ToobitOrderUpdate[]>(message, receiveTime, originalData)
+                    new DataEvent<ToobitOrderUpdate[]>(ToobitExchange.ExchangeName, message, receiveTime, originalData)
                         .WithStreamId("SpotOrder")
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
@@ -76,7 +76,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         public CallResult HandleUserTrade(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitUserTradeUpdate[] message)
         {
             _userTradeHandler?.Invoke(
-                    new DataEvent<ToobitUserTradeUpdate[]>(message, receiveTime, originalData)
+                    new DataEvent<ToobitUserTradeUpdate[]>(ToobitExchange.ExchangeName, message, receiveTime, originalData)
                         .WithStreamId("SpotUserTrade")
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)

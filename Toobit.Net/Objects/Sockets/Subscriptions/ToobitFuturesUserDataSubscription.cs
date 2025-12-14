@@ -57,7 +57,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         public CallResult HandleAccountInfo(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitAccountUpdate[] message)
         {
             _accountHandler?.Invoke(
-                    new DataEvent<ToobitAccountUpdate>(message.First(), receiveTime, originalData)
+                    new DataEvent<ToobitAccountUpdate>(ToobitExchange.ExchangeName, message.First(), receiveTime, originalData)
                         .WithStreamId("FuturesAccount")
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
@@ -69,7 +69,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         public CallResult HandleOrderUpdate(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitFuturesOrderUpdate[] message)
         {
             _orderHandler?.Invoke(
-                    new DataEvent<ToobitFuturesOrderUpdate[]>(message, receiveTime, originalData)
+                    new DataEvent<ToobitFuturesOrderUpdate[]>(ToobitExchange.ExchangeName, message, receiveTime, originalData)
                         .WithStreamId("FuturesOrder")
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
@@ -81,7 +81,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         public CallResult HandleUserTradeUpdate(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitUserTradeUpdate[] message)
         {
             _userTradeHandler?.Invoke(
-                    new DataEvent<ToobitUserTradeUpdate[]>(message, receiveTime, originalData)
+                    new DataEvent<ToobitUserTradeUpdate[]>(ToobitExchange.ExchangeName, message, receiveTime, originalData)
                         .WithStreamId("UserTrade")
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
@@ -93,7 +93,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         public CallResult HandlePositionUpdate(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitPositionUpdate[] message)
         {
             _positionHandler?.Invoke(
-                    new DataEvent<ToobitPositionUpdate[]>(message, receiveTime, originalData)
+                    new DataEvent<ToobitPositionUpdate[]>(ToobitExchange.ExchangeName, message, receiveTime, originalData)
                         .WithStreamId("FuturesPosition")
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
