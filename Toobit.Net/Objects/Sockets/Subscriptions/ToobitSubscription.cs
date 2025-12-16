@@ -92,7 +92,6 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         /// <inheritdoc />
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, SocketUpdate<T> message)
         {
-            //_handler.Invoke(message.As(message.Data.Data, message.Data.Topic, message.Data.Symbol, message.Data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update).WithDataTimestamp(message.Data.SendTime));
             _handler.Invoke(receiveTime, originalData, message);
             return new CallResult(null);
         }

@@ -57,7 +57,6 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
                         .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
                 );
 
-            //_accountHandler?.Invoke(message.As(message.Data.First(), "SpotAccount", null, SocketUpdateType.Update).WithDataTimestamp(message.Data.Any() ? message.Data.Max(x => x.EventTime) : null));
             return CallResult.SuccessResult;
         }
 
