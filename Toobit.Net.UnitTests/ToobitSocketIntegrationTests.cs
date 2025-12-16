@@ -12,7 +12,7 @@ namespace Toobit.Net.UnitTests
 {
     internal class ToobitSocketIntegrationTests : SocketIntegrationTest<ToobitSocketClient>
     {
-        public override bool Run { get; set; } = true;
+        public override bool Run { get; set; } = false;
 
         public ToobitSocketIntegrationTests()
         {
