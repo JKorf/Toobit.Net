@@ -3,7 +3,6 @@ using System.Threading;
 using CryptoExchange.Net.Objects;
 using Toobit.Net.Objects.Models;
 using Toobit.Net.Enums;
-using Toobit.Net.Objects.Internal;
 using System;
 using System.Collections.Generic;
 

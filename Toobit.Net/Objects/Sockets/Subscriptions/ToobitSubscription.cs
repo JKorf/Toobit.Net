@@ -1,25 +1,22 @@
 using CryptoExchange.Net.Clients;
-using CryptoExchange.Net.Converters.MessageParsing;
 using CryptoExchange.Net.Converters.SystemTextJson;
-using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
-using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.Sockets;
+using CryptoExchange.Net.Sockets.Default;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Toobit.Net.Enums;
-using Toobit.Net.Objects.Models;
 
 namespace Toobit.Net.Objects.Sockets.Subscriptions
 {
     /// <inheritdoc />
-    internal class ToobitSubscription<T> : Subscription<object, object>
+    internal class ToobitSubscription<T> : Subscription
     {
         private readonly TimeSpan _waitForErrorTimeout;
         private readonly SocketApiClient _client;
-        private readonly Action<DataEvent<T>> _handler;
+        private readonly Action<DateTime, string?, SocketUpdate<T>> _handler;
         private readonly string[]? _symbols;
         private readonly string _topic;
         private readonly KlineInterval? _interval;
@@ -33,7 +30,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             string[]? symbols,
             string topic,
             KlineInterval? interval,
-            Action<DataEvent<T>> handler,
+            Action<DateTime, string?, SocketUpdate<T>> handler,
             bool auth,
             TimeSpan waitForErrorTimeout) : base(logger, auth)
         {
@@ -43,10 +40,15 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             _topic = topic + (interval == null ? "" : ("_" + EnumConverter.GetString(interval.Value)));
             _interval = interval;
             _waitForErrorTimeout = waitForErrorTimeout;
+
+            IndividualSubscriptionCount = symbols?.Length ?? 1;
+
             if (symbols?.Any() == true)
                 MessageMatcher = MessageMatcher.Create<SocketUpdate<T>>(symbols.Select(x => topic + "-" + x + (_interval == null ? "" : ("-" + EnumConverter.GetString(_interval.Value)))), DoHandleMessage);
             else
                 MessageMatcher = MessageMatcher.Create<SocketUpdate<T>>(topic, DoHandleMessage);
+
+            MessageRouter = MessageRouter.CreateWithOptionalTopicFilters<SocketUpdate<T>>(topic, symbols?.Select(x => _interval == null ? x : x + EnumConverter.GetString(_interval.Value)), DoHandleMessage);
         }
 
         /// <inheritdoc />
@@ -88,9 +90,9 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         }
 
         /// <inheritdoc />
-        public CallResult DoHandleMessage(SocketConnection connection, DataEvent<SocketUpdate<T>> message)
+        public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, SocketUpdate<T> message)
         {
-            _handler.Invoke(message.As(message.Data.Data, message.Data.Topic, message.Data.Symbol, message.Data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update).WithDataTimestamp(message.Data.SendTime));
+            _handler.Invoke(receiveTime, originalData, message);
             return new CallResult(null);
         }
     }

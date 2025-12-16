@@ -1,9 +1,8 @@
 using CryptoExchange.Net.Authentication;
-using CryptoExchange.Net.Interfaces;
+using CryptoExchange.Net.Interfaces.Clients;
 using CryptoExchange.Net.Objects.Options;
 using Toobit.Net.Interfaces.Clients.SpotApi;
 using Toobit.Net.Interfaces.Clients.UsdtFuturesApi;
-using Toobit.Net.Objects.Options;
 
 namespace Toobit.Net.Interfaces.Clients
 {

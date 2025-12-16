@@ -1,20 +1,21 @@
-using CryptoExchange.Net;
 using CryptoExchange.Net.Authentication;
-using CryptoExchange.Net.Objects;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using Toobit.Net.Interfaces.Clients.UsdtFuturesApi;
-using Toobit.Net.Objects.Options;
 using CryptoExchange.Net.Clients;
+using CryptoExchange.Net.Converters.MessageParsing;
+using CryptoExchange.Net.Converters.MessageParsing.DynamicConverters;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using CryptoExchange.Net.Interfaces;
-using CryptoExchange.Net.SharedApis;
-using CryptoExchange.Net.Converters.MessageParsing;
+using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Errors;
+using CryptoExchange.Net.SharedApis;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading;
+using System.Threading.Tasks;
+using Toobit.Net.Clients.MessageHandlers;
+using Toobit.Net.Interfaces.Clients.UsdtFuturesApi;
+using Toobit.Net.Objects.Options;
 
 namespace Toobit.Net.Clients.UsdtFuturesApi
 {
@@ -25,6 +26,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         internal static TimeSyncState _timeSyncState = new TimeSyncState("UsdtFutures Api");
 
         protected override ErrorMapping ErrorMapping => ToobitErrors.Errors;
+        protected override IRestMessageHandler MessageHandler { get; } = new ToobitRestMessageHandler(ToobitErrors.Errors);
 
         #endregion
 
@@ -97,22 +99,6 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         /// <inheritdoc />
         public override TimeSpan? GetTimeOffset()
             => _timeSyncState.TimeOffset;
-
-        protected override Error ParseErrorResponse(int httpStatusCode, KeyValuePair<string, string[]>[] responseHeaders, IMessageAccessor accessor, Exception? exception)
-        {
-            if (!accessor.IsValid)
-                return new ServerError(ErrorInfo.Unknown, exception: exception);
-
-            var code = accessor.GetValue<int?>(MessagePath.Get().Property("code"));
-            var msg = accessor.GetValue<string>(MessagePath.Get().Property("msg"));
-            if (msg == null)
-                return new ServerError(ErrorInfo.Unknown, exception: exception);
-
-            if (code == null)
-                return new ServerError(ErrorInfo.Unknown with { Message = msg }, exception);
-
-            return new ServerError(code.Value, GetErrorInfo(code.Value, msg), exception);
-        }
 
         /// <inheritdoc />
         public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverDate = null) 

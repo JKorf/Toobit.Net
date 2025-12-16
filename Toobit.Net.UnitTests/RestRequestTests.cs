@@ -101,7 +101,6 @@ namespace Toobit.Net.UnitTests
             await tester.ValidateAsync(client => client.UsdtFuturesApi.ExchangeData.GetFundingRateHistoryAsync("123"), "GetFundingRateHistory");
         }
 
-
         [Test]
         public async Task ValidateUsdtFuturesTradingCalls()
         {

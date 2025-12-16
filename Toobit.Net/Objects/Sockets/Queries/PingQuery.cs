@@ -1,10 +1,6 @@
 using CryptoExchange.Net.Converters.SystemTextJson;
-using CryptoExchange.Net.Objects;
-using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.Sockets;
 using System;
-using System.Collections.Generic;
-using Toobit.Net.Objects.Models;
 
 namespace Toobit.Net.Objects.Sockets
 {
@@ -14,6 +10,7 @@ namespace Toobit.Net.Objects.Sockets
         {
             RequestTimeout = TimeSpan.FromSeconds(5);
             MessageMatcher = MessageMatcher.Create<PingResponse>("pong");
+            MessageRouter = MessageRouter.CreateWithoutHandler<PingResponse>("pong");
         }
     }
 }

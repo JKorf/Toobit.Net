@@ -1,19 +1,16 @@
-using CryptoExchange.Net.Converters.MessageParsing;
-using CryptoExchange.Net.Converters.SystemTextJson;
-using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.Sockets;
+using CryptoExchange.Net.Sockets.Default;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Toobit.Net.Objects.Models;
 
 namespace Toobit.Net.Objects.Sockets.Subscriptions
 {
     /// <inheritdoc />
-    internal class ToobitUserDataSubscription : Subscription<object, object>
+    internal class ToobitUserDataSubscription : Subscription
     {
         private readonly Action<DataEvent<ToobitAccountUpdate>>? _accountHandler;
         private readonly Action<DataEvent<ToobitOrderUpdate[]>>? _orderHandler;
@@ -37,6 +34,12 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
                 new MessageHandlerLink<ToobitOrderUpdate[]>(MessageLinkType.Full, "executionReport", HandleOrderUpdate),
                 new MessageHandlerLink<ToobitUserTradeUpdate[]>(MessageLinkType.Full, "ticketInfo", HandleUserTrade)
                 ]);
+
+            MessageRouter = MessageRouter.Create([
+                MessageRoute<ToobitAccountUpdate[]>.CreateWithoutTopicFilter("outboundAccountInfo", HandleAccountInfo),
+                MessageRoute<ToobitOrderUpdate[]>.CreateWithoutTopicFilter("executionReport", HandleOrderUpdate),
+                MessageRoute<ToobitUserTradeUpdate[]>.CreateWithoutTopicFilter("ticketInfo", HandleUserTrade)
+                ]);
         }
 
         /// <inheritdoc />
@@ -45,21 +48,39 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         /// <inheritdoc />
         protected override Query? GetUnsubQuery(SocketConnection connection) => null;
 
-        public CallResult HandleAccountInfo(SocketConnection connection, DataEvent<ToobitAccountUpdate[]> message)
+        public CallResult HandleAccountInfo(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitAccountUpdate[] message)
         {
-            _accountHandler?.Invoke(message.As(message.Data.First(), "SpotAccount", null, SocketUpdateType.Update).WithDataTimestamp(message.Data.Any() ? message.Data.Max(x => x.EventTime) : null));
+            _accountHandler?.Invoke(
+                    new DataEvent<ToobitAccountUpdate>(ToobitExchange.ExchangeName, message.First(), receiveTime, originalData)
+                        .WithStreamId("SpotAccount")
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
+                );
+
             return CallResult.SuccessResult;
         }
 
-        public CallResult HandleOrderUpdate(SocketConnection connection, DataEvent<ToobitOrderUpdate[]> message)
+        public CallResult HandleOrderUpdate(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitOrderUpdate[] message)
         {
-            _orderHandler?.Invoke(message.As(message.Data, "SpotOrder", null, SocketUpdateType.Update).WithDataTimestamp(message.Data.Any() ? message.Data.Max(x => x.EventTime) : null));
+            _orderHandler?.Invoke(
+                    new DataEvent<ToobitOrderUpdate[]>(ToobitExchange.ExchangeName, message, receiveTime, originalData)
+                        .WithStreamId("SpotOrder")
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
+                );
+
             return CallResult.SuccessResult;
         }
 
-        public CallResult HandleUserTrade(SocketConnection connection, DataEvent<ToobitUserTradeUpdate[]> message)
+        public CallResult HandleUserTrade(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitUserTradeUpdate[] message)
         {
-            _userTradeHandler?.Invoke(message.As(message.Data, "SpotUserTrade", null, SocketUpdateType.Update).WithDataTimestamp(message.Data.Any() ? message.Data.Max(x => x.EventTime) : null));
+            _userTradeHandler?.Invoke(
+                    new DataEvent<ToobitUserTradeUpdate[]>(ToobitExchange.ExchangeName, message, receiveTime, originalData)
+                        .WithStreamId("SpotUserTrade")
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
+                );
+
             return CallResult.SuccessResult;
         }
     }

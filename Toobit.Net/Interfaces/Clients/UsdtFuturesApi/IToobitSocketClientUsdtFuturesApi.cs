@@ -2,11 +2,11 @@ using CryptoExchange.Net.Objects;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects.Sockets;
 using Toobit.Net.Objects.Models;
 using System.Collections.Generic;
 using Toobit.Net.Enums;
+using CryptoExchange.Net.Interfaces.Clients;
 
 namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
 {
@@ -35,25 +35,25 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitTradeUpdate[]>> onMessage, CancellationToken ct = default);
 
-        /// <summary>
-        /// Subscribe to live mark price updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#mark-price-stream" /></para>
-        /// </summary>
-        /// <param name="symbol">Symbol to subscribe</param>
-        /// <param name="onMessage">The event handler for the received data</param>
-        /// <param name="ct">Cancellation token for closing this subscription</param>
-        /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToMarkPriceUpdatesAsync(string symbol, Action<DataEvent<ToobitMarkPriceUpdate>> onMessage, CancellationToken ct = default);
+        ///// <summary>
+        ///// Subscribe to live mark price updates
+        ///// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#mark-price-stream" /></para>
+        ///// </summary>
+        ///// <param name="symbol">Symbol to subscribe</param>
+        ///// <param name="onMessage">The event handler for the received data</param>
+        ///// <param name="ct">Cancellation token for closing this subscription</param>
+        ///// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        //Task<CallResult<UpdateSubscription>> SubscribeToMarkPriceUpdatesAsync(string symbol, Action<DataEvent<ToobitMarkPriceUpdate>> onMessage, CancellationToken ct = default);
 
-        /// <summary>
-        /// Subscribe to live mark price updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#mark-price-stream" /></para>
-        /// </summary>
-        /// <param name="symbols">Symbol to subscribe</param>
-        /// <param name="onMessage">The event handler for the received data</param>
-        /// <param name="ct">Cancellation token for closing this subscription</param>
-        /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToMarkPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitMarkPriceUpdate>> onMessage, CancellationToken ct = default);
+        ///// <summary>
+        ///// Subscribe to live mark price updates
+        ///// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#mark-price-stream" /></para>
+        ///// </summary>
+        ///// <param name="symbols">Symbol to subscribe</param>
+        ///// <param name="onMessage">The event handler for the received data</param>
+        ///// <param name="ct">Cancellation token for closing this subscription</param>
+        ///// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        //Task<CallResult<UpdateSubscription>> SubscribeToMarkPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitMarkPriceUpdate>> onMessage, CancellationToken ct = default);
 
         /// <summary>
         /// Subscribe to live kline/candlestick updates

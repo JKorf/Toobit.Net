@@ -1,0 +1,4 @@
+>1 {"symbol": "ETHUSDT","topic": "kline_1d","event": "sub","params": {"binary": false }}
+>2 {"symbol": "ETHUSDT","topic": "kline_1h","event": "sub","params": {"binary": false }}
+=1 { "symbol": "ETHUSDT", "symbolName": "ETHUSDT", "topic": "kline", "params": { "realtimeInterval": "24h", "klineType": "1d", "binary": "false" }, "data": [{ "t": 1668753840000 }], "f": true, "sendTime": 1668753854576, "shared": false}
+=2 { "symbol": "ETHUSDT", "symbolName": "ETHUSDT", "topic": "kline", "params": { "realtimeInterval": "24h", "klineType": "1h", "binary": "false" }, "data": [{ "t": 1668753840000 }], "f": true, "sendTime": 1668753854576, "shared": false}
