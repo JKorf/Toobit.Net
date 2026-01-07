@@ -114,7 +114,7 @@ namespace Toobit.Net.SymbolOrderBooks
             if (data.Data.Asks.Length == 0 && data.Data.Bids.Length == 0)
                 return;
 
-            UpdateOrderBook(data.Data.Timestamp.Ticks, data.Data.Bids, data.Data.Asks);
+            UpdateOrderBook(data.Data.Timestamp.Ticks, data.Data.Bids, data.Data.Asks, data.DataTime, data.DataTimeLocal);
         }
 
         /// <inheritdoc />

@@ -31,12 +31,6 @@
         <member name="M:Toobit.Net.Clients.SpotApi.ToobitRestClientSpotApi.GetServerTimestampAsync">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Clients.SpotApi.ToobitRestClientSpotApi.GetTimeSyncInfo">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Clients.SpotApi.ToobitRestClientSpotApi.GetTimeOffset">
-            <inheritdoc />
-        </member>
         <member name="M:Toobit.Net.Clients.SpotApi.ToobitRestClientSpotApi.FormatSymbol(System.String,System.String,CryptoExchange.Net.SharedApis.TradingMode,System.Nullable{System.DateTime})">
             <inheritdoc />
         </member>
@@ -194,9 +188,6 @@
         <member name="M:Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi.GetListenerIdentifier(CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi.GetAuthenticationRequestAsync(CryptoExchange.Net.Sockets.Default.SocketConnection)">
-            <inheritdoc />
-        </member>
         <member name="P:Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi.SharedClient">
             <inheritdoc />
         </member>
@@ -326,12 +317,6 @@
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitRestClientUsdtFuturesApi.GetServerTimestampAsync">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitRestClientUsdtFuturesApi.GetTimeSyncInfo">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitRestClientUsdtFuturesApi.GetTimeOffset">
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitRestClientUsdtFuturesApi.FormatSymbol(System.String,System.String,CryptoExchange.Net.SharedApis.TradingMode,System.Nullable{System.DateTime})">
@@ -471,9 +456,6 @@
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.GetAuthenticationRequestAsync(CryptoExchange.Net.Sockets.Default.SocketConnection)">
             <inheritdoc />
         </member>
         <member name="P:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.SharedClient">
@@ -5814,7 +5796,7 @@
         <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription.#ctor(Microsoft.Extensions.Logging.ILogger,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitAccountUpdate}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitFuturesOrderUpdate[]}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitPositionUpdate[]}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitUserTradeUpdate[]}})">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitFuturesUserDataSubscription.#ctor(Microsoft.Extensions.Logging.ILogger,Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitAccountUpdate}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitFuturesOrderUpdate[]}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitPositionUpdate[]}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitUserTradeUpdate[]}})">
             <summary>
             ctor
             </summary>
@@ -5856,7 +5838,7 @@
         <member name="T:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription.#ctor(Microsoft.Extensions.Logging.ILogger,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitAccountUpdate}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitOrderUpdate[]}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitUserTradeUpdate[]}})">
+        <member name="M:Toobit.Net.Objects.Sockets.Subscriptions.ToobitUserDataSubscription.#ctor(Microsoft.Extensions.Logging.ILogger,Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitAccountUpdate}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitOrderUpdate[]}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitUserTradeUpdate[]}})">
             <summary>
             ctor
             </summary>

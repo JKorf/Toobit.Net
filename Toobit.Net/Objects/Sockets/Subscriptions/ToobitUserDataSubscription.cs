@@ -5,6 +5,7 @@ using CryptoExchange.Net.Sockets.Default;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using Toobit.Net.Clients.SpotApi;
 using Toobit.Net.Objects.Models;
 
 namespace Toobit.Net.Objects.Sockets.Subscriptions
@@ -12,6 +13,8 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
     /// <inheritdoc />
     internal class ToobitUserDataSubscription : Subscription
     {
+        private readonly ToobitSocketClientSpotApi _client;
+
         private readonly Action<DataEvent<ToobitAccountUpdate>>? _accountHandler;
         private readonly Action<DataEvent<ToobitOrderUpdate[]>>? _orderHandler;
         private readonly Action<DataEvent<ToobitUserTradeUpdate[]>>? _userTradeHandler;
@@ -21,10 +24,13 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         /// </summary>
         public ToobitUserDataSubscription(
             ILogger logger,
+            ToobitSocketClientSpotApi client,
             Action<DataEvent<ToobitAccountUpdate>>? accountHandler = null,
             Action<DataEvent<ToobitOrderUpdate[]>>? orderHandler = null,
             Action<DataEvent<ToobitUserTradeUpdate[]>>? tradeHandler = null) : base(logger, false)
         {
+            _client = client;
+
             _accountHandler = accountHandler;
             _orderHandler = orderHandler;
             _userTradeHandler = tradeHandler;
@@ -50,11 +56,15 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
 
         public CallResult HandleAccountInfo(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitAccountUpdate[] message)
         {
+            DateTime? timestamp = message.Length > 0 ? message.Max(x => x.EventTime) : null;
+            if (timestamp != null)
+                _client.UpdateTimeOffset(timestamp.Value);
+
             _accountHandler?.Invoke(
                     new DataEvent<ToobitAccountUpdate>(ToobitExchange.ExchangeName, message.First(), receiveTime, originalData)
                         .WithStreamId("SpotAccount")
                         .WithUpdateType(SocketUpdateType.Update)
-                        .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
+                        .WithDataTimestamp(timestamp, _client.GetTimeOffset())
                 );
 
             return CallResult.SuccessResult;
@@ -62,11 +72,16 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
 
         public CallResult HandleOrderUpdate(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitOrderUpdate[] message)
         {
+            DateTime? timestamp = message.Length > 0 ? message.Max(x => x.EventTime) : null;
+            if (timestamp != null)
+                _client.UpdateTimeOffset(timestamp.Value);
+
+
             _orderHandler?.Invoke(
                     new DataEvent<ToobitOrderUpdate[]>(ToobitExchange.ExchangeName, message, receiveTime, originalData)
                         .WithStreamId("SpotOrder")
                         .WithUpdateType(SocketUpdateType.Update)
-                        .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
+                        .WithDataTimestamp(timestamp, _client.GetTimeOffset())
                 );
 
             return CallResult.SuccessResult;
@@ -74,11 +89,15 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
 
         public CallResult HandleUserTrade(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitUserTradeUpdate[] message)
         {
+            DateTime? timestamp = message.Length > 0 ? message.Max(x => x.EventTime) : null;
+            if (timestamp != null)
+                _client.UpdateTimeOffset(timestamp.Value);
+
             _userTradeHandler?.Invoke(
                     new DataEvent<ToobitUserTradeUpdate[]>(ToobitExchange.ExchangeName, message, receiveTime, originalData)
                         .WithStreamId("SpotUserTrade")
                         .WithUpdateType(SocketUpdateType.Update)
-                        .WithDataTimestamp(message.Length > 0 ? message.Max(x => x.EventTime) : null)
+                        .WithDataTimestamp(timestamp, _client.GetTimeOffset())
                 );
 
             return CallResult.SuccessResult;

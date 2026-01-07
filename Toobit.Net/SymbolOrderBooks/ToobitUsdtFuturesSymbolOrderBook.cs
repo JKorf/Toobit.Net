@@ -93,7 +93,7 @@ namespace Toobit.Net.SymbolOrderBooks
 
         private void HandleUpdate(DataEvent<ToobitOrderBookUpdate> data)
         {
-            UpdateOrderBook(data.Data.Timestamp.Ticks, data.Data.Bids, data.Data.Asks);
+            UpdateOrderBook(data.Data.Timestamp.Ticks, data.Data.Bids, data.Data.Asks, data.DataTime, data.DataTimeLocal);
         }
 
         /// <inheritdoc />

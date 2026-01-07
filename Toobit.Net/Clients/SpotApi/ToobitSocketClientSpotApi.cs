@@ -96,10 +96,12 @@ namespace Toobit.Net.Clients.SpotApi
         {
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitTradeUpdate[]>>((receiveTime, originalData, data) =>
             {
+                UpdateTimeOffset(data.SendTime);
+
                 onMessage(
                     new DataEvent<ToobitTradeUpdate[]>(ToobitExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime)
+                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
                         .WithStreamId(data.Topic)
                         .WithSymbol(data.Symbol)
                     );
@@ -118,10 +120,12 @@ namespace Toobit.Net.Clients.SpotApi
         {
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitTickerUpdate[]>>((receiveTime, originalData, data) =>
             {
+                UpdateTimeOffset(data.SendTime);
+
                 onMessage(
                     new DataEvent<ToobitTickerUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime)
+                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
                         .WithStreamId(data.Topic)
                         .WithSymbol(data.Symbol)
                     );
@@ -140,10 +144,12 @@ namespace Toobit.Net.Clients.SpotApi
         {
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitKlineUpdate[]>>((receiveTime, originalData, data) =>
             {
+                UpdateTimeOffset(data.SendTime);
+
                 onMessage(
                     new DataEvent<ToobitKlineUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime)
+                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
                         .WithStreamId(data.Topic)
                         .WithSymbol(data.Symbol)
                     );
@@ -162,10 +168,12 @@ namespace Toobit.Net.Clients.SpotApi
         {
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitOrderBookUpdate[]>>((receiveTime, originalData, data) =>
             {
+                UpdateTimeOffset(data.SendTime);
+
                 onMessage(
                     new DataEvent<ToobitOrderBookUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime)
+                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
                         .WithStreamId(data.Topic)
                         .WithSymbol(data.Symbol)
                     );
@@ -184,10 +192,12 @@ namespace Toobit.Net.Clients.SpotApi
         {
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitOrderBookUpdate[]>>((receiveTime, originalData, data) =>
             {
+                UpdateTimeOffset(data.SendTime);
+
                 onMessage(
                     new DataEvent<ToobitOrderBookUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime)
+                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
                         .WithStreamId(data.Topic)
                         .WithSymbol(data.Symbol)
                     );
@@ -205,7 +215,7 @@ namespace Toobit.Net.Clients.SpotApi
             Action<DataEvent<ToobitUserTradeUpdate[]>>? onUserTradeMessage = null,
             CancellationToken ct = default)
         {
-            var subscription = new ToobitUserDataSubscription(_logger, onAccountMessage, onOrderMessage, onUserTradeMessage);
+            var subscription = new ToobitUserDataSubscription(_logger, this, onAccountMessage, onOrderMessage, onUserTradeMessage);
             return await SubscribeAsync(BaseAddress.AppendPath("/api/v1/ws/" + listenKey), subscription, ct).ConfigureAwait(false);
         }
 
@@ -240,9 +250,6 @@ namespace Toobit.Net.Clients.SpotApi
 
             return symbol == null ? topic : topic + "-" + symbol;
         }
-
-        /// <inheritdoc />
-        protected override Task<Query?> GetAuthenticationRequestAsync(SocketConnection connection) => Task.FromResult<Query?>(null);
 
         /// <inheritdoc />
         public IToobitSocketClientSpotApiShared SharedClient => this;

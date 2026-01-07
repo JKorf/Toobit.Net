@@ -25,7 +25,7 @@ namespace Toobit.Net
             if (!request.Authenticated)
                 return;
 
-            var timestamp = GetMillisecondTimestampLong(apiClient) - 1000;
+            var timestamp = GetMillisecondTimestampLong(apiClient);
             var receiveWindow = ((ToobitRestOptions)apiClient.ClientOptions).ReceiveWindow.TotalMilliseconds;
 
             request.QueryParameters ??= new Dictionary<string, object>();

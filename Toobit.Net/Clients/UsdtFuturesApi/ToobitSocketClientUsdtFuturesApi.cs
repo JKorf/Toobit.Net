@@ -85,9 +85,6 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             => new ToobitAuthenticationProvider(credentials);
 
         /// <inheritdoc />
-        protected override Task<Query?> GetAuthenticationRequestAsync(SocketConnection connection) => Task.FromResult<Query?>(null);
-
-        /// <inheritdoc />
         public IToobitSocketClientUsdtFuturesApiShared SharedClient => this;
 
         /// <inheritdoc />
@@ -99,10 +96,12 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         {
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitTradeUpdate[]>>((receiveTime, originalData, data) =>
             {
+                UpdateTimeOffset(data.SendTime);
+
                 onMessage(
                     new DataEvent<ToobitTradeUpdate[]>(ToobitExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime)
+                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
                         .WithStreamId(data.Topic)
                         .WithSymbol(data.Symbol)
                     );
@@ -143,10 +142,12 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         {
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitKlineUpdate[]>>((receiveTime, originalData, data) =>
             {
+                UpdateTimeOffset(data.SendTime);
+
                 onMessage(
                     new DataEvent<ToobitKlineUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime)
+                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
                         .WithStreamId(data.Topic)
                         .WithSymbol(data.Symbol)
                     );
@@ -165,10 +166,12 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         {
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitOrderBookUpdate[]>>((receiveTime, originalData, data) =>
             {
+                UpdateTimeOffset(data.SendTime);
+
                 onMessage(
                     new DataEvent<ToobitOrderBookUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime)
+                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
                         .WithStreamId(data.Topic)
                         .WithSymbol(data.Symbol)
                     );
@@ -187,10 +190,12 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         {
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitOrderBookUpdate[]>>((receiveTime, originalData, data) =>
             {
+                UpdateTimeOffset(data.SendTime);
+
                 onMessage(
                     new DataEvent<ToobitOrderBookUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime)
+                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
                         .WithStreamId(data.Topic)
                         .WithSymbol(data.Symbol)
                     );
@@ -209,10 +214,12 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         {
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitTickerUpdate[]>>((receiveTime, originalData, data) =>
             {
+                UpdateTimeOffset(data.SendTime);
+
                 onMessage(
                     new DataEvent<ToobitTickerUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime)
+                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
                         .WithStreamId(data.Topic)
                         .WithSymbol(data.Symbol)
                     );
@@ -231,10 +238,12 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         {
             var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitIndexUpdate[]>>((receiveTime, originalData, data) =>
             {
+                UpdateTimeOffset(data.SendTime);
+
                 onMessage(
                     new DataEvent<ToobitIndexUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
                         .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime)
+                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
                         .WithStreamId(data.Topic)
                         .WithSymbol(data.Symbol)
                     );
@@ -252,7 +261,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             Action<DataEvent<ToobitUserTradeUpdate[]>>? onUserTradeMessage = null,
             CancellationToken ct = default)
         {
-            var subscription = new ToobitFuturesUserDataSubscription(_logger, onAccountMessage, onOrderMessage, onPositionMessage, onUserTradeMessage);
+            var subscription = new ToobitFuturesUserDataSubscription(_logger, this, onAccountMessage, onOrderMessage, onPositionMessage, onUserTradeMessage);
             return await SubscribeAsync(BaseAddress.AppendPath("/api/v1/ws/" + listenKey), subscription, ct).ConfigureAwait(false);
         }
 
