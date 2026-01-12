@@ -105,7 +105,7 @@ namespace Toobit.Net.SymbolOrderBooks
                     asks.Add(item.Price, item);
             }
 
-            SetInitialOrderBook(bookResult.Data.Timestamp.Ticks, bids.Values.ToArray(), asks.Values.ToArray());
+            SetSnapshot(bookResult.Data.Timestamp.Ticks, bids.Values.ToArray(), asks.Values.ToArray());
             return new CallResult<UpdateSubscription>(subResult.Data);
         }
 
@@ -125,11 +125,13 @@ namespace Toobit.Net.SymbolOrderBooks
         /// <inheritdoc />
         protected override async Task<CallResult<bool>> DoResyncAsync(CancellationToken ct)
         {
+            // Small delay to make sure the snapshot is from after our first stream update
+            await Task.Delay(200).ConfigureAwait(false);
             var bookResult = await _restClient.SpotApi.ExchangeData.GetOrderBookAsync(Symbol, Levels ?? 5000).ConfigureAwait(false);
             if (!bookResult)
                 return new CallResult<bool>(bookResult.Error!);
 
-            SetInitialOrderBook(bookResult.Data.Timestamp.Ticks, bookResult.Data.Bids, bookResult.Data.Asks);
+            SetSnapshot(bookResult.Data.Timestamp.Ticks, bookResult.Data.Bids, bookResult.Data.Asks);
             return new CallResult<bool>(true);
         }
 
