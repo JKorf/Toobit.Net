@@ -14,6 +14,11 @@ namespace Toobit.Net.Enums
         /// Trading
         /// </summary>
         [Map("TRADING")]
-        Trading
+        Trading,
+        /// <summary>
+        /// Api trading forbidden
+        /// </summary>
+        [Map("API_TRADE_FORBIDDEN")]
+        ApiTradeForbidden
     }
 }

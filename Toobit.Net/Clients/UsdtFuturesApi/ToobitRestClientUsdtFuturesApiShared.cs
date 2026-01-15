@@ -209,7 +209,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             if (!result)
                 return result.AsExchangeResult<SharedFuturesSymbol[]>(Exchange, null, default);
 
-            var data = result.Data.ContractSymbols;
+            var data = result.Data.ContractSymbols.Where(x => x.Status != SymbolStatus.ApiTradeForbidden);
             var resultData = result.AsExchangeResult(Exchange, request.TradingMode == null ? SupportedTradingModes : new[] { request.TradingMode.Value }, data.Select(s =>
             new SharedFuturesSymbol(TradingMode.PerpetualLinear,
             s.BaseAsset,
