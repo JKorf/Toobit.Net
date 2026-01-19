@@ -19,6 +19,11 @@ namespace Toobit.Net.Enums
         /// Api trading forbidden
         /// </summary>
         [Map("API_TRADE_FORBIDDEN")]
-        ApiTradeForbidden
+        ApiTradeForbidden,
+        /// <summary>
+        /// Offline
+        /// </summary>
+        [Map("Offline")]
+        Offline
     }
 }

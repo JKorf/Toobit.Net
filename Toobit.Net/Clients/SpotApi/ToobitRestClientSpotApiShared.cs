@@ -95,7 +95,7 @@ namespace Toobit.Net.Clients.SpotApi
                 return result.AsExchangeResult<SharedSpotSymbol[]>(Exchange, null, default);
 
             var resultData = result.AsExchangeResult(Exchange, TradingMode.Spot,
-                result.Data.SpotSymbols.Where(x => x.Status != SymbolStatus.ApiTradeForbidden).Select(s => new SharedSpotSymbol(s.BaseAsset, s.QuoteAsset, s.Symbol, s.Status == SymbolStatus.Trading)
+                result.Data.SpotSymbols.Where(x => x.Status == SymbolStatus.Trading).Select(s => new SharedSpotSymbol(s.BaseAsset, s.QuoteAsset, s.Symbol, s.Status == SymbolStatus.Trading)
             {
                 MinTradeQuantity = s.LotSizeFilter?.MinQuantity,
                 MaxTradeQuantity = s.LotSizeFilter?.MaxQuantity,

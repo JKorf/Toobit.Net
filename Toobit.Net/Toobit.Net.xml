@@ -1735,6 +1735,11 @@
             Api trading forbidden
             </summary>
         </member>
+        <member name="F:Toobit.Net.Enums.SymbolStatus.Offline">
+            <summary>
+            Offline
+            </summary>
+        </member>
         <member name="T:Toobit.Net.Enums.SymbolType">
             <summary>
             Symbol type
