@@ -77,8 +77,8 @@ namespace Toobit.Net.SymbolOrderBooks
 
             Status = OrderBookStatus.Syncing;
 
-            // Small delay to make sure the snapshot is from after our first stream update
-            await Task.Delay(200).ConfigureAwait(false);
+            // Wait up to 1s until the first update has been received
+            await WaitUntilFirstUpdateBufferedAsync(TimeSpan.FromMilliseconds(250), TimeSpan.FromMilliseconds(500), ct).ConfigureAwait(false);
             var bookResult = await _restClient.SpotApi.ExchangeData.GetOrderBookAsync(Symbol, Levels ?? 5000).ConfigureAwait(false);
             if (!bookResult)
             {
@@ -104,8 +104,8 @@ namespace Toobit.Net.SymbolOrderBooks
         /// <inheritdoc />
         protected override async Task<CallResult<bool>> DoResyncAsync(CancellationToken ct)
         {
-            // Small delay to make sure the snapshot is from after our first stream update
-            await Task.Delay(200).ConfigureAwait(false);
+            // Wait up to 1s until the first update has been received
+            await WaitUntilFirstUpdateBufferedAsync(TimeSpan.FromMilliseconds(250), TimeSpan.FromMilliseconds(500), ct).ConfigureAwait(false);
             var bookResult = await _restClient.SpotApi.ExchangeData.GetOrderBookAsync(Symbol, Levels ?? 5000).ConfigureAwait(false);
             if (!bookResult)
                 return new CallResult<bool>(bookResult.Error!);
