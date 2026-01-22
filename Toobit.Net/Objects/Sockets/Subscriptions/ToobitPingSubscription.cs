@@ -15,7 +15,6 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         /// </summary>
         public ToobitPingSubscription(ILogger logger) : base(logger, false)
         {
-            MessageMatcher = MessageMatcher.Create<PingRequest>("ping", DoHandleMessage);
             MessageRouter = MessageRouter.CreateWithoutTopicFilter<PingRequest>("ping", DoHandleMessage);
         }
 

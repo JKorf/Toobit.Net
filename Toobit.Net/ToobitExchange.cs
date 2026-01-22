@@ -16,6 +16,19 @@ namespace Toobit.Net
     public static class ToobitExchange
     {
         /// <summary>
+        /// Platform metadata
+        /// </summary>
+        public static PlatformInfo Metadata { get; } = new PlatformInfo(
+                "Toobit",
+                "Toobit",
+                "https://raw.githubusercontent.com/JKorf/Toobit.Net/master/Toobit.Net/Icon/icon.png",
+                "https://www.toobit.com",
+                ["https://toobit-docs.github.io/apidocs/spot/v1/en/"],
+                PlatformType.CryptoCurrencyExchange,
+                CentralizationType.Centralized
+                );
+
+        /// <summary>
         /// Exchange name
         /// </summary>
         public static string ExchangeName => "Toobit";

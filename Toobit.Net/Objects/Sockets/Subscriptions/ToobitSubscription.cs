@@ -43,11 +43,6 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
 
             IndividualSubscriptionCount = symbols?.Length ?? 1;
 
-            if (symbols?.Any() == true)
-                MessageMatcher = MessageMatcher.Create<SocketUpdate<T>>(symbols.Select(x => topic + "-" + x + (_interval == null ? "" : ("-" + EnumConverter.GetString(_interval.Value)))), DoHandleMessage);
-            else
-                MessageMatcher = MessageMatcher.Create<SocketUpdate<T>>(topic, DoHandleMessage);
-
             MessageRouter = MessageRouter.CreateWithOptionalTopicFilters<SocketUpdate<T>>(topic, symbols?.Select(x => _interval == null ? x : x + EnumConverter.GetString(_interval.Value)), DoHandleMessage);
         }
 

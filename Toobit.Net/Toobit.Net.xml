@@ -19,9 +19,6 @@
         <member name="P:Toobit.Net.Clients.SpotApi.ToobitRestClientSpotApi.ExchangeName">
             <inheritdoc />
         </member>
-        <member name="M:Toobit.Net.Clients.SpotApi.ToobitRestClientSpotApi.CreateAccessor">
-            <inheritdoc />
-        </member>
         <member name="M:Toobit.Net.Clients.SpotApi.ToobitRestClientSpotApi.CreateSerializer">
             <inheritdoc />
         </member>
@@ -143,9 +140,6 @@
             ctor
             </summary>
         </member>
-        <member name="M:Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi.CreateAccessor(System.Net.WebSockets.WebSocketMessageType)">
-            <inheritdoc />
-        </member>
         <member name="M:Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi.CreateSerializer">
             <inheritdoc />
         </member>
@@ -183,9 +177,6 @@
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi.SubscribeToUserDataUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitAccountUpdate}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitOrderUpdate[]}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitUserTradeUpdate[]}},System.Threading.CancellationToken)">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi.GetListenerIdentifier(CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
         <member name="P:Toobit.Net.Clients.SpotApi.ToobitSocketClientSpotApi.SharedClient">
@@ -305,9 +296,6 @@
             <inheritdoc />
         </member>
         <member name="P:Toobit.Net.Clients.UsdtFuturesApi.ToobitRestClientUsdtFuturesApi.ExchangeName">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitRestClientUsdtFuturesApi.CreateAccessor">
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitRestClientUsdtFuturesApi.CreateSerializer">
@@ -449,9 +437,6 @@
             ctor
             </summary>
         </member>
-        <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.CreateAccessor(System.Net.WebSockets.WebSocketMessageType)">
-            <inheritdoc />
-        </member>
         <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.CreateSerializer">
             <inheritdoc />
         </member>
@@ -498,9 +483,6 @@
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.SubscribeToUserDataUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitAccountUpdate}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitFuturesOrderUpdate[]}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitPositionUpdate[]}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitUserTradeUpdate[]}},System.Threading.CancellationToken)">
-            <inheritdoc />
-        </member>
-        <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.GetListenerIdentifier(CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
         <member name="M:Toobit.Net.Clients.UsdtFuturesApi.ToobitSocketClientUsdtFuturesApi.FormatSymbol(System.String,System.String,CryptoExchange.Net.SharedApis.TradingMode,System.Nullable{System.DateTime})">
@@ -6026,6 +6008,11 @@
         <member name="T:Toobit.Net.ToobitExchange">
             <summary>
             Toobit exchange information and configuration
+            </summary>
+        </member>
+        <member name="P:Toobit.Net.ToobitExchange.Metadata">
+            <summary>
+            Platform metadata
             </summary>
         </member>
         <member name="P:Toobit.Net.ToobitExchange.ExchangeName">

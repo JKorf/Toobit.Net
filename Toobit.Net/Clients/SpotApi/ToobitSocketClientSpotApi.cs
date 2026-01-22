@@ -34,14 +34,6 @@ namespace Toobit.Net.Clients.SpotApi
     internal partial class ToobitSocketClientSpotApi : SocketApiClient, IToobitSocketClientSpotApi
     {
         #region fields
-        private static readonly MessagePath _codePath = MessagePath.Get().Property("code");
-        private static readonly MessagePath _topicPath = MessagePath.Get().Property("topic");
-        private static readonly MessagePath _pongPath = MessagePath.Get().Property("pong");
-        private static readonly MessagePath _pingPath = MessagePath.Get().Property("ping");
-        private static readonly MessagePath _symbolPath = MessagePath.Get().Property("symbol");
-        private static readonly MessagePath _userEventPath = MessagePath.Get().Index(0).Property("e");
-        private static readonly MessagePath _intervalPath = MessagePath.Get().Property("params").Property("klineType");
-
         private readonly TimeSpan _waitForErrorTimeout;
 
         protected override ErrorMapping ErrorMapping => ToobitErrors.Errors;
@@ -76,8 +68,6 @@ namespace Toobit.Net.Clients.SpotApi
         }
         #endregion
 
-        /// <inheritdoc />
-        protected override IByteMessageAccessor CreateAccessor(WebSocketMessageType type) => new SystemTextJsonByteMessageAccessor(SerializerOptions.WithConverters(ToobitExchange._serializerContext));
         /// <inheritdoc />
         protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(ToobitExchange._serializerContext));
 
@@ -217,38 +207,6 @@ namespace Toobit.Net.Clients.SpotApi
         {
             var subscription = new ToobitUserDataSubscription(_logger, this, onAccountMessage, onOrderMessage, onUserTradeMessage);
             return await SubscribeAsync(BaseAddress.AppendPath("/api/v1/ws/" + listenKey), subscription, ct).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public override string? GetListenerIdentifier(IMessageAccessor message)
-        {
-            var code = message.GetValue<string?>(_codePath);
-            if (code != null)
-                return code;
-
-            var topic = message.GetValue<string?>(_topicPath);
-            if (topic == null)
-            {
-                var userEvent = message.GetValue<string?>(_userEventPath);
-                if (userEvent != null)
-                    return userEvent;
-
-                if (message.GetValue<long>(_pongPath) != 0)
-                    return "pong";
-                else if (message.GetValue<long>(_pingPath) != 0)
-                    return "ping";
-                else
-                    return null;
-            }
-
-            var symbol = message.GetValue<string?>(_symbolPath);;
-            if (topic!.Equals("kline", StringComparison.Ordinal))
-            {
-                var interval = message.GetValue<string>(_intervalPath);
-                return symbol == null ? topic : topic + "-" + symbol + "-" + interval;
-            }
-
-            return symbol == null ? topic : topic + "-" + symbol;
         }
 
         /// <inheritdoc />

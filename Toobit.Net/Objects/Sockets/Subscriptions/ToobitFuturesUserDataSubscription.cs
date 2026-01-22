@@ -37,13 +37,6 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             _positionHandler = positionHandler;
             _userTradeHandler = tradeHandler;
 
-            MessageMatcher = MessageMatcher.Create([
-                new MessageHandlerLink<ToobitAccountUpdate[]>(MessageLinkType.Full, "outboundContractAccountInfo", HandleAccountInfo),
-                new MessageHandlerLink<ToobitPositionUpdate[]>(MessageLinkType.Full, "outboundContractPositionInfo", HandlePositionUpdate),
-                new MessageHandlerLink<ToobitFuturesOrderUpdate[]>(MessageLinkType.Full, "contractExecutionReport", HandleOrderUpdate),
-                new MessageHandlerLink<ToobitUserTradeUpdate[]>(MessageLinkType.Full, "ticketInfo", HandleUserTradeUpdate)
-                ]);
-
             MessageRouter = MessageRouter.Create([
                 MessageRoute<ToobitAccountUpdate[]>.CreateWithoutTopicFilter("outboundContractAccountInfo", HandleAccountInfo),
                 MessageRoute<ToobitPositionUpdate[]>.CreateWithoutTopicFilter("outboundContractPositionInfo", HandlePositionUpdate),

@@ -13,17 +13,15 @@ namespace Toobit.Net.UnitTests
     [TestFixture]
     public class SocketSubscriptionTests
     {
-        [TestCase(false)]
-        [TestCase(true)]
-        public async Task ValidateConcurrentFuturesSubscriptions(bool newDeserialization)
+        [Test]
+        public async Task ValidateConcurrentFuturesSubscriptions()
         {
             var logger = new LoggerFactory();
             logger.AddProvider(new TraceLoggerProvider());
 
             var client = new ToobitSocketClient(Options.Create(new ToobitSocketOptions
             {
-                OutputOriginalData = true,
-                UseUpdatedDeserialization = newDeserialization,
+                OutputOriginalData = true
 
             }), logger);
 
@@ -34,13 +32,11 @@ namespace Toobit.Net.UnitTests
                 "Concurrent");
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public async Task ValidateSpotSubscriptions(bool useUpdatedDeserialization)
+        [Test]
+        public async Task ValidateSpotSubscriptions()
         {
             var client = new ToobitSocketClient(opts =>
             {
-                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
             });
             var tester = new SocketSubscriptionValidator<ToobitSocketClient>(client, "Subscriptions/Spot", "wss://stream.toobit.com");
@@ -54,13 +50,11 @@ namespace Toobit.Net.UnitTests
             await tester.ValidateAsync<ToobitUserTradeUpdate[]>((client, handler) => client.SpotApi.SubscribeToUserDataUpdatesAsync("123", null, null, handler), "UserTrade");
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public async Task ValidateFuturesSubscriptions(bool useUpdatedDeserialization)
+        [Test]
+        public async Task ValidateFuturesSubscriptions()
         {
             var client = new ToobitSocketClient(opts =>
             {
-                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
             });
             var tester = new SocketSubscriptionValidator<ToobitSocketClient>(client, "Subscriptions/UsdtFutures", "wss://stream.toobit.com");

@@ -52,8 +52,6 @@ namespace Toobit.Net.Clients.SpotApi
         #endregion
 
         /// <inheritdoc />
-        protected override IStreamMessageAccessor CreateAccessor() => new SystemTextJsonStreamMessageAccessor(SerializerOptions.WithConverters(ToobitExchange._serializerContext));
-        /// <inheritdoc />
         protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(ToobitExchange._serializerContext));
 
 

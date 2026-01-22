@@ -9,7 +9,6 @@ namespace Toobit.Net.Objects.Sockets
         public PingQuery() : base(new PingRequest() { Ping = DateTimeConverter.ConvertToMilliseconds(DateTime.UtcNow).Value }, false, 1)
         {
             RequestTimeout = TimeSpan.FromSeconds(5);
-            MessageMatcher = MessageMatcher.Create<PingResponse>("pong");
             MessageRouter = MessageRouter.CreateWithoutHandler<PingResponse>("pong");
         }
     }

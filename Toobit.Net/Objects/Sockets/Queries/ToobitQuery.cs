@@ -18,7 +18,6 @@ namespace Toobit.Net.Objects.Sockets
             RequestTimeout = waitForErrorTimeout;
             TimeoutBehavior = TimeoutBehavior.Succeed;
 
-            MessageMatcher = MessageMatcher.Create<SocketError>("-100010", HandleSymbolError);
             MessageRouter = MessageRouter.CreateWithoutTopicFilter<SocketError>("-100010", HandleSymbolError);
         }
 

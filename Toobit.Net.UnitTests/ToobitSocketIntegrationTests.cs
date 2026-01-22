@@ -18,7 +18,7 @@ namespace Toobit.Net.UnitTests
         {
         }
 
-        public override ToobitSocketClient GetClient(ILoggerFactory loggerFactory, bool useUpdatedDeserialization)
+        public override ToobitSocketClient GetClient(ILoggerFactory loggerFactory)
         {
             var key = Environment.GetEnvironmentVariable("APIKEY");
             var sec = Environment.GetEnvironmentVariable("APISECRET");
@@ -26,7 +26,6 @@ namespace Toobit.Net.UnitTests
             Authenticated = key != null && sec != null;
             return new ToobitSocketClient(Options.Create(new ToobitSocketOptions
             {
-                UseUpdatedDeserialization = useUpdatedDeserialization,
                 OutputOriginalData = true,
                 ApiCredentials = Authenticated ? new CryptoExchange.Net.Authentication.ApiCredentials(key, sec) : null
             }), loggerFactory);
@@ -44,15 +43,14 @@ namespace Toobit.Net.UnitTests
             });
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public async Task TestSubscriptions(bool useUpdatedDeserialization)
+        [Test]
+        public async Task TestSubscriptions()
         {
             var listenKey = await GetRestClient().SpotApi.Account.StartUserStreamAsync();
-            await RunAndCheckUpdate<ToobitAccountUpdate>(useUpdatedDeserialization, (client, updateHandler) => client.SpotApi.SubscribeToUserDataUpdatesAsync(listenKey.Data, updateHandler, default, default, default), false, true);
+            await RunAndCheckUpdate<ToobitAccountUpdate>((client, updateHandler) => client.SpotApi.SubscribeToUserDataUpdatesAsync(listenKey.Data, updateHandler, default, default, default), false, true);
             
-            await RunAndCheckUpdate<ToobitTickerUpdate>(useUpdatedDeserialization, (client, updateHandler) => client.SpotApi.SubscribeToTickerUpdatesAsync("ETHUSDT", updateHandler, default), true, false);
-            await RunAndCheckUpdate<ToobitTickerUpdate>(useUpdatedDeserialization, (client, updateHandler) => client.UsdtFuturesApi.SubscribeToTickerUpdatesAsync("ETH-SWAP-USDT", updateHandler, default), true, false);
+            await RunAndCheckUpdate<ToobitTickerUpdate>((client, updateHandler) => client.SpotApi.SubscribeToTickerUpdatesAsync("ETHUSDT", updateHandler, default), true, false);
+            await RunAndCheckUpdate<ToobitTickerUpdate>((client, updateHandler) => client.UsdtFuturesApi.SubscribeToTickerUpdatesAsync("ETH-SWAP-USDT", updateHandler, default), true, false);
         }
     }
 }
