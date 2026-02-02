@@ -664,6 +664,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 LiquidationPrice = x.LiquidationPrice == 0 ? null : x.LiquidationPrice,
                 Leverage = x.Leverage,
                 AverageOpenPrice = x.AveragePrice,
+                PositionMode = SharedPositionMode.HedgeMode,
                 PositionSide = x.PositionSide == PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long                
             }).ToArray());
         }
