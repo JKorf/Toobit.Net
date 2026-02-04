@@ -1722,6 +1722,11 @@
             Offline
             </summary>
         </member>
+        <member name="F:Toobit.Net.Enums.SymbolStatus.Online">
+            <summary>
+            Online
+            </summary>
+        </member>
         <member name="T:Toobit.Net.Enums.SymbolType">
             <summary>
             Symbol type
@@ -2952,6 +2957,36 @@
             <summary>
             Tracker factory
             </summary>
+        </member>
+        <member name="M:Toobit.Net.Interfaces.IToobitTrackerFactory.CreateUserSpotDataTracker(System.String,CryptoExchange.Net.Trackers.UserData.Objects.SpotUserDataTrackerConfig,CryptoExchange.Net.Authentication.ApiCredentials,Toobit.Net.ToobitEnvironment)">
+            <summary>
+            Create a new Spot user data tracker
+            </summary>
+            <param name="userIdentifier">User identifier</param>
+            <param name="config">Configuration</param>
+            <param name="credentials">Credentials</param>
+            <param name="environment">Environment</param>
+        </member>
+        <member name="M:Toobit.Net.Interfaces.IToobitTrackerFactory.CreateUserSpotDataTracker(CryptoExchange.Net.Trackers.UserData.Objects.SpotUserDataTrackerConfig)">
+            <summary>
+            Create a new spot user data tracker
+            </summary>
+            <param name="config">Configuration</param>
+        </member>
+        <member name="M:Toobit.Net.Interfaces.IToobitTrackerFactory.CreateUserFuturesDataTracker(System.String,CryptoExchange.Net.Trackers.UserData.Objects.FuturesUserDataTrackerConfig,CryptoExchange.Net.Authentication.ApiCredentials,Toobit.Net.ToobitEnvironment)">
+            <summary>
+            Create a new futures user data tracker
+            </summary>
+            <param name="userIdentifier">User identifier</param>
+            <param name="config">Configuration</param>
+            <param name="credentials">Credentials</param>
+            <param name="environment">Environment</param>
+        </member>
+        <member name="M:Toobit.Net.Interfaces.IToobitTrackerFactory.CreateUserFuturesDataTracker(CryptoExchange.Net.Trackers.UserData.Objects.FuturesUserDataTrackerConfig)">
+            <summary>
+            Create a new futures user data tracker
+            </summary>
+            <param name="config">Configuration</param>
         </member>
         <member name="P:Toobit.Net.Objects.Internal.ToobitDataResult`1.Code">
             <summary>
@@ -6105,6 +6140,37 @@
         </member>
         <member name="M:Toobit.Net.ToobitTrackerFactory.CreateTradeTracker(CryptoExchange.Net.SharedApis.SharedSymbol,System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
             <inheritdoc />
+        </member>
+        <member name="M:Toobit.Net.ToobitTrackerFactory.CreateUserSpotDataTracker(CryptoExchange.Net.Trackers.UserData.Objects.SpotUserDataTrackerConfig)">
+            <inheritdoc />
+        </member>
+        <member name="M:Toobit.Net.ToobitTrackerFactory.CreateUserSpotDataTracker(System.String,CryptoExchange.Net.Trackers.UserData.Objects.SpotUserDataTrackerConfig,CryptoExchange.Net.Authentication.ApiCredentials,Toobit.Net.ToobitEnvironment)">
+            <inheritdoc />
+        </member>
+        <member name="M:Toobit.Net.ToobitTrackerFactory.CreateUserFuturesDataTracker(CryptoExchange.Net.Trackers.UserData.Objects.FuturesUserDataTrackerConfig)">
+            <inheritdoc />
+        </member>
+        <member name="M:Toobit.Net.ToobitTrackerFactory.CreateUserFuturesDataTracker(System.String,CryptoExchange.Net.Trackers.UserData.Objects.FuturesUserDataTrackerConfig,CryptoExchange.Net.Authentication.ApiCredentials,Toobit.Net.ToobitEnvironment)">
+            <inheritdoc />
+        </member>
+        <member name="T:Toobit.Net.ToobitUserSpotDataTracker">
+            <inheritdoc/>
+        </member>
+        <member name="M:Toobit.Net.ToobitUserSpotDataTracker.#ctor(Microsoft.Extensions.Logging.ILogger{Toobit.Net.ToobitUserSpotDataTracker},Toobit.Net.Interfaces.Clients.IToobitRestClient,Toobit.Net.Interfaces.Clients.IToobitSocketClient,System.String,CryptoExchange.Net.Trackers.UserData.Objects.SpotUserDataTrackerConfig)">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="T:Toobit.Net.ToobitUserFuturesDataTracker">
+            <inheritdoc/>
+        </member>
+        <member name="P:Toobit.Net.ToobitUserFuturesDataTracker.WebsocketPositionUpdatesAreFullSnapshots">
+            <inheritdoc/>
+        </member>
+        <member name="M:Toobit.Net.ToobitUserFuturesDataTracker.#ctor(Microsoft.Extensions.Logging.ILogger{Toobit.Net.ToobitUserFuturesDataTracker},Toobit.Net.Interfaces.Clients.IToobitRestClient,Toobit.Net.Interfaces.Clients.IToobitSocketClient,System.String,CryptoExchange.Net.Trackers.UserData.Objects.FuturesUserDataTrackerConfig)">
+            <summary>
+            ctor
+            </summary>
         </member>
         <member name="T:CryptoExchange.Net.Interfaces.CryptoClientExtensions">
             <summary>
