@@ -719,7 +719,15 @@ namespace Toobit.Net.Clients.SpotApi
             if (deposits.Data.Count() == (request.Limit ?? 100))
                 nextToken = new FromIdToken(deposits.Data.Min(x => x.Id.ToString())!);
 
-            return deposits.AsExchangeResult(Exchange, TradingMode.Spot, deposits.Data.Select(x => new SharedDeposit(x.Asset, x.Quantity, x.Status == DepositStatus.Success, x.Timestamp)
+            return deposits.AsExchangeResult(Exchange, TradingMode.Spot, deposits.Data.Select(x => 
+            new SharedDeposit(
+                x.Asset, 
+                x.Quantity,
+                x.Status == DepositStatus.Success, 
+                x.Timestamp,
+                x.Status == DepositStatus.Success ? SharedTransferStatus.Completed
+                : x.Status == DepositStatus.Rejected ? SharedTransferStatus.Failed
+                : SharedTransferStatus.InProgress)
             {
                 Confirmations = x.ConfirmTimes,
                 TransactionId = x.TransactionId,
