@@ -17,7 +17,7 @@ namespace Toobit.Net
             IToobitRestClient restClient,
             IToobitSocketClient socketClient,
             string? userIdentifier,
-            SpotUserDataTrackerConfig config) : base(
+            SpotUserDataTrackerConfig? config) : base(
                 logger,
                 restClient.SpotApi.SharedClient,
                 restClient.SpotApi.SharedClient,
@@ -27,13 +27,13 @@ namespace Toobit.Net
                 socketClient.SpotApi.SharedClient,
                 socketClient.SpotApi.SharedClient,
                 userIdentifier,
-                config)
+                config ?? new SpotUserDataTrackerConfig())
         {
         }
     }
 
     /// <inheritdoc/>
-    public class ToobitUserFuturesDataTracker : UserFuturesDataTracker
+    public class ToobitUserUsdtFuturesDataTracker : UserFuturesDataTracker
     {
         /// <inheritdoc/>
         protected override bool WebsocketPositionUpdatesAreFullSnapshots => false;
@@ -41,12 +41,12 @@ namespace Toobit.Net
         /// <summary>
         /// ctor
         /// </summary>
-        public ToobitUserFuturesDataTracker(
-            ILogger<ToobitUserFuturesDataTracker> logger,
+        public ToobitUserUsdtFuturesDataTracker(
+            ILogger<ToobitUserUsdtFuturesDataTracker> logger,
             IToobitRestClient restClient,
             IToobitSocketClient socketClient,
             string? userIdentifier,
-            FuturesUserDataTrackerConfig config) : base(logger,
+            FuturesUserDataTrackerConfig? config) : base(logger,
                 restClient.UsdtFuturesApi.SharedClient,
                 restClient.UsdtFuturesApi.SharedClient,
                 restClient.UsdtFuturesApi.SharedClient,
@@ -56,7 +56,7 @@ namespace Toobit.Net
                 socketClient.UsdtFuturesApi.SharedClient,
                 socketClient.UsdtFuturesApi.SharedClient,
                 userIdentifier,
-                config)
+                config ?? new FuturesUserDataTrackerConfig())
         {
         }
     }

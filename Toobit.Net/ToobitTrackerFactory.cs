@@ -107,7 +107,7 @@ namespace Toobit.Net
         }
 
         /// <inheritdoc />
-        public IUserSpotDataTracker CreateUserSpotDataTracker(SpotUserDataTrackerConfig config)
+        public IUserSpotDataTracker CreateUserSpotDataTracker(SpotUserDataTrackerConfig? config = null)
         {
             var restClient = _serviceProvider?.GetRequiredService<IToobitRestClient>() ?? new ToobitRestClient();
             var socketClient = _serviceProvider?.GetRequiredService<IToobitSocketClient>() ?? new ToobitSocketClient();
@@ -121,7 +121,7 @@ namespace Toobit.Net
         }
 
         /// <inheritdoc />
-        public IUserSpotDataTracker CreateUserSpotDataTracker(string userIdentifier, SpotUserDataTrackerConfig config, ApiCredentials credentials, ToobitEnvironment? environment = null)
+        public IUserSpotDataTracker CreateUserSpotDataTracker(string userIdentifier, ApiCredentials credentials, SpotUserDataTrackerConfig? config = null, ToobitEnvironment? environment = null)
         {
             var clientProvider = _serviceProvider?.GetRequiredService<IToobitUserClientProvider>() ?? new ToobitUserClientProvider();
             var restClient = clientProvider.GetRestClient(userIdentifier, credentials, environment);
@@ -136,12 +136,12 @@ namespace Toobit.Net
         }
 
         /// <inheritdoc />
-        public IUserFuturesDataTracker CreateUserFuturesDataTracker(FuturesUserDataTrackerConfig config)
+        public IUserFuturesDataTracker CreateUserUsdtFuturesDataTracker(FuturesUserDataTrackerConfig? config = null)
         {
             var restClient = _serviceProvider?.GetRequiredService<IToobitRestClient>() ?? new ToobitRestClient();
             var socketClient = _serviceProvider?.GetRequiredService<IToobitSocketClient>() ?? new ToobitSocketClient();
-            return new ToobitUserFuturesDataTracker(
-                _serviceProvider?.GetRequiredService<ILogger<ToobitUserFuturesDataTracker>>() ?? new NullLogger<ToobitUserFuturesDataTracker>(),
+            return new ToobitUserUsdtFuturesDataTracker(
+                _serviceProvider?.GetRequiredService<ILogger<ToobitUserUsdtFuturesDataTracker>>() ?? new NullLogger<ToobitUserUsdtFuturesDataTracker>(),
                 restClient,
                 socketClient,
                 null,
@@ -150,13 +150,13 @@ namespace Toobit.Net
         }
 
         /// <inheritdoc />
-        public IUserFuturesDataTracker CreateUserFuturesDataTracker(string userIdentifier, FuturesUserDataTrackerConfig config, ApiCredentials credentials, ToobitEnvironment? environment = null)
+        public IUserFuturesDataTracker CreateUserUsdtFuturesDataTracker(string userIdentifier, ApiCredentials credentials, FuturesUserDataTrackerConfig? config = null, ToobitEnvironment? environment = null)
         {
             var clientProvider = _serviceProvider?.GetRequiredService<IToobitUserClientProvider>() ?? new ToobitUserClientProvider();
             var restClient = clientProvider.GetRestClient(userIdentifier, credentials, environment);
             var socketClient = clientProvider.GetSocketClient(userIdentifier, credentials, environment);
-            return new ToobitUserFuturesDataTracker(
-                _serviceProvider?.GetRequiredService<ILogger<ToobitUserFuturesDataTracker>>() ?? new NullLogger<ToobitUserFuturesDataTracker>(),
+            return new ToobitUserUsdtFuturesDataTracker(
+                _serviceProvider?.GetRequiredService<ILogger<ToobitUserUsdtFuturesDataTracker>>() ?? new NullLogger<ToobitUserUsdtFuturesDataTracker>(),
                 restClient,
                 socketClient,
                 userIdentifier,
