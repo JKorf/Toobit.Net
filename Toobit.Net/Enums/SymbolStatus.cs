@@ -24,6 +24,11 @@ namespace Toobit.Net.Enums
         /// Offline
         /// </summary>
         [Map("Offline")]
-        Offline
+        Offline,
+        /// <summary>
+        /// Online
+        /// </summary>
+        [Map("ONLINE")]
+        Online,
     }
 }
