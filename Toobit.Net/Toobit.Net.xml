@@ -1597,6 +1597,11 @@
             Rejected
             </summary>
         </member>
+        <member name="F:Toobit.Net.Enums.OrderStatus.PartiallyCanceled">
+            <summary>
+            The order was canceled after being partially filled
+            </summary>
+        </member>
         <member name="T:Toobit.Net.Enums.OrderType">
             <summary>
             Order type
@@ -1720,6 +1725,11 @@
         <member name="F:Toobit.Net.Enums.SymbolStatus.Offline">
             <summary>
             Offline
+            </summary>
+        </member>
+        <member name="F:Toobit.Net.Enums.SymbolStatus.Online">
+            <summary>
+            Online
             </summary>
         </member>
         <member name="T:Toobit.Net.Enums.SymbolType">
