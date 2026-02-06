@@ -1,6 +1,6 @@
-﻿using CryptoExchange.Net.Attributes;
+﻿using System.Text.Json.Serialization;
+using CryptoExchange.Net.Attributes;
 using CryptoExchange.Net.Converters.SystemTextJson;
-using System.Text.Json.Serialization;
 
 namespace Toobit.Net.Enums
 {
@@ -39,6 +39,11 @@ namespace Toobit.Net.Enums
         /// Rejected
         /// </summary>
         [Map("REJECTED")]
-        Rejected
+        Rejected,
+        /// <summary>
+        /// The order was canceled after being partially filled
+        /// </summary>
+        [Map("PARTIALLY_CANCELED")]
+        PartiallyCanceled
     }
 }
