@@ -1,12 +1,16 @@
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.SharedApis;
 using CryptoExchange.Net.Trackers.Klines;
 using CryptoExchange.Net.Trackers.Trades;
-using Toobit.Net.Interfaces;
-using Toobit.Net.Interfaces.Clients;
+using CryptoExchange.Net.Trackers.UserData.Interfaces;
+using CryptoExchange.Net.Trackers.UserData.Objects;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using Toobit.Net.Clients;
+using Toobit.Net.Interfaces;
+using Toobit.Net.Interfaces.Clients;
 
 namespace Toobit.Net
 {
@@ -99,6 +103,64 @@ namespace Toobit.Net
                 symbol,
                 limit,
                 period
+                );
+        }
+
+        /// <inheritdoc />
+        public IUserSpotDataTracker CreateUserSpotDataTracker(SpotUserDataTrackerConfig? config = null)
+        {
+            var restClient = _serviceProvider?.GetRequiredService<IToobitRestClient>() ?? new ToobitRestClient();
+            var socketClient = _serviceProvider?.GetRequiredService<IToobitSocketClient>() ?? new ToobitSocketClient();
+            return new ToobitUserSpotDataTracker(
+                _serviceProvider?.GetRequiredService<ILogger<ToobitUserSpotDataTracker>>() ?? new NullLogger<ToobitUserSpotDataTracker>(),
+                restClient,
+                socketClient,
+                null,
+                config
+                );
+        }
+
+        /// <inheritdoc />
+        public IUserSpotDataTracker CreateUserSpotDataTracker(string userIdentifier, ApiCredentials credentials, SpotUserDataTrackerConfig? config = null, ToobitEnvironment? environment = null)
+        {
+            var clientProvider = _serviceProvider?.GetRequiredService<IToobitUserClientProvider>() ?? new ToobitUserClientProvider();
+            var restClient = clientProvider.GetRestClient(userIdentifier, credentials, environment);
+            var socketClient = clientProvider.GetSocketClient(userIdentifier, credentials, environment);
+            return new ToobitUserSpotDataTracker(
+                _serviceProvider?.GetRequiredService<ILogger<ToobitUserSpotDataTracker>>() ?? new NullLogger<ToobitUserSpotDataTracker>(),
+                restClient,
+                socketClient,
+                userIdentifier,
+                config
+                );
+        }
+
+        /// <inheritdoc />
+        public IUserFuturesDataTracker CreateUserUsdtFuturesDataTracker(FuturesUserDataTrackerConfig? config = null)
+        {
+            var restClient = _serviceProvider?.GetRequiredService<IToobitRestClient>() ?? new ToobitRestClient();
+            var socketClient = _serviceProvider?.GetRequiredService<IToobitSocketClient>() ?? new ToobitSocketClient();
+            return new ToobitUserUsdtFuturesDataTracker(
+                _serviceProvider?.GetRequiredService<ILogger<ToobitUserUsdtFuturesDataTracker>>() ?? new NullLogger<ToobitUserUsdtFuturesDataTracker>(),
+                restClient,
+                socketClient,
+                null,
+                config
+                );
+        }
+
+        /// <inheritdoc />
+        public IUserFuturesDataTracker CreateUserUsdtFuturesDataTracker(string userIdentifier, ApiCredentials credentials, FuturesUserDataTrackerConfig? config = null, ToobitEnvironment? environment = null)
+        {
+            var clientProvider = _serviceProvider?.GetRequiredService<IToobitUserClientProvider>() ?? new ToobitUserClientProvider();
+            var restClient = clientProvider.GetRestClient(userIdentifier, credentials, environment);
+            var socketClient = clientProvider.GetSocketClient(userIdentifier, credentials, environment);
+            return new ToobitUserUsdtFuturesDataTracker(
+                _serviceProvider?.GetRequiredService<ILogger<ToobitUserUsdtFuturesDataTracker>>() ?? new NullLogger<ToobitUserUsdtFuturesDataTracker>(),
+                restClient,
+                socketClient,
+                userIdentifier,
+                config
                 );
         }
     }

@@ -199,6 +199,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 onPositionMessage: update => handler(update.ToType(update.Data.Select(x => new SharedPosition(ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol, x.PositionQuantity, x.EventTime)
                 {
                     AverageOpenPrice = x.AveragePrice,
+                    PositionMode = SharedPositionMode.HedgeMode,
                     PositionSide = x.PositionSide == Enums.PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long,
                     UnrealizedPnl = x.UnrealizedPnl,
                     LiquidationPrice = x.LiquidationPrice == 0 ? null : x.LiquidationPrice,
