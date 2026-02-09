@@ -12,8 +12,8 @@ namespace Toobit.Net.Clients
     /// <inheritdoc />
     public class ToobitUserClientProvider : IToobitUserClientProvider
     {
-        private static ConcurrentDictionary<string, IToobitRestClient> _restClients = new ConcurrentDictionary<string, IToobitRestClient>();
-        private static ConcurrentDictionary<string, IToobitSocketClient> _socketClients = new ConcurrentDictionary<string, IToobitSocketClient>();
+        private ConcurrentDictionary<string, IToobitRestClient> _restClients = new ConcurrentDictionary<string, IToobitRestClient>();
+        private ConcurrentDictionary<string, IToobitSocketClient> _socketClients = new ConcurrentDictionary<string, IToobitSocketClient>();
         
         private readonly IOptions<ToobitRestOptions> _restOptions;
         private readonly IOptions<ToobitSocketOptions> _socketOptions;
