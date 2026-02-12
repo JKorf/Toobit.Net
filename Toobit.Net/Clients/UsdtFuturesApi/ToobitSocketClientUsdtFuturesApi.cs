@@ -134,13 +134,16 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             {
                 UpdateTimeOffset(data.SendTime);
 
-                onMessage(
-                    new DataEvent<ToobitKlineUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
-                        .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
-                        .WithStreamId(data.Topic)
-                        .WithSymbol(data.Symbol)
-                    );
+                if (data.Data.Length > 0)
+                {
+                    onMessage(
+                        new DataEvent<ToobitKlineUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
+                            .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
+                            .WithDataTimestamp(data.SendTime, GetTimeOffset())
+                            .WithStreamId(data.Topic)
+                            .WithSymbol(data.Symbol)
+                        );
+                }
             });
 
             var subscription = new ToobitSubscription<ToobitKlineUpdate[]>(_logger, this, symbols.ToArray(), "kline", interval, internalHandler, false, _waitForErrorTimeout);
@@ -158,13 +161,16 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             {
                 UpdateTimeOffset(data.SendTime);
 
-                onMessage(
-                    new DataEvent<ToobitOrderBookUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
-                        .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
-                        .WithStreamId(data.Topic)
-                        .WithSymbol(data.Symbol)
-                    );
+                if (data.Data.Length > 0)
+                {
+                    onMessage(
+                        new DataEvent<ToobitOrderBookUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
+                            .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
+                            .WithDataTimestamp(data.SendTime, GetTimeOffset())
+                            .WithStreamId(data.Topic)
+                            .WithSymbol(data.Symbol)
+                        );
+                }
             });
 
             var subscription = new ToobitSubscription<ToobitOrderBookUpdate[]>(_logger, this, symbols.ToArray(), "depth", null, internalHandler, false, _waitForErrorTimeout);
@@ -182,13 +188,16 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             {
                 UpdateTimeOffset(data.SendTime);
 
-                onMessage(
-                    new DataEvent<ToobitOrderBookUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
-                        .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
-                        .WithStreamId(data.Topic)
-                        .WithSymbol(data.Symbol)
-                    );
+                if (data.Data.Length > 0)
+                {
+                    onMessage(
+                        new DataEvent<ToobitOrderBookUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
+                            .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
+                            .WithDataTimestamp(data.SendTime, GetTimeOffset())
+                            .WithStreamId(data.Topic)
+                            .WithSymbol(data.Symbol)
+                        );
+                }
             });
 
             var subscription = new ToobitSubscription<ToobitOrderBookUpdate[]>(_logger, this, symbols.ToArray(), "diffDepth", null, internalHandler, false, _waitForErrorTimeout);
@@ -206,13 +215,16 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             {
                 UpdateTimeOffset(data.SendTime);
 
-                onMessage(
-                    new DataEvent<ToobitTickerUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
-                        .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
-                        .WithStreamId(data.Topic)
-                        .WithSymbol(data.Symbol)
-                    );
+                if (data.Data.Length > 0)
+                {
+                    onMessage(
+                        new DataEvent<ToobitTickerUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
+                            .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
+                            .WithDataTimestamp(data.SendTime, GetTimeOffset())
+                            .WithStreamId(data.Topic)
+                            .WithSymbol(data.Symbol)
+                        );
+                }
             });
 
             var subscription = new ToobitSubscription<ToobitTickerUpdate[]>(_logger, this, symbols.ToArray(), "realtimes", null, internalHandler, false, _waitForErrorTimeout);
@@ -230,13 +242,16 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             {
                 UpdateTimeOffset(data.SendTime);
 
-                onMessage(
-                    new DataEvent<ToobitIndexUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
-                        .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                        .WithDataTimestamp(data.SendTime, GetTimeOffset())
-                        .WithStreamId(data.Topic)
-                        .WithSymbol(data.Symbol)
-                    );
+                if (data.Data.Length > 0)
+                {
+                    onMessage(
+                        new DataEvent<ToobitIndexUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
+                            .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
+                            .WithDataTimestamp(data.SendTime, GetTimeOffset())
+                            .WithStreamId(data.Topic)
+                            .WithSymbol(data.Symbol)
+                        );
+                }
             });
             var subscription = new ToobitSubscription<ToobitIndexUpdate[]>(_logger, this, symbols.ToArray(), "index", null, internalHandler, false, _waitForErrorTimeout);
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
