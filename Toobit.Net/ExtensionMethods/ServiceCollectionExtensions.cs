@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Net.Http;
+using System.Threading;
 using Toobit.Net;
 using Toobit.Net.Clients;
 using Toobit.Net.Interfaces;
@@ -95,8 +96,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 return new ToobitRestClient(client, serviceProvider.GetRequiredService<ILoggerFactory>(), serviceProvider.GetRequiredService<IOptions<ToobitRestOptions>>());
             }).ConfigurePrimaryHttpMessageHandler((serviceProvider) => {
                 var options = serviceProvider.GetRequiredService<IOptions<ToobitRestOptions>>().Value;
-                return LibraryHelpers.CreateHttpClientMessageHandler(options.Proxy, options.HttpKeepAliveInterval);
-            });
+                return LibraryHelpers.CreateHttpClientMessageHandler(options);
+            }).SetHandlerLifetime(Timeout.InfiniteTimeSpan);
             services.Add(new ServiceDescriptor(typeof(IToobitSocketClient), x => { return new ToobitSocketClient(x.GetRequiredService<IOptions<ToobitSocketOptions>>(), x.GetRequiredService<ILoggerFactory>()); }, socketClientLifeTime ?? ServiceLifetime.Singleton));
 
             services.AddTransient<ICryptoRestClient, CryptoRestClient>();
@@ -106,7 +107,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<ITrackerFactory, ToobitTrackerFactory>();
             services.AddSingleton<IToobitUserClientProvider, ToobitUserClientProvider>(x => 
             new ToobitUserClientProvider(
-                x.GetRequiredService<HttpClient>(),
+                x.GetRequiredService<IHttpClientFactory>().CreateClient(typeof(IToobitRestClient).Name),
                 x.GetRequiredService<ILoggerFactory>(),
                 x.GetRequiredService<IOptions<ToobitRestOptions>>(),
                 x.GetRequiredService<IOptions<ToobitSocketOptions>>()));
