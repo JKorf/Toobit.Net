@@ -1950,14 +1950,24 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiAccount.GetBalancesAsync(System.Threading.CancellationToken)">
             <summary>
             Get account balances
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#account-information-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#account-information-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/account
+            </para>
             </summary>
             <param name="ct">Cancellation token</param>
         </member>
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiAccount.WithdrawAsync(System.String,System.String,System.Decimal,System.String,System.String,System.String,System.String,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Withdraw funds
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#withdraw-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#withdraw-user_data" /><br />
+            Endpoint:<br />
+            POST /api/v1/account/withdraw
+            </para>
             </summary>
             <param name="asset">The asset, for example `ETH`</param>
             <param name="address">Address to withdraw to</param>
@@ -1973,7 +1983,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiAccount.GetWithdrawalsAsync(System.String,System.String,System.Nullable{System.Int64},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get withdrawal history
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#withdrawal-records-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#withdrawal-records-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/account/withdrawOrders
+            </para>
             </summary>
             <param name="asset">Filter by asset, for example `ETH`</param>
             <param name="fromId">Return results after this id</param>
@@ -1986,7 +2001,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiAccount.GetDepositAddressAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Get deposit address
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#deposit-address-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#deposit-address-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/account/deposit/address
+            </para>
             </summary>
             <param name="asset">The asset, for example `ETH`</param>
             <param name="network">The network</param>
@@ -1995,7 +2015,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiAccount.GetDepositsAsync(System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get deposit history
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#deposit-history-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#deposit-history-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/account/depositOrders
+            </para>
             </summary>
             <param name="asset">Filter by asset, for example `ETH`</param>
             <param name="fromId">Return results after this id</param>
@@ -2007,7 +2032,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiAccount.TransferAsync(System.Int64,System.Int64,Toobit.Net.Enums.AccountType,Toobit.Net.Enums.AccountType,System.String,System.Decimal,System.Threading.CancellationToken)">
             <summary>
             Transfer asset. Can be between account types or between parent and sub account. If transferring between Spot and Futures for the current account the fromUid and toUid should be set to the current account id which can be retrieved with GetBalances
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#account-transfer" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#account-transfer" /><br />
+            Endpoint:<br />
+            POST /api/v1/subAccount/transfer
+            </para>
             </summary>
             <param name="fromUid">From user id</param>
             <param name="toUid">To user id</param>
@@ -2020,7 +2050,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiAccount.GetTransactionHistoryAsync(System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int64},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get transaction history
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#get-account-transaction-history-list-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#get-account-transaction-history-list-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/account/balanceFlow
+            </para>
             </summary>
             <param name="accountType">Account type</param>
             <param name="asset">Filter by asset, for example `ETH`</param>
@@ -2034,7 +2069,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiAccount.GetSubAccountsAsync(System.Threading.CancellationToken)">
             <summary>
             Get sub account list
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#query-sub-account-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#query-sub-account-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/account/checkApiKey
+            </para>
             </summary>
             <param name="ct">Cancellation token</param>
         </member>
@@ -2042,14 +2082,24 @@
             <summary>
             Starts a user stream by requesting a listen key. This listen key can be used in subsequent requests to SubscribeToUserDataUpdates. The stream will close after 60 minutes unless a keep alive is send.
             <para>Note that the listenkey is shared between the Spot and UsdtFutures API</para>
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /><br />
+            Endpoint:<br />
+            POST /api/v1/userDataStream
+            </para>
             </summary>
             <param name="ct">Cancellation token</param>
         </member>
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiAccount.KeepAliveUserStreamAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Sends a keep alive for the current user stream listen key to keep the stream from closing. Stream auto closes after 60 minutes if no keep alive is send. 30 minute interval for keep alive is recommended.
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /><br />
+            Endpoint:<br />
+            PUT /api/v1/userDataStream
+            </para>
             </summary>
             <param name="listenKey">The listen key to keep alive</param>
             <param name="ct">Cancellation token</param>
@@ -2057,7 +2107,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiAccount.StopUserStreamAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Stops the current user stream
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /><br />
+            Endpoint:<br />
+            DELETE /api/v1/userDataStream
+            </para>
             </summary>
             <param name="listenKey">The listen key to stop</param>
             <param name="ct">Cancellation token</param>
@@ -2070,7 +2125,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiExchangeData.GetServerTimeAsync(System.Threading.CancellationToken)">
             <summary>
             Get server time
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#test-connectivity" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#test-connectivity" /><br />
+            Endpoint:<br />
+            GET /api/v1/time
+            </para>
             </summary>
             <param name="ct">Cancellation token</param>
             <returns></returns>
@@ -2078,14 +2138,24 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiExchangeData.GetExchangeInfoAsync(System.Threading.CancellationToken)">
             <summary>
             Get exchange info
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#exchange-information" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#exchange-information" /><br />
+            Endpoint:<br />
+            GET /api/v1/exchangeInfo
+            </para>
             </summary>
             <param name="ct">Cancellation token</param>
         </member>
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiExchangeData.GetOrderBookAsync(System.String,System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get the current order book
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#order-book" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#order-book" /><br />
+            Endpoint:<br />
+            GET /quote/v1/depth
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETHUSDT`</param>
             <param name="limit">Max number of results, max 200</param>
@@ -2094,7 +2164,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiExchangeData.GetRecentTradesAsync(System.String,System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get the most recent trades for a symbol
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#recent-trades-list" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#recent-trades-list" /><br />
+            Endpoint:<br />
+            GET /quote/v1/trades
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETHUSDT`</param>
             <param name="limit">Max number of results, max 60</param>
@@ -2103,7 +2178,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiExchangeData.GetKlinesAsync(System.String,Toobit.Net.Enums.KlineInterval,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get klines
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-data" /><br />
+            Endpoint:<br />
+            GET /quote/v1/klines
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETHUSDT`</param>
             <param name="interval">Kline interval</param>
@@ -2115,7 +2195,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiExchangeData.GetTickersAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Get 24h price info
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#24hr-ticker-price-change-statistics" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#24hr-ticker-price-change-statistics" /><br />
+            Endpoint:<br />
+            GET /quote/v1/ticker/24hr
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETHUSDT`</param>
             <param name="ct">Cancellation token</param>
@@ -2123,7 +2208,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiExchangeData.GetPricesAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Get price info
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#symbol-price-ticker" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#symbol-price-ticker" /><br />
+            Endpoint:<br />
+            GET /quote/v1/ticker/price
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETHUSDT`</param>
             <param name="ct">Cancellation token</param>
@@ -2131,7 +2221,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiExchangeData.GetBookTickersAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Get best book prices info
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#symbol-order-book-ticker" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#symbol-order-book-ticker" /><br />
+            Endpoint:<br />
+            GET /quote/v1/ticker/bookTicker
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETHUSDT`</param>
             <param name="ct">Cancellation token</param>
@@ -2149,7 +2244,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiTrading.PlaceTestOrderAsync(System.String,Toobit.Net.Enums.OrderSide,Toobit.Net.Enums.OrderType,System.Decimal,System.Nullable{Toobit.Net.Enums.TimeInForce},System.Nullable{System.Decimal},System.String,System.Threading.CancellationToken)">
             <summary>
             Place a test order, only validates the request, doesn't place the order
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#test-new-order-trade" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#test-new-order-trade" /><br />
+            Endpoint:<br />
+            POST /api/v1/spot/orderTest
+            </para>
             </summary>
             <param name="symbol">Symbol name, for example 'ETHUSDT'</param>
             <param name="orderSide">Order side</param>
@@ -2163,7 +2263,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiTrading.PlaceOrderAsync(System.String,Toobit.Net.Enums.OrderSide,Toobit.Net.Enums.OrderType,System.Decimal,System.Nullable{Toobit.Net.Enums.TimeInForce},System.Nullable{System.Decimal},System.String,System.Threading.CancellationToken)">
             <summary>
             Place a new order
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#new-order-trade" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#new-order-trade" /><br />
+            Endpoint:<br />
+            POST /api/v1/spot/order
+            </para>
             </summary>
             <param name="symbol">Symbol name, for example 'ETHUSDT'</param>
             <param name="orderSide">Order side</param>
@@ -2177,7 +2282,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiTrading.PlaceMultipleOrdersAsync(System.Collections.Generic.IEnumerable{Toobit.Net.Objects.Models.ToobitOrderRequest},System.Threading.CancellationToken)">
             <summary>
             Place multiple orders. Orders have to be for the same symbol.
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#place-multiple-orders-trade" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#place-multiple-orders-trade" /><br />
+            Endpoint:<br />
+            POST /api/v1/spot/batchOrders
+            </para>
             </summary>
             <param name="orders">Orders to place</param>
             <param name="ct">Cancellation token</param>
@@ -2185,7 +2295,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiTrading.CancelOrderAsync(System.Nullable{System.Int64},System.String,System.Threading.CancellationToken)">
             <summary>
             Cancel an open order
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#cancel-order-trade" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#cancel-order-trade" /><br />
+            Endpoint:<br />
+            DELETE /api/v1/spot/order
+            </para>
             </summary>
             <param name="orderId">Id of order to cancel. Either this or clientOrderId should be provided</param>
             <param name="clientOrderId">Client order id of order to cancel. Either this or orderId should be provided</param>
@@ -2194,7 +2309,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiTrading.CancelAllOrdersAsync(System.String,System.Nullable{Toobit.Net.Enums.OrderSide},System.Threading.CancellationToken)">
             <summary>
             Cancel all orders matching the parameters
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#cancel-all-open-orders-trade" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#cancel-all-open-orders-trade" /><br />
+            Endpoint:<br />
+            DELETE /api/v1/spot/openOrders
+            </para>
             </summary>
             <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
             <param name="side">Filter by order side</param>
@@ -2203,7 +2323,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiTrading.CancelMultipleOrdersAsync(System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)">
             <summary>
             Cancel multiple orders by id. If successful no result is returned in the data, if unsuccessful an error is returned in the data
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#cancel-multiple-orders-trade" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#cancel-multiple-orders-trade" /><br />
+            Endpoint:<br />
+            DELETE /api/v1/spot/cancelOrderByIds
+            </para>
             </summary>
             <param name="orderIds">Ids of the orders to cancel</param>
             <param name="ct">Cancellation token</param>
@@ -2211,7 +2336,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiTrading.GetOrderAsync(System.Nullable{System.Int64},System.String,System.Threading.CancellationToken)">
             <summary>
             Get order info
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#query-order-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#query-order-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/spot/order
+            </para>
             </summary>
             <param name="orderId">Id of order to cancel, either this or clientOrderId should be provided</param>
             <param name="clientOrderId">Client order id of the order to cancel, either this or orderId should be provided</param>
@@ -2220,7 +2350,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiTrading.GetOpenOrdersAsync(System.Nullable{System.Int64},System.String,System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get open orders
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#current-open-orders-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#current-open-orders-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/spot/openOrders
+            </para>
             </summary>
             <param name="orderId">Filter by order id</param>
             <param name="symbol">Filter by symbol</param>
@@ -2230,7 +2365,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiTrading.GetOrdersAsync(System.Nullable{System.Int64},System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get orders
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#all-orders-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#all-orders-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/spot/tradeOrders
+            </para>
             </summary>
             <param name="orderId">Filter by order id</param>
             <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
@@ -2242,7 +2382,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiTrading.GetUserTradesAsync(System.String,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get user trades
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#account-trade-list-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#account-trade-list-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/account/trades
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETHUSDT`</param>
             <param name="fromId">Filter by min id</param>
@@ -2260,7 +2405,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitTradeUpdate[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live trade updates
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#trade-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#trade-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: trade)
+            </para>
             </summary>
             <param name="symbol">Symbol to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2270,7 +2420,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitTradeUpdate[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live trade updates
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#trade-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#trade-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: trade)
+            </para>
             </summary>
             <param name="symbols">Symbols to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2280,7 +2435,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitTickerUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live price ticker updates
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#individual-symbol-ticker-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#individual-symbol-ticker-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: realtimes)
+            </para>
             </summary>
             <param name="symbol">Symbol to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2290,7 +2450,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitTickerUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live price ticker updates
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#individual-symbol-ticker-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#individual-symbol-ticker-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: realtimes)
+            </para>
             </summary>
             <param name="symbols">Symbols to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2300,7 +2465,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitSocketClientSpotApi.SubscribeToKlineUpdatesAsync(System.String,Toobit.Net.Enums.KlineInterval,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitKlineUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live kline/candlestick updates
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: kline)
+            </para>
             </summary>
             <param name="symbol">Symbol to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2311,7 +2481,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitSocketClientSpotApi.SubscribeToKlineUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},Toobit.Net.Enums.KlineInterval,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitKlineUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live kline/candlestick updates
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: kline)
+            </para>
             </summary>
             <param name="symbols">Symbols to subscribe</param>
             <param name="interval">Kline interval</param>
@@ -2322,7 +2497,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitSocketClientSpotApi.SubscribeToPartialOrderBookUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitOrderBookUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live price ticker updates
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#partial-book-depth-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#partial-book-depth-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: depth)
+            </para>
             </summary>
             <param name="symbol">Symbol to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2332,7 +2512,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitSocketClientSpotApi.SubscribeToPartialOrderBookUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitOrderBookUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live price ticker updates
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#partial-book-depth-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#partial-book-depth-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: depth)
+            </para>
             </summary>
             <param name="symbols">Symbols to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2342,7 +2527,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitOrderBookUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live price ticker updates
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#diff-depth-stream" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#diff-depth-stream" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: diffDepth)
+            </para>
             </summary>
             <param name="symbol">Symbol to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2352,7 +2542,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitOrderBookUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live price ticker updates
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#diff-depth-stream" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#diff-depth-stream" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: diffDepth)
+            </para>
             </summary>
             <param name="symbols">Symbols to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2362,7 +2557,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitSocketClientSpotApi.SubscribeToUserDataUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitAccountUpdate}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitOrderUpdate[]}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitUserTradeUpdate[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to user data updates
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#user-data-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#user-data-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /api/v1/ws/{listenKey}
+            </para>
             </summary>
             <param name="listenKey">Listen key retrieved by the <see cref="M:Toobit.Net.Interfaces.Clients.SpotApi.IToobitRestClientSpotApiAccount.StartUserStreamAsync(System.Threading.CancellationToken)">StartUserStreamAsync</see> method</param>
             <param name="onAccountMessage">Event handler for account and balance updates</param>
@@ -2417,7 +2617,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiAccount.SetMarginTypeAsync(System.String,Toobit.Net.Enums.MarginType,System.Threading.CancellationToken)">
             <summary>
             Change the margin type for a symbol
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#change-margin-type-trade" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#change-margin-type-trade" /><br />
+            Endpoint:<br />
+            POST /api/v1/futures/marginType
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="marginType">Type of margin</param>
@@ -2426,7 +2631,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiAccount.SetLeverageAsync(System.String,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Change the initial leverage for a symbol
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#change-initial-leverage-trade" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#change-initial-leverage-trade" /><br />
+            Endpoint:<br />
+            POST /api/v1/futures/leverage
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="leverage">New leverage value</param>
@@ -2435,7 +2645,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiAccount.GetLeverageInfoAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Get leverage info
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#get-the-leverage-multiple-and-position-mode-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#get-the-leverage-multiple-and-position-mode-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/futures/accountLeverage
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="ct">Cancellation token</param>
@@ -2443,14 +2658,24 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiAccount.GetBalancesAsync(System.Threading.CancellationToken)">
             <summary>
             Get futures balances
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#futures-account-balance-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#futures-account-balance-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/futures/balance
+            </para>
             </summary>
             <param name="ct">Cancellation token</param>
         </member>
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiAccount.SetPositionMarginAsync(System.String,Toobit.Net.Enums.PositionSide,System.Decimal,System.Threading.CancellationToken)">
             <summary>
             Adjust the position margin
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#modify-isolated-position-margin-trade" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#modify-isolated-position-margin-trade" /><br />
+            Endpoint:<br />
+            POST /api/v1/futures/positionMargin
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="positionSide">Position side</param>
@@ -2460,7 +2685,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiAccount.GetTransactionHistoryAsync(System.String,System.Nullable{Toobit.Net.Enums.FlowType},System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get transaction history
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#get-futures-account-transaction-history-list-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#get-futures-account-transaction-history-list-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/futures/balanceFlow
+            </para>
             </summary>
             <param name="asset">The asset, for example `ETH`</param>
             <param name="flowType">Flow type</param>
@@ -2474,7 +2704,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiAccount.GetFeesAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Get fee rates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#user-commission-rate-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#user-commission-rate-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/futures/commissionRate
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="ct">Cancellation token</param>
@@ -2483,14 +2718,24 @@
             <summary>
             Starts a user stream by requesting a listen key. This listen key can be used in subsequent requests to SubscribeToUserDataUpdates. The stream will close after 60 minutes unless a keep alive is send.
             <para>Note that the listenkey is shared between the Spot and UsdtFutures API</para>
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /><br />
+            Endpoint:<br />
+            POST /api/v1/userDataStream
+            </para>
             </summary>
             <param name="ct">Cancellation token</param>
         </member>
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiAccount.KeepAliveUserStreamAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Sends a keep alive for the current user stream listen key to keep the stream from closing. Stream auto closes after 60 minutes if no keep alive is send. 30 minute interval for keep alive is recommended.
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /><br />
+            Endpoint:<br />
+            PUT /api/v1/userDataStream
+            </para>
             </summary>
             <param name="listenKey">The listen key to keep alive</param>
             <param name="ct">Cancellation token</param>
@@ -2498,7 +2743,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiAccount.StopUserStreamAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Stops the current user stream
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /><br />
+            Endpoint:<br />
+            DELETE /api/v1/userDataStream
+            </para>
             </summary>
             <param name="listenKey">The listen key to stop</param>
             <param name="ct">Cancellation token</param>
@@ -2511,7 +2761,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiExchangeData.GetServerTimeAsync(System.Threading.CancellationToken)">
             <summary>
             Get server time
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#test-connectivity" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#test-connectivity" /><br />
+            Endpoint:<br />
+            GET /api/v1/time
+            </para>
             </summary>
             <param name="ct">Cancellation token</param>
             <returns></returns>
@@ -2519,14 +2774,24 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiExchangeData.GetExchangeInfoAsync(System.Threading.CancellationToken)">
             <summary>
             Get exchange info
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#exchange-information" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#exchange-information" /><br />
+            Endpoint:<br />
+            GET /api/v1/exchangeInfo
+            </para>
             </summary>
             <param name="ct">Cancellation token</param>
         </member>
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiExchangeData.GetOrderBookAsync(System.String,System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get the current order book
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#order-book" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#order-book" /><br />
+            Endpoint:<br />
+            GET /quote/v1/depth
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="limit">Max number of results, max 200</param>
@@ -2535,7 +2800,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiExchangeData.GetRecentTradesAsync(System.String,System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get the most recent trades for a symbol
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#recent-trades-list" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#recent-trades-list" /><br />
+            Endpoint:<br />
+            GET /quote/v1/trades
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="limit">Max number of results, max 60</param>
@@ -2544,7 +2814,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiExchangeData.GetKlinesAsync(System.String,Toobit.Net.Enums.KlineInterval,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get klines
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#kline-candlestick-data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#kline-candlestick-data" /><br />
+            Endpoint:<br />
+            GET /quote/v1/klines
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="interval">Kline interval</param>
@@ -2556,7 +2831,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiExchangeData.GetMarkPriceKlinesAsync(System.String,Toobit.Net.Enums.KlineInterval,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get mark price klines
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-data" /><br />
+            Endpoint:<br />
+            GET /quote/v1/markPrice/klines
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="interval">Kline interval</param>
@@ -2568,7 +2848,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiExchangeData.GetIndexPriceKlinesAsync(System.String,Toobit.Net.Enums.KlineInterval,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get index price klines
-            <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-data" /><br />
+            Endpoint:<br />
+            GET /quote/v1/index/klines
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETHUSDT`</param>
             <param name="interval">Kline interval</param>
@@ -2580,7 +2865,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiExchangeData.GetTickersAsync(System.String,System.Nullable{Toobit.Net.Enums.TickerInterval},System.Threading.CancellationToken)">
             <summary>
             Get 24h price info
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#24hr-ticker-price-change-statistics" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#24hr-ticker-price-change-statistics" /><br />
+            Endpoint:<br />
+            GET /quote/v1/contract/ticker/24hr
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="interval">Stats interval</param>
@@ -2589,7 +2879,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiExchangeData.GetPricesAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Get price info
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-price-ticker" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-price-ticker" /><br />
+            Endpoint:<br />
+            GET /quote/v1/ticker/price
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="ct">Cancellation token</param>
@@ -2597,7 +2892,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiExchangeData.GetBookTickersAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Get best book prices info
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-order-book-ticker" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-order-book-ticker" /><br />
+            Endpoint:<br />
+            GET /quote/v1/ticker/bookTicker
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="ct">Cancellation token</param>
@@ -2605,7 +2905,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiExchangeData.GetIndexPricesAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Get index prices
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-index-price" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-index-price" /><br />
+            Endpoint:<br />
+            GET /quote/v1/index
+            </para>
             </summary>
             <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
             <param name="ct">Cancellation token</param>
@@ -2613,7 +2918,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiExchangeData.GetMarkPriceAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Get mark price
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#mark-price" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#mark-price" /><br />
+            Endpoint:<br />
+            GET /quote/v1/markPrice
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="ct">Cancellation token</param>
@@ -2621,7 +2931,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiExchangeData.GetFundingRateAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Get funding rate
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#funding-rate" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#funding-rate" /><br />
+            Endpoint:<br />
+            GET /api/v1/futures/fundingRate
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="ct">Cancellation token</param>
@@ -2629,7 +2944,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiExchangeData.GetFundingRateHistoryAsync(System.String,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get funding rate history for a symbol
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#get-funding-rate-history" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#get-funding-rate-history" /><br />
+            Endpoint:<br />
+            GET /api/v1/futures/historyFundingRate
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="fromId">Filter by from id</param>
@@ -2650,7 +2970,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiTrading.PlaceOrderAsync(System.String,Toobit.Net.Enums.FuturesOrderSide,Toobit.Net.Enums.FuturesNewOrderType,System.Int64,System.Nullable{System.Decimal},System.Nullable{Toobit.Net.Enums.PriceType},System.Nullable{System.Decimal},System.Nullable{Toobit.Net.Enums.TimeInForce},System.String,System.Nullable{System.Decimal},System.Nullable{Toobit.Net.Enums.TriggerType},System.Nullable{System.Decimal},System.Nullable{Toobit.Net.Enums.OrderType},System.Nullable{System.Decimal},System.Nullable{Toobit.Net.Enums.TriggerType},System.Nullable{System.Decimal},System.Nullable{Toobit.Net.Enums.OrderType},System.Threading.CancellationToken)">
             <summary>
             Place a new order
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#new-order-trade" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#new-order-trade" /><br />
+            Endpoint:<br />
+            POST /api/v1/futures/order
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="orderSide">Futures order side</param>
@@ -2674,7 +2999,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiTrading.PlaceMultipleOrdersAsync(System.Collections.Generic.IEnumerable{Toobit.Net.Objects.Models.ToobitFuturesOrderRequest},System.Threading.CancellationToken)">
             <summary>
             Place multiple new orders
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#place-multiple-orders-trade" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#place-multiple-orders-trade" /><br />
+            Endpoint:<br />
+            POST /api/v1/futures/batchOrders
+            </para>
             </summary>
             <param name="orders">Orders to place</param>
             <param name="ct">Cancellation token</param>
@@ -2682,7 +3012,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiTrading.GetOrderAsync(System.Nullable{System.Int64},System.String,System.Nullable{Toobit.Net.Enums.FuturesOrderType},System.Threading.CancellationToken)">
             <summary>
             Get order info
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#query-order-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#query-order-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/futures/order
+            </para>
             </summary>
             <param name="orderId">Order id, either this or clientOrderId should be provided</param>
             <param name="clientOrderId">Client order id, either this or orderId should be provided</param>
@@ -2692,7 +3027,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiTrading.CancelOrderAsync(System.Nullable{System.Int64},System.String,System.Nullable{Toobit.Net.Enums.FuturesOrderType},System.Threading.CancellationToken)">
             <summary>
             Cancel an order
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#cancel-order-trade" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#cancel-order-trade" /><br />
+            Endpoint:<br />
+            DELETE /api/v1/futures/order
+            </para>
             </summary>
             <param name="orderId">Order id, either this or clientOrderId should be provided</param>
             <param name="clientOrderId">Client order id, either this or orderId should be provided</param>
@@ -2702,7 +3042,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiTrading.CancelAllOrdersAsync(System.String,Toobit.Net.Enums.OrderSide,System.Threading.CancellationToken)">
             <summary>
             Cancel all orders matching the parameters
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#cancel-orders-trade" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#cancel-orders-trade" /><br />
+            Endpoint:<br />
+            DELETE /api/v1/futures/batchOrders
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="side">Order side</param>
@@ -2711,7 +3056,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiTrading.CancelMultipleOrdersAsync(System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)">
             <summary>
             Cancel multiple orders by id. If successful no result is returned in the data, if unsuccessful an error is returned in the data
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#cancel-orders-trade" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#cancel-orders-trade" /><br />
+            Endpoint:<br />
+            DELETE /api/v1/futures/cancelOrderByIds
+            </para>
             </summary>
             <param name="orderIds">Ids of orders to cancel</param>
             <param name="ct">Cancellation token</param>
@@ -2719,7 +3069,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiTrading.GetOpenOrdersAsync(System.String,System.Nullable{System.Int64},System.Nullable{Toobit.Net.Enums.FuturesOrderType},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get open orders
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#query-current-open-order-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#query-current-open-order-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/futures/openOrders
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="orderId">Filter by order id</param>
@@ -2730,7 +3085,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiTrading.GetPositionsAsync(System.String,System.Nullable{Toobit.Net.Enums.PositionSide},System.Threading.CancellationToken)">
             <summary>
             Get positions
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#query-position-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#query-position-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/futures/positions
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="positionSide">Filter by position side</param>
@@ -2739,7 +3099,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiTrading.SetTradingStopAsync(System.String,Toobit.Net.Enums.PositionSide,System.Nullable{System.Decimal},System.Nullable{System.Decimal},System.Nullable{Toobit.Net.Enums.TriggerType},System.Nullable{Toobit.Net.Enums.TriggerType},System.Threading.CancellationToken)">
             <summary>
             Set take profit / stop loss
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#set-trading-stop" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#set-trading-stop" /><br />
+            Endpoint:<br />
+            POST /api/v1/futures/position/trading-stop
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="positionSide">Position side</param>
@@ -2752,7 +3117,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiTrading.GetOrderHistoryAsync(System.String,System.Nullable{System.Int64},System.Nullable{Toobit.Net.Enums.FuturesOrderType},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get order history
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#query-history-orders-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#query-history-orders-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/futures/historyOrders
+            </para>
             </summary>
             <param name="symbol">Filter by symbol, for example `ETH-SWAP-USDT`</param>
             <param name="toId">Return orders before this id</param>
@@ -2765,7 +3135,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiTrading.GetUserTradesAsync(System.String,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get user trades
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#account-trade-list-user_data" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#account-trade-list-user_data" /><br />
+            Endpoint:<br />
+            GET /api/v1/futures/userTrades
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
             <param name="fromId">Return results after this id</param>
@@ -2783,7 +3158,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitSocketClientUsdtFuturesApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitTradeUpdate[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live trade updates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#latest-contract-price-stream" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#latest-contract-price-stream" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: trade)
+            </para>
             </summary>
             <param name="symbol">Symbol to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2793,7 +3173,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitSocketClientUsdtFuturesApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitTradeUpdate[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live trade updates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#latest-contract-price-stream" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#latest-contract-price-stream" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: trade)
+            </para>
             </summary>
             <param name="symbols">Symbols to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2803,7 +3188,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitSocketClientUsdtFuturesApi.SubscribeToKlineUpdatesAsync(System.String,Toobit.Net.Enums.KlineInterval,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitKlineUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live kline/candlestick updates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#kline-candlestick-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#kline-candlestick-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: kline)
+            </para>
             </summary>
             <param name="symbol">Symbol to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2814,7 +3204,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitSocketClientUsdtFuturesApi.SubscribeToKlineUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},Toobit.Net.Enums.KlineInterval,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitKlineUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live kline/candlestick updates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#kline-candlestick-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#kline-candlestick-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: kline)
+            </para>
             </summary>
             <param name="symbols">Symbols to subscribe</param>
             <param name="interval">Kline interval</param>
@@ -2825,7 +3220,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitSocketClientUsdtFuturesApi.SubscribeToPartialOrderBookUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitOrderBookUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live price ticker updates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#partial-book-depth-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#partial-book-depth-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: depth)
+            </para>
             </summary>
             <param name="symbol">Symbol to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2835,7 +3235,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitSocketClientUsdtFuturesApi.SubscribeToPartialOrderBookUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitOrderBookUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live price ticker updates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#partial-book-depth-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#partial-book-depth-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: depth)
+            </para>
             </summary>
             <param name="symbols">Symbols to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2845,7 +3250,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitSocketClientUsdtFuturesApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitOrderBookUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live price ticker updates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#diff-book-depth-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#diff-book-depth-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: diffDepth)
+            </para>
             </summary>
             <param name="symbol">Symbol to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2855,7 +3265,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitSocketClientUsdtFuturesApi.SubscribeToOrderBookUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitOrderBookUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live price ticker updates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#diff-book-depth-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#diff-book-depth-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: diffDepth)
+            </para>
             </summary>
             <param name="symbols">Symbols to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2865,7 +3280,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitSocketClientUsdtFuturesApi.SubscribeToTickerUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitTickerUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live price ticker updates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#individual-symbol-ticker-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#individual-symbol-ticker-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: realtimes)
+            </para>
             </summary>
             <param name="symbol">Symbol to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2875,7 +3295,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitSocketClientUsdtFuturesApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitTickerUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live price ticker updates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#individual-symbol-ticker-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#individual-symbol-ticker-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: realtimes)
+            </para>
             </summary>
             <param name="symbols">Symbols to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2885,7 +3310,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitSocketClientUsdtFuturesApi.SubscribeToIndexPriceUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitIndexUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live index price updates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-index-price-2" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-index-price-2" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: index)
+            </para>
             </summary>
             <param name="symbol">Symbol to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2895,7 +3325,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitSocketClientUsdtFuturesApi.SubscribeToIndexPriceUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitIndexUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live index price updates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-index-price-2" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-index-price-2" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /quote/ws/v1 (topic: index)
+            </para>
             </summary>
             <param name="symbols">Symbols to subscribe</param>
             <param name="onMessage">The event handler for the received data</param>
@@ -2905,7 +3340,12 @@
         <member name="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitSocketClientUsdtFuturesApi.SubscribeToUserDataUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitAccountUpdate}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitFuturesOrderUpdate[]}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitPositionUpdate[]}},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{Toobit.Net.Objects.Models.ToobitUserTradeUpdate[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to user data updates
-            <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#user-data-streams" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#user-data-streams" /><br />
+            Endpoint:<br />
+            SUBSCRIBE /api/v1/ws/{listenKey}
+            </para>
             </summary>
             <param name="listenKey">Listen key retrieved by the <see cref="M:Toobit.Net.Interfaces.Clients.UsdtFuturesApi.IToobitRestClientUsdtFuturesApiAccount.StartUserStreamAsync(System.Threading.CancellationToken)">StartUserStreamAsync</see> method</param>
             <param name="onAccountMessage">Event handler for account and balance updates</param>

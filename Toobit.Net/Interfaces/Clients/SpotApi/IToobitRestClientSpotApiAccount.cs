@@ -14,14 +14,24 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
     {
         /// <summary>
         /// Get account balances
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#account-information-user_data" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#account-information-user_data" /><br />
+        /// Endpoint:<br />
+        /// GET /api/v1/account
+        /// </para>
         /// </summary>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<ToobitUserBalance>> GetBalancesAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Withdraw funds
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#withdraw-user_data" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#withdraw-user_data" /><br />
+        /// Endpoint:<br />
+        /// POST /api/v1/account/withdraw
+        /// </para>
         /// </summary>
         /// <param name="asset">The asset, for example `ETH`</param>
         /// <param name="address">Address to withdraw to</param>
@@ -37,7 +47,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Get withdrawal history
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#withdrawal-records-user_data" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#withdrawal-records-user_data" /><br />
+        /// Endpoint:<br />
+        /// GET /api/v1/account/withdrawOrders
+        /// </para>
         /// </summary>
         /// <param name="asset">Filter by asset, for example `ETH`</param>
         /// <param name="fromId">Return results after this id</param>
@@ -50,7 +65,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Get deposit address
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#deposit-address-user_data" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#deposit-address-user_data" /><br />
+        /// Endpoint:<br />
+        /// GET /api/v1/account/deposit/address
+        /// </para>
         /// </summary>
         /// <param name="asset">The asset, for example `ETH`</param>
         /// <param name="network">The network</param>
@@ -59,7 +79,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Get deposit history
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#deposit-history-user_data" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#deposit-history-user_data" /><br />
+        /// Endpoint:<br />
+        /// GET /api/v1/account/depositOrders
+        /// </para>
         /// </summary>
         /// <param name="asset">Filter by asset, for example `ETH`</param>
         /// <param name="fromId">Return results after this id</param>
@@ -71,7 +96,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Transfer asset. Can be between account types or between parent and sub account. If transferring between Spot and Futures for the current account the fromUid and toUid should be set to the current account id which can be retrieved with GetBalances
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#account-transfer" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#account-transfer" /><br />
+        /// Endpoint:<br />
+        /// POST /api/v1/subAccount/transfer
+        /// </para>
         /// </summary>
         /// <param name="fromUid">From user id</param>
         /// <param name="toUid">To user id</param>
@@ -84,7 +114,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Get transaction history
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#get-account-transaction-history-list-user_data" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#get-account-transaction-history-list-user_data" /><br />
+        /// Endpoint:<br />
+        /// GET /api/v1/account/balanceFlow
+        /// </para>
         /// </summary>
         /// <param name="accountType">Account type</param>
         /// <param name="asset">Filter by asset, for example `ETH`</param>
@@ -98,7 +133,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         
         /// <summary>
         /// Get sub account list
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#query-sub-account-user_data" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#query-sub-account-user_data" /><br />
+        /// Endpoint:<br />
+        /// GET /api/v1/account/checkApiKey
+        /// </para>
         /// </summary>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<ToobitSubAccount[]>> GetSubAccountsAsync(CancellationToken ct = default);
@@ -106,14 +146,24 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <summary>
         /// Starts a user stream by requesting a listen key. This listen key can be used in subsequent requests to SubscribeToUserDataUpdates. The stream will close after 60 minutes unless a keep alive is send.
         /// <para>Note that the listenkey is shared between the Spot and UsdtFutures API</para>
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /><br />
+        /// Endpoint:<br />
+        /// POST /api/v1/userDataStream
+        /// </para>
         /// </summary>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<string>> StartUserStreamAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Sends a keep alive for the current user stream listen key to keep the stream from closing. Stream auto closes after 60 minutes if no keep alive is send. 30 minute interval for keep alive is recommended.
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /><br />
+        /// Endpoint:<br />
+        /// PUT /api/v1/userDataStream
+        /// </para>
         /// </summary>
         /// <param name="listenKey">The listen key to keep alive</param>
         /// <param name="ct">Cancellation token</param>
@@ -121,7 +171,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Stops the current user stream
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /><br />
+        /// Endpoint:<br />
+        /// DELETE /api/v1/userDataStream
+        /// </para>
         /// </summary>
         /// <param name="listenKey">The listen key to stop</param>
         /// <param name="ct">Cancellation token</param>
