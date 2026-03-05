@@ -17,7 +17,12 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
     {
         /// <summary>
         /// Subscribe to live trade updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#latest-contract-price-stream" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#latest-contract-price-stream" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: trade)
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -27,7 +32,12 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
 
         /// <summary>
         /// Subscribe to live trade updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#latest-contract-price-stream" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#latest-contract-price-stream" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: trade)
+        /// </para>
         /// </summary>
         /// <param name="symbols">Symbols to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -57,7 +67,12 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
 
         /// <summary>
         /// Subscribe to live kline/candlestick updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#kline-candlestick-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#kline-candlestick-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: kline)
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -67,7 +82,12 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         Task<CallResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(string symbol, KlineInterval interval, Action<DataEvent<ToobitKlineUpdate>> onMessage, CancellationToken ct = default);
         /// <summary>
         /// Subscribe to live kline/candlestick updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#kline-candlestick-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#kline-candlestick-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: kline)
+        /// </para>
         /// </summary>
         /// <param name="symbols">Symbols to subscribe</param>
         /// <param name="interval">Kline interval</param>
@@ -78,7 +98,12 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
 
         /// <summary>
         /// Subscribe to live price ticker updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#partial-book-depth-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#partial-book-depth-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: depth)
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -87,7 +112,12 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         Task<CallResult<UpdateSubscription>> SubscribeToPartialOrderBookUpdatesAsync(string symbol, Action<DataEvent<ToobitOrderBookUpdate>> onMessage, CancellationToken ct = default);
         /// <summary>
         /// Subscribe to live price ticker updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#partial-book-depth-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#partial-book-depth-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: depth)
+        /// </para>
         /// </summary>
         /// <param name="symbols">Symbols to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -97,7 +127,12 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
 
         /// <summary>
         /// Subscribe to live price ticker updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#diff-book-depth-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#diff-book-depth-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: diffDepth)
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -106,7 +141,12 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, Action<DataEvent<ToobitOrderBookUpdate>> onMessage, CancellationToken ct = default);
         /// <summary>
         /// Subscribe to live price ticker updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#diff-book-depth-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#diff-book-depth-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: diffDepth)
+        /// </para>
         /// </summary>
         /// <param name="symbols">Symbols to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -116,7 +156,12 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
 
         /// <summary>
         /// Subscribe to live price ticker updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#individual-symbol-ticker-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#individual-symbol-ticker-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: realtimes)
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -125,7 +170,12 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(string symbol, Action<DataEvent<ToobitTickerUpdate>> onMessage, CancellationToken ct = default);
         /// <summary>
         /// Subscribe to live price ticker updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#individual-symbol-ticker-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#individual-symbol-ticker-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: realtimes)
+        /// </para>
         /// </summary>
         /// <param name="symbols">Symbols to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -134,7 +184,12 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitTickerUpdate>> onMessage, CancellationToken ct = default);
         /// <summary>
         /// Subscribe to live index price updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-index-price-2" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-index-price-2" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: index)
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -143,7 +198,12 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         Task<CallResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(string symbol, Action<DataEvent<ToobitIndexUpdate>> onMessage, CancellationToken ct = default);
         /// <summary>
         /// Subscribe to live index price updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-index-price-2" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-index-price-2" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: index)
+        /// </para>
         /// </summary>
         /// <param name="symbols">Symbols to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -153,7 +213,12 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
 
         /// <summary>
         /// Subscribe to user data updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#user-data-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#user-data-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /api/v1/ws/{listenKey}
+        /// </para>
         /// </summary>
         /// <param name="listenKey">Listen key retrieved by the <see cref="IToobitRestClientUsdtFuturesApiAccount.StartUserStreamAsync(CancellationToken)">StartUserStreamAsync</see> method</param>
         /// <param name="onAccountMessage">Event handler for account and balance updates</param>

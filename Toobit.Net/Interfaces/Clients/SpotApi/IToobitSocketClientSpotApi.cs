@@ -17,7 +17,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
     {
         /// <summary>
         /// Subscribe to live trade updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#trade-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#trade-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: trade)
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -27,7 +32,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Subscribe to live trade updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#trade-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#trade-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: trade)
+        /// </para>
         /// </summary>
         /// <param name="symbols">Symbols to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -37,7 +47,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Subscribe to live price ticker updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#individual-symbol-ticker-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#individual-symbol-ticker-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: realtimes)
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -47,7 +62,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Subscribe to live price ticker updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#individual-symbol-ticker-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#individual-symbol-ticker-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: realtimes)
+        /// </para>
         /// </summary>
         /// <param name="symbols">Symbols to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -57,7 +77,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Subscribe to live kline/candlestick updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: kline)
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -68,7 +93,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Subscribe to live kline/candlestick updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: kline)
+        /// </para>
         /// </summary>
         /// <param name="symbols">Symbols to subscribe</param>
         /// <param name="interval">Kline interval</param>
@@ -79,7 +109,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Subscribe to live price ticker updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#partial-book-depth-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#partial-book-depth-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: depth)
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -89,7 +124,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Subscribe to live price ticker updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#partial-book-depth-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#partial-book-depth-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: depth)
+        /// </para>
         /// </summary>
         /// <param name="symbols">Symbols to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -99,7 +139,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Subscribe to live price ticker updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#diff-depth-stream" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#diff-depth-stream" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: diffDepth)
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -109,7 +154,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Subscribe to live price ticker updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#diff-depth-stream" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#diff-depth-stream" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /quote/ws/v1 (topic: diffDepth)
+        /// </para>
         /// </summary>
         /// <param name="symbols">Symbols to subscribe</param>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -119,7 +169,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Subscribe to user data updates
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#user-data-streams" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#user-data-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /api/v1/ws/{listenKey}
+        /// </para>
         /// </summary>
         /// <param name="listenKey">Listen key retrieved by the <see cref="IToobitRestClientSpotApiAccount.StartUserStreamAsync(CancellationToken)">StartUserStreamAsync</see> method</param>
         /// <param name="onAccountMessage">Event handler for account and balance updates</param>

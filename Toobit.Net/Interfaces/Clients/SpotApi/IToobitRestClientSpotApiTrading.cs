@@ -15,7 +15,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
     {
         /// <summary>
         /// Place a test order, only validates the request, doesn't place the order
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#test-new-order-trade" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#test-new-order-trade" /><br />
+        /// Endpoint:<br />
+        /// POST /api/v1/spot/orderTest
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol name, for example 'ETHUSDT'</param>
         /// <param name="orderSide">Order side</param>
@@ -29,7 +34,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Place a new order
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#new-order-trade" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#new-order-trade" /><br />
+        /// Endpoint:<br />
+        /// POST /api/v1/spot/order
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol name, for example 'ETHUSDT'</param>
         /// <param name="orderSide">Order side</param>
@@ -43,7 +53,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Place multiple orders. Orders have to be for the same symbol.
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#place-multiple-orders-trade" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#place-multiple-orders-trade" /><br />
+        /// Endpoint:<br />
+        /// POST /api/v1/spot/batchOrders
+        /// </para>
         /// </summary>
         /// <param name="orders">Orders to place</param>
         /// <param name="ct">Cancellation token</param>
@@ -51,7 +66,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Cancel an open order
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#cancel-order-trade" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#cancel-order-trade" /><br />
+        /// Endpoint:<br />
+        /// DELETE /api/v1/spot/order
+        /// </para>
         /// </summary>
         /// <param name="orderId">Id of order to cancel. Either this or clientOrderId should be provided</param>
         /// <param name="clientOrderId">Client order id of order to cancel. Either this or orderId should be provided</param>
@@ -60,7 +80,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Cancel all orders matching the parameters
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#cancel-all-open-orders-trade" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#cancel-all-open-orders-trade" /><br />
+        /// Endpoint:<br />
+        /// DELETE /api/v1/spot/openOrders
+        /// </para>
         /// </summary>
         /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
         /// <param name="side">Filter by order side</param>
@@ -69,7 +94,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Cancel multiple orders by id. If successful no result is returned in the data, if unsuccessful an error is returned in the data
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#cancel-multiple-orders-trade" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#cancel-multiple-orders-trade" /><br />
+        /// Endpoint:<br />
+        /// DELETE /api/v1/spot/cancelOrderByIds
+        /// </para>
         /// </summary>
         /// <param name="orderIds">Ids of the orders to cancel</param>
         /// <param name="ct">Cancellation token</param>
@@ -77,7 +107,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Get order info
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#query-order-user_data" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#query-order-user_data" /><br />
+        /// Endpoint:<br />
+        /// GET /api/v1/spot/order
+        /// </para>
         /// </summary>
         /// <param name="orderId">Id of order to cancel, either this or clientOrderId should be provided</param>
         /// <param name="clientOrderId">Client order id of the order to cancel, either this or orderId should be provided</param>
@@ -86,7 +121,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Get open orders
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#current-open-orders-user_data" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#current-open-orders-user_data" /><br />
+        /// Endpoint:<br />
+        /// GET /api/v1/spot/openOrders
+        /// </para>
         /// </summary>
         /// <param name="orderId">Filter by order id</param>
         /// <param name="symbol">Filter by symbol</param>
@@ -96,7 +136,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Get orders
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#all-orders-user_data" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#all-orders-user_data" /><br />
+        /// Endpoint:<br />
+        /// GET /api/v1/spot/tradeOrders
+        /// </para>
         /// </summary>
         /// <param name="orderId">Filter by order id</param>
         /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
@@ -108,7 +153,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
 
         /// <summary>
         /// Get user trades
-        /// <para><a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#account-trade-list-user_data" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#account-trade-list-user_data" /><br />
+        /// Endpoint:<br />
+        /// GET /api/v1/account/trades
+        /// </para>
         /// </summary>
         /// <param name="symbol">The symbol, for example `ETHUSDT`</param>
         /// <param name="fromId">Filter by min id</param>
