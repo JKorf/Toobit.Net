@@ -21,8 +21,8 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// POST /api/v1/futures/marginType
         /// </para>
         /// </summary>
-        /// <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
-        /// <param name="marginType">Type of margin</param>
+        /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
+        /// <param name="marginType">["<c>marginType</c>"] Type of margin</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<ToobitMarginType>> SetMarginTypeAsync(string symbol, MarginType marginType, CancellationToken ct = default);
 
@@ -35,8 +35,8 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// POST /api/v1/futures/leverage
         /// </para>
         /// </summary>
-        /// <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
-        /// <param name="leverage">New leverage value</param>
+        /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
+        /// <param name="leverage">["<c>leverage</c>"] New leverage value</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<ToobitLeverage>> SetLeverageAsync(string symbol, int leverage, CancellationToken ct = default);
 
@@ -49,7 +49,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// GET /api/v1/futures/accountLeverage
         /// </para>
         /// </summary>
-        /// <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
+        /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<ToobitLeverageInfo>> GetLeverageInfoAsync(string symbol, CancellationToken ct = default);
 
@@ -74,9 +74,9 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// POST /api/v1/futures/positionMargin
         /// </para>
         /// </summary>
-        /// <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
-        /// <param name="positionSide">Position side</param>
-        /// <param name="quantity">Quantity of margin to adjust, positive to add, negative to remove</param>
+        /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
+        /// <param name="positionSide">["<c>side</c>"] Position side</param>
+        /// <param name="quantity">["<c>amount</c>"] Quantity of margin to adjust, positive to add, negative to remove</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<ToobitPositionMargin>> SetPositionMarginAsync(string symbol, PositionSide positionSide, decimal quantity, CancellationToken ct = default);
 
@@ -89,13 +89,13 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// GET /api/v1/futures/balanceFlow
         /// </para>
         /// </summary>
-        /// <param name="asset">The asset, for example `ETH`</param>
-        /// <param name="flowType">Flow type</param>
-        /// <param name="fromId">Return results after this id</param>
-        /// <param name="endId">Return results before this id</param>
-        /// <param name="startTime">Filter by start time</param>
-        /// <param name="endTime">Filter by end time</param>
-        /// <param name="limit">Max number of results</param>
+        /// <param name="asset">["<c>symbol</c>"] The asset, for example `ETH`</param>
+        /// <param name="flowType">["<c>flowType</c>"] Flow type</param>
+        /// <param name="fromId">["<c>fromId</c>"] Return results after this id</param>
+        /// <param name="endId">["<c>endId</c>"] Return results before this id</param>
+        /// <param name="startTime">["<c>startTime</c>"] Filter by start time</param>
+        /// <param name="endTime">["<c>endTime</c>"] Filter by end time</param>
+        /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<ToobitFuturesTransaction[]>> GetTransactionHistoryAsync(string? asset = null, FlowType? flowType = null, long? fromId = null, long? endId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
 
@@ -108,7 +108,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// GET /api/v1/futures/commissionRate
         /// </para>
         /// </summary>
-        /// <param name="symbol">The symbol, for example `ETH-SWAP-USDT`</param>
+        /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<ToobitFeeRates>> GetFeesAsync(string symbol, CancellationToken ct = default);
 
@@ -134,7 +134,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// PUT /api/v1/userDataStream
         /// </para>
         /// </summary>
-        /// <param name="listenKey">The listen key to keep alive</param>
+        /// <param name="listenKey">["<c>listenKey</c>"] The listen key to keep alive</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult> KeepAliveUserStreamAsync(string listenKey, CancellationToken ct = default);
 
@@ -147,7 +147,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// DELETE /api/v1/userDataStream
         /// </para>
         /// </summary>
-        /// <param name="listenKey">The listen key to stop</param>
+        /// <param name="listenKey">["<c>listenKey</c>"] The listen key to stop</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult> StopUserStreamAsync(string listenKey, CancellationToken ct = default);
     }

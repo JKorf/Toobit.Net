@@ -33,15 +33,15 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// POST /api/v1/account/withdraw
         /// </para>
         /// </summary>
-        /// <param name="asset">The asset, for example `ETH`</param>
-        /// <param name="address">Address to withdraw to</param>
-        /// <param name="quantity">Quantity to withdraw</param>
-        /// <param name="network">Network to use</param>
-        /// <param name="tag">Tag</param>
-        /// <param name="vaspCode">Vasp code</param>
-        /// <param name="targetPersonFirstName">Target person first name</param>
-        /// <param name="targetPersonLastName">Target person last name</param>
-        /// <param name="clientOrderId">Client order id</param>
+        /// <param name="asset">["<c>coin</c>"] The asset, for example `ETH`</param>
+        /// <param name="address">["<c>address</c>"] Address to withdraw to</param>
+        /// <param name="quantity">["<c>quantity</c>"] Quantity to withdraw</param>
+        /// <param name="network">["<c>chainType</c>"] Network to use</param>
+        /// <param name="tag">["<c>addressExt</c>"] Tag</param>
+        /// <param name="vaspCode">["<c>vaspCode</c>"] Vasp code</param>
+        /// <param name="targetPersonFirstName">["<c>targetPersonFirstName</c>"] Target person first name</param>
+        /// <param name="targetPersonLastName">["<c>targetPersonLastName</c>"] Target person last name</param>
+        /// <param name="clientOrderId">["<c>clientOrderId</c>"] Client order id</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<ToobitWithdrawResult>> WithdrawAsync(string asset, string address, decimal quantity, string? network = null, string? tag = null, string? vaspCode = null, string? targetPersonFirstName = null, string? targetPersonLastName = null, string? clientOrderId = null, CancellationToken ct = default);
 
@@ -54,12 +54,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// GET /api/v1/account/withdrawOrders
         /// </para>
         /// </summary>
-        /// <param name="asset">Filter by asset, for example `ETH`</param>
-        /// <param name="fromId">Return results after this id</param>
-        /// <param name="withdrawOrderId">Filter by withdraw order id</param>
-        /// <param name="startTime">Filter by start time</param>
-        /// <param name="endTime">Filter by end time</param>
-        /// <param name="limit">Max number of results</param>
+        /// <param name="asset">["<c>coin</c>"] Filter by asset, for example `ETH`</param>
+        /// <param name="fromId">["<c>fromId</c>"] Return results after this id</param>
+        /// <param name="withdrawOrderId">["<c>withdrawOrderId</c>"] Filter by withdraw order id</param>
+        /// <param name="startTime">["<c>startTime</c>"] Filter by start time</param>
+        /// <param name="endTime">["<c>endTime</c>"] Filter by end time</param>
+        /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<ToobitWithdrawal[]>> GetWithdrawalsAsync(string? asset = null, string? fromId = null, long? withdrawOrderId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
 
@@ -72,8 +72,8 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// GET /api/v1/account/deposit/address
         /// </para>
         /// </summary>
-        /// <param name="asset">The asset, for example `ETH`</param>
-        /// <param name="network">The network</param>
+        /// <param name="asset">["<c>coin</c>"] The asset, for example `ETH`</param>
+        /// <param name="network">["<c>chainType</c>"] The network</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<ToobitDepositAddress>> GetDepositAddressAsync(string asset, string network, CancellationToken ct = default);
 
@@ -86,11 +86,11 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// GET /api/v1/account/depositOrders
         /// </para>
         /// </summary>
-        /// <param name="asset">Filter by asset, for example `ETH`</param>
-        /// <param name="fromId">Return results after this id</param>
-        /// <param name="startTime">Filter by start time</param>
-        /// <param name="endTime">Filter by end time</param>
-        /// <param name="limit">Max number of results</param>
+        /// <param name="asset">["<c>coin</c>"] Filter by asset, for example `ETH`</param>
+        /// <param name="fromId">["<c>fromId</c>"] Return results after this id</param>
+        /// <param name="startTime">["<c>startTime</c>"] Filter by start time</param>
+        /// <param name="endTime">["<c>endTime</c>"] Filter by end time</param>
+        /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<ToobitDeposit[]>> GetDepositsAsync(string? asset = null, string? fromId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
 
@@ -103,12 +103,12 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// POST /api/v1/subAccount/transfer
         /// </para>
         /// </summary>
-        /// <param name="fromUid">From user id</param>
-        /// <param name="toUid">To user id</param>
-        /// <param name="fromAccountType">From account type</param>
-        /// <param name="toAccountType">To account type</param>
-        /// <param name="asset">The asset, for example `ETH`</param>
-        /// <param name="quantity">Quantity</param>
+        /// <param name="fromUid">["<c>fromUid</c>"] From user id</param>
+        /// <param name="toUid">["<c>toUid</c>"] To user id</param>
+        /// <param name="fromAccountType">["<c>fromAccountType</c>"] From account type</param>
+        /// <param name="toAccountType">["<c>toAccountType</c>"] To account type</param>
+        /// <param name="asset">["<c>asset</c>"] The asset, for example `ETH`</param>
+        /// <param name="quantity">["<c>quantity</c>"] Quantity</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult> TransferAsync(long fromUid, long toUid, AccountType fromAccountType, AccountType toAccountType, string asset, decimal quantity, CancellationToken ct = default);
 
@@ -121,13 +121,13 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// GET /api/v1/account/balanceFlow
         /// </para>
         /// </summary>
-        /// <param name="accountType">Account type</param>
-        /// <param name="asset">Filter by asset, for example `ETH`</param>
-        /// <param name="flowType">Flow type</param>
-        /// <param name="fromId">Return results after this id</param>
-        /// <param name="startTime">Filter by start time</param>
-        /// <param name="endTime">Filter by end time</param>
-        /// <param name="limit">Max number of results</param>
+        /// <param name="accountType">["<c>accountType</c>"] Account type</param>
+        /// <param name="asset">["<c>coin</c>"] Filter by asset, for example `ETH`</param>
+        /// <param name="flowType">["<c>flowType</c>"] Flow type</param>
+        /// <param name="fromId">["<c>fromId</c>"] Return results after this id</param>
+        /// <param name="startTime">["<c>startTime</c>"] Filter by start time</param>
+        /// <param name="endTime">["<c>endTime</c>"] Filter by end time</param>
+        /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<ToobitTransaction[]>> GetTransactionHistoryAsync(int? accountType = null, string? asset = null, int? flowType = null, long? fromId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
         
@@ -165,7 +165,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// PUT /api/v1/userDataStream
         /// </para>
         /// </summary>
-        /// <param name="listenKey">The listen key to keep alive</param>
+        /// <param name="listenKey">["<c>listenKey</c>"] The listen key to keep alive</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult> KeepAliveUserStreamAsync(string listenKey, CancellationToken ct = default);
 
@@ -178,7 +178,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// DELETE /api/v1/userDataStream
         /// </para>
         /// </summary>
-        /// <param name="listenKey">The listen key to stop</param>
+        /// <param name="listenKey">["<c>listenKey</c>"] The listen key to stop</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult> StopUserStreamAsync(string listenKey, CancellationToken ct = default);
     }
