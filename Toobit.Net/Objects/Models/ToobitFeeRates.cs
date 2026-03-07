@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Toobit.Net.Objects.Models
 {
@@ -8,22 +8,22 @@ namespace Toobit.Net.Objects.Models
     public record ToobitFeeRates
     {
         /// <summary>
-        /// Fee rate for maker opening positions
+        /// ["<c>openMakerFee</c>"] Fee rate for maker opening positions
         /// </summary>
         [JsonPropertyName("openMakerFee")]
         public decimal OpenMakerFee { get; set; }
         /// <summary>
-        /// Fee rate for taker opening positions
+        /// ["<c>openTakerFee</c>"] Fee rate for taker opening positions
         /// </summary>
         [JsonPropertyName("openTakerFee")]
         public decimal OpenTakerFee { get; set; }
         /// <summary>
-        /// Fee rate for maker closing positions
+        /// ["<c>closeMakerFee</c>"] Fee rate for maker closing positions
         /// </summary>
         [JsonPropertyName("closeMakerFee")]
         public decimal CloseMakerFee { get; set; }
         /// <summary>
-        /// Fee rate for taker closing positions
+        /// ["<c>closeTakerFee</c>"] Fee rate for taker closing positions
         /// </summary>
         [JsonPropertyName("closeTakerFee")]
         public decimal CloseTakerFee { get; set; }

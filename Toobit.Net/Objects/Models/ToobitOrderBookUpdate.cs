@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 
 namespace Toobit.Net.Objects.Models
@@ -9,22 +9,22 @@ namespace Toobit.Net.Objects.Models
     public record ToobitOrderBookUpdate
     {
         /// <summary>
-        /// Symbol
+        /// ["<c>s</c>"] Symbol
         /// </summary>
         [JsonPropertyName("s")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Timestamp
+        /// ["<c>t</c>"] Timestamp
         /// </summary>
         [JsonPropertyName("t")]
         public DateTime Timestamp { get; set; }
         /// <summary>
-        /// Bids list
+        /// ["<c>b</c>"] Bids list
         /// </summary>
         [JsonPropertyName("b")]
         public ToobitOrderBookEntry[] Bids { get; set; } = [];
         /// <summary>
-        /// Asks list
+        /// ["<c>a</c>"] Asks list
         /// </summary>
         [JsonPropertyName("a")]
         public ToobitOrderBookEntry[] Asks { get; set; } = [];

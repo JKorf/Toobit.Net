@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Toobit.Net.Objects.Models
 {
@@ -8,32 +8,32 @@ namespace Toobit.Net.Objects.Models
     public record ToobitFuturesBalance
     {
         /// <summary>
-        /// Asset
+        /// ["<c>asset</c>"] Asset
         /// </summary>
         [JsonPropertyName("asset")]
         public string Asset { get; set; } = string.Empty;
         /// <summary>
-        /// Total balance
+        /// ["<c>balance</c>"] Total balance
         /// </summary>
         [JsonPropertyName("balance")]
         public decimal TotalBalance { get; set; }
         /// <summary>
-        /// Available balance Include unrealized profit and loss
+        /// ["<c>availableBalance</c>"] Available balance Include unrealized profit and loss
         /// </summary>
         [JsonPropertyName("availableBalance")]
         public decimal AvailableBalance { get; set; }
         /// <summary>
-        /// Position margin
+        /// ["<c>positionMargin</c>"] Position margin
         /// </summary>
         [JsonPropertyName("positionMargin")]
         public decimal PositionMargin { get; set; }
         /// <summary>
-        /// Order margin
+        /// ["<c>orderMargin</c>"] Order margin
         /// </summary>
         [JsonPropertyName("orderMargin")]
         public decimal OrderMargin { get; set; }
         /// <summary>
-        /// Cross unrealized profit and loss
+        /// ["<c>crossUnRealizedPnl</c>"] Cross unrealized profit and loss
         /// </summary>
         [JsonPropertyName("crossUnRealizedPnl")]
         public decimal CrossUnrealizedPnl { get; set; }

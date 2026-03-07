@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using Toobit.Net.Enums;
 
@@ -10,67 +10,67 @@ namespace Toobit.Net.Objects.Models
     public record ToobitFuturesTransaction
     {
         /// <summary>
-        /// Id
+        /// ["<c>id</c>"] Id
         /// </summary>
         [JsonPropertyName("id")]
         public long Id { get; set; }
         /// <summary>
-        /// Account id
+        /// ["<c>accountId</c>"] Account id
         /// </summary>
         [JsonPropertyName("accountId")]
         public long AccountId { get; set; }
         /// <summary>
-        /// Asset
+        /// ["<c>coin</c>"] Asset
         /// </summary>
         [JsonPropertyName("coin")]
         public string Asset { get; set; } = string.Empty;
         /// <summary>
-        /// Asset id
+        /// ["<c>coinId</c>"] Asset id
         /// </summary>
         [JsonPropertyName("coinId")]
         public string AssetId { get; set; } = string.Empty;
         /// <summary>
-        /// Asset name
+        /// ["<c>coinName</c>"] Asset name
         /// </summary>
         [JsonPropertyName("coinName")]
         public string AssetName { get; set; } = string.Empty;
         /// <summary>
-        /// Symbol
+        /// ["<c>symbol</c>"] Symbol
         /// </summary>
         [JsonPropertyName("symbol")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Symbol id
+        /// ["<c>symbolId</c>"] Symbol id
         /// </summary>
         [JsonPropertyName("symbolId")]
         public string SymbolId { get; set; } = string.Empty;
         /// <summary>
-        /// Flow type
+        /// ["<c>flowTypeValue</c>"] Flow type
         /// </summary>
         [JsonPropertyName("flowTypeValue")]
         public FlowType FlowType { get; set; }
         /// <summary>
-        /// Flow type description
+        /// ["<c>flowType</c>"] Flow type description
         /// </summary>
         [JsonPropertyName("flowType")]
         public string FlowTypeDescription { get; set; } = string.Empty;
         /// <summary>
-        /// Flow name
+        /// ["<c>flowName</c>"] Flow name
         /// </summary>
         [JsonPropertyName("flowName")]
         public string FlowName { get; set; } = string.Empty;
         /// <summary>
-        /// Change
+        /// ["<c>change</c>"] Change
         /// </summary>
         [JsonPropertyName("change")]
         public decimal Change { get; set; }
         /// <summary>
-        /// Total
+        /// ["<c>total</c>"] Total
         /// </summary>
         [JsonPropertyName("total")]
         public decimal Total { get; set; }
         /// <summary>
-        /// Create time
+        /// ["<c>created</c>"] Create time
         /// </summary>
         [JsonPropertyName("created")]
         public DateTime CreateTime { get; set; }

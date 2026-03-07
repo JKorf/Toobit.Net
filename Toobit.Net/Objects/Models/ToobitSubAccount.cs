@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Toobit.Net.Enums;
 
 namespace Toobit.Net.Objects.Models
@@ -9,22 +9,22 @@ namespace Toobit.Net.Objects.Models
     public record ToobitSubAccount
     {
         /// <summary>
-        /// Account id
+        /// ["<c>accountId</c>"] Account id
         /// </summary>
         [JsonPropertyName("accountId")]
         public string AccountId { get; set; } = string.Empty;
         /// <summary>
-        /// Nick name
+        /// ["<c>nickName</c>"] Nick name
         /// </summary>
         [JsonPropertyName("nickName")]
         public string NickName { get; set; } = string.Empty;
         /// <summary>
-        /// Account type
+        /// ["<c>accountType</c>"] Account type
         /// </summary>
         [JsonPropertyName("accountType")]
         public AccountType AccountType { get; set; }
         /// <summary>
-        /// Account index
+        /// ["<c>accountIndex</c>"] Account index
         /// </summary>
         [JsonPropertyName("accountIndex")]
         public int AccountIndex { get; set; }

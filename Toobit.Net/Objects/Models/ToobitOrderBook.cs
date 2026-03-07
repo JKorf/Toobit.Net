@@ -1,4 +1,4 @@
-﻿using CryptoExchange.Net.Converters;
+using CryptoExchange.Net.Converters;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using CryptoExchange.Net.Interfaces;
 using System;
@@ -12,17 +12,17 @@ namespace Toobit.Net.Objects.Models
     public record ToobitOrderBook
     {
         /// <summary>
-        /// Timestamp
+        /// ["<c>t</c>"] Timestamp
         /// </summary>
         [JsonPropertyName("t")]
         public DateTime Timestamp { get; set; }
         /// <summary>
-        /// Bids list
+        /// ["<c>b</c>"] Bids list
         /// </summary>
         [JsonPropertyName("b")]
         public ToobitOrderBookEntry[] Bids { get; set; } = [];
         /// <summary>
-        /// Asks list
+        /// ["<c>a</c>"] Asks list
         /// </summary>
         [JsonPropertyName("a")]
         public ToobitOrderBookEntry[] Asks { get; set; } = [];

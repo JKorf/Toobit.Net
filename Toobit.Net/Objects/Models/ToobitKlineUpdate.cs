@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 
 namespace Toobit.Net.Objects.Models
@@ -9,37 +9,37 @@ namespace Toobit.Net.Objects.Models
     public record ToobitKlineUpdate
     {
         /// <summary>
-        /// Open time
+        /// ["<c>t</c>"] Open time
         /// </summary>
         [JsonPropertyName("t")]
         public DateTime OpenTime { get; set; }
         /// <summary>
-        /// Symbol
+        /// ["<c>s</c>"] Symbol
         /// </summary>
         [JsonPropertyName("s")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Open price
+        /// ["<c>o</c>"] Open price
         /// </summary>
         [JsonPropertyName("o")]
         public decimal OpenPrice { get; set; }
         /// <summary>
-        /// High price
+        /// ["<c>h</c>"] High price
         /// </summary>
         [JsonPropertyName("h")]
         public decimal HighPrice { get; set; }
         /// <summary>
-        /// Low price
+        /// ["<c>l</c>"] Low price
         /// </summary>
         [JsonPropertyName("l")]
         public decimal LowPrice { get; set; }
         /// <summary>
-        /// Close price
+        /// ["<c>c</c>"] Close price
         /// </summary>
         [JsonPropertyName("c")]
         public decimal ClosePrice { get; set; }
         /// <summary>
-        /// Volume
+        /// ["<c>v</c>"] Volume
         /// </summary>
         [JsonPropertyName("v")]
         public decimal Volume { get; set; }

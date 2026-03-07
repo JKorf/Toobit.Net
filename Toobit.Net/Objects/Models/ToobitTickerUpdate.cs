@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Toobit.Net.Objects.Models
 {
@@ -8,52 +8,52 @@ namespace Toobit.Net.Objects.Models
     public record ToobitTickerUpdate
     {
         /// <summary>
-        /// Timestamp
+        /// ["<c>t</c>"] Timestamp
         /// </summary>
         [JsonPropertyName("t")]
         public decimal Timestamp { get; set; }
         /// <summary>
-        /// Symbol
+        /// ["<c>s</c>"] Symbol
         /// </summary>
         [JsonPropertyName("s")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Last trade price
+        /// ["<c>c</c>"] Last trade price
         /// </summary>
         [JsonPropertyName("c")]
         public decimal? LastPrice { get; set; }
         /// <summary>
-        /// Open price
+        /// ["<c>o</c>"] Open price
         /// </summary>
         [JsonPropertyName("o")]
         public decimal? OpenPrice { get; set; }
         /// <summary>
-        /// High price
+        /// ["<c>h</c>"] High price
         /// </summary>
         [JsonPropertyName("h")]
         public decimal? HighPrice { get; set; }
         /// <summary>
-        /// Low price
+        /// ["<c>l</c>"] Low price
         /// </summary>
         [JsonPropertyName("l")]
         public decimal? LowPrice { get; set; }
         /// <summary>
-        /// Volume in base asset
+        /// ["<c>v</c>"] Volume in base asset
         /// </summary>
         [JsonPropertyName("v")]
         public decimal Volume { get; set; }
         /// <summary>
-        /// Volume in quote asset
+        /// ["<c>qv</c>"] Volume in quote asset
         /// </summary>
         [JsonPropertyName("qv")]
         public decimal QuoteVolume { get; set; }
         /// <summary>
-        /// Margin
+        /// ["<c>m</c>"] Margin
         /// </summary>
         [JsonPropertyName("m")]
         public decimal Margin { get; set; }
         /// <summary>
-        /// Last trade id
+        /// ["<c>e</c>"] Last trade id
         /// </summary>
         [JsonPropertyName("e")]
         public long LastTradeId { get; set; }

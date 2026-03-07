@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using Toobit.Net.Enums;
 
@@ -10,32 +10,32 @@ namespace Toobit.Net.Objects.Models
     public record ToobitOrder
     {
         /// <summary>
-        /// Account id
+        /// ["<c>accountId</c>"] Account id
         /// </summary>
         [JsonPropertyName("accountId")]
         public long AccountId { get; set; }
         /// <summary>
-        /// Symbol
+        /// ["<c>symbol</c>"] Symbol
         /// </summary>
         [JsonPropertyName("symbol")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Symbol name
+        /// ["<c>symbolName</c>"] Symbol name
         /// </summary>
         [JsonPropertyName("symbolName")]
         public string SymbolName { get; set; } = string.Empty;
         /// <summary>
-        /// Client order id
+        /// ["<c>clientOrderId</c>"] Client order id
         /// </summary>
         [JsonPropertyName("clientOrderId")]
         public string ClientOrderId { get; set; } = string.Empty;
         /// <summary>
-        /// Order id
+        /// ["<c>orderId</c>"] Order id
         /// </summary>
         [JsonPropertyName("orderId")]
         public long OrderId { get; set; }
         /// <summary>
-        /// Price
+        /// ["<c>price</c>"] Price
         /// </summary>
         [JsonPropertyName("price")]
         public decimal Price { get; set; }
@@ -55,57 +55,57 @@ namespace Toobit.Net.Objects.Models
         }
 
         /// <summary>
-        /// Quantity
+        /// ["<c>origQty</c>"] Quantity
         /// </summary>
         [JsonPropertyName("origQty")]
         public decimal Quantity { get; set; }
         /// <summary>
-        /// Quantity filled
+        /// ["<c>executedQty</c>"] Quantity filled
         /// </summary>
         [JsonPropertyName("executedQty")]
         public decimal QuantityFilled { get; set; }
         /// <summary>
-        /// Quote quantity filled
+        /// ["<c>cumulativeQuoteQty</c>"] Quote quantity filled
         /// </summary>
         [JsonPropertyName("cumulativeQuoteQty")]
         public decimal QuoteQuantityFilled { get; set; }
         /// <summary>
-        /// Status
+        /// ["<c>status</c>"] Status
         /// </summary>
         [JsonPropertyName("status")]
         public OrderStatus Status { get; set; }
         /// <summary>
-        /// Time in force
+        /// ["<c>timeInForce</c>"] Time in force
         /// </summary>
         [JsonPropertyName("timeInForce")]
         public TimeInForce TimeInForce { get; set; }
         /// <summary>
-        /// Order type
+        /// ["<c>type</c>"] Order type
         /// </summary>
         [JsonPropertyName("type")]
         public OrderType OrderType { get; set; }
         /// <summary>
-        /// Order side
+        /// ["<c>side</c>"] Order side
         /// </summary>
         [JsonPropertyName("side")]
         public OrderSide OrderSide { get; set; }
         /// <summary>
-        /// Transact time
+        /// ["<c>transactTime</c>"] Transact time
         /// </summary>
         [JsonPropertyName("transactTime")]
         public DateTime? TransactTime { get; set; }
         /// <summary>
-        /// Create time
+        /// ["<c>time</c>"] Create time
         /// </summary>
         [JsonPropertyName("time")]
         public DateTime? CreateTime { get; set; }
         /// <summary>
-        /// Update time
+        /// ["<c>updateTime</c>"] Update time
         /// </summary>
         [JsonPropertyName("updateTime")]
         public DateTime? UpdateTime { get; set; }
         /// <summary>
-        /// Is working
+        /// ["<c>isWorking</c>"] Is working
         /// </summary>
         [JsonPropertyName("isWorking")]
         public bool IsWorking { get; set; }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 
 namespace Toobit.Net.Objects.Models
@@ -9,87 +9,87 @@ namespace Toobit.Net.Objects.Models
     public record ToobitUserTrade
     {
         /// <summary>
-        /// Id
+        /// ["<c>id</c>"] Id
         /// </summary>
         [JsonPropertyName("id")]
         public long Id { get; set; }
         /// <summary>
-        /// Symbol
+        /// ["<c>symbol</c>"] Symbol
         /// </summary>
         [JsonPropertyName("symbol")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Symbol name
+        /// ["<c>symbolName</c>"] Symbol name
         /// </summary>
         [JsonPropertyName("symbolName")]
         public string SymbolName { get; set; } = string.Empty;
         /// <summary>
-        /// Order id
+        /// ["<c>orderId</c>"] Order id
         /// </summary>
         [JsonPropertyName("orderId")]
         public long OrderId { get; set; }
         /// <summary>
-        /// Match order id
+        /// ["<c>matchOrderId</c>"] Match order id
         /// </summary>
         [JsonPropertyName("matchOrderId")]
         public long MatchOrderId { get; set; }
         /// <summary>
-        /// Price
+        /// ["<c>price</c>"] Price
         /// </summary>
         [JsonPropertyName("price")]
         public decimal Price { get; set; }
         /// <summary>
-        /// Quantity
+        /// ["<c>qty</c>"] Quantity
         /// </summary>
         [JsonPropertyName("qty")]
         public decimal Quantity { get; set; }
         /// <summary>
-        /// Fee
+        /// ["<c>commission</c>"] Fee
         /// </summary>
         [JsonPropertyName("commission")]
         public decimal Fee { get; set; }
         /// <summary>
-        /// Fee asset
+        /// ["<c>commissionAsset</c>"] Fee asset
         /// </summary>
         [JsonPropertyName("commissionAsset")]
         public string FeeAsset { get; set; } = string.Empty;
         /// <summary>
-        /// Timestamp
+        /// ["<c>time</c>"] Timestamp
         /// </summary>
         [JsonPropertyName("time")]
         public DateTime Timestamp { get; set; }
         /// <summary>
-        /// Is buyer
+        /// ["<c>isBuyer</c>"] Is buyer
         /// </summary>
         [JsonPropertyName("isBuyer")]
         public bool IsBuyer { get; set; }
         /// <summary>
-        /// Is maker
+        /// ["<c>isMaker</c>"] Is maker
         /// </summary>
         [JsonPropertyName("isMaker")]
         public bool IsMaker { get; set; }
         /// <summary>
-        /// Fee
+        /// ["<c>fee</c>"] Fee
         /// </summary>
         [JsonPropertyName("fee")]
         public ToobitUserTradeFee FeeInfo { get; set; } = null!;
         /// <summary>
-        /// Fee asset id
+        /// ["<c>feeCoinId</c>"] Fee asset id
         /// </summary>
         [JsonPropertyName("feeCoinId")]
         public string FeeAssetId { get; set; } = string.Empty;
         /// <summary>
-        /// Fee quantity
+        /// ["<c>feeAmount</c>"] Fee quantity
         /// </summary>
         [JsonPropertyName("feeAmount")]
         public decimal FeeQuantity { get; set; }
         /// <summary>
-        /// Maker rebate
+        /// ["<c>makerRebate</c>"] Maker rebate
         /// </summary>
         [JsonPropertyName("makerRebate")]
         public decimal MakerRebate { get; set; }
         /// <summary>
-        /// Ticket id
+        /// ["<c>ticketId</c>"] Ticket id
         /// </summary>
         [JsonPropertyName("ticketId")]
         public long TicketId { get; set; }
@@ -101,17 +101,17 @@ namespace Toobit.Net.Objects.Models
     public record ToobitUserTradeFee
     {
         /// <summary>
-        /// Fee asset id
+        /// ["<c>feeCoinId</c>"] Fee asset id
         /// </summary>
         [JsonPropertyName("feeCoinId")]
         public string FeeAssetId { get; set; } = string.Empty;
         /// <summary>
-        /// Fee asset name
+        /// ["<c>feeCoinName</c>"] Fee asset name
         /// </summary>
         [JsonPropertyName("feeCoinName")]
         public string FeeAssetName { get; set; } = string.Empty;
         /// <summary>
-        /// Fee
+        /// ["<c>fee</c>"] Fee
         /// </summary>
         [JsonPropertyName("fee")]
         public decimal Fee { get; set; }

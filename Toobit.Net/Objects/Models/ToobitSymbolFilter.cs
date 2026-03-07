@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Toobit.Net.Converters;
 using Toobit.Net.Enums;
 
@@ -11,7 +11,7 @@ namespace Toobit.Net.Objects.Models
     public record ToobitSymbolFilter
     {
         /// <summary>
-        /// The type of this filter
+        /// ["<c>filterType</c>"] The type of this filter
         /// </summary>
         [JsonPropertyName("filterType")]
         public SymbolFilterType FilterType { get; set; }

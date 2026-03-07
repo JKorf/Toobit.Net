@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 
 namespace Toobit.Net.Objects.Models
@@ -9,27 +9,27 @@ namespace Toobit.Net.Objects.Models
     public record ToobitPositionMargin
     {
         /// <summary>
-        /// Code
+        /// ["<c>code</c>"] Code
         /// </summary>
         [JsonPropertyName("code")]
         public decimal Code { get; set; }
         /// <summary>
-        /// Message
+        /// ["<c>msg</c>"] Message
         /// </summary>
         [JsonPropertyName("msg")]
         public string Message { get; set; } = string.Empty;
         /// <summary>
-        /// Symbol
+        /// ["<c>symbol</c>"] Symbol
         /// </summary>
         [JsonPropertyName("symbol")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Margin
+        /// ["<c>margin</c>"] Margin
         /// </summary>
         [JsonPropertyName("margin")]
         public decimal Margin { get; set; }
         /// <summary>
-        /// Timestamp
+        /// ["<c>timestamp</c>"] Timestamp
         /// </summary>
         [JsonPropertyName("timestamp")]
         public DateTime Timestamp { get; set; }

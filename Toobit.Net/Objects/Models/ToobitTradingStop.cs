@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Toobit.Net.Enums;
 
 namespace Toobit.Net.Objects.Models
@@ -9,32 +9,32 @@ namespace Toobit.Net.Objects.Models
     public record ToobitTradingStop
     {
         /// <summary>
-        /// Symbol
+        /// ["<c>symbol</c>"] Symbol
         /// </summary>
         [JsonPropertyName("symbol")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Position side
+        /// ["<c>side</c>"] Position side
         /// </summary>
         [JsonPropertyName("side")]
         public PositionSide PositionSide { get; set; }
         /// <summary>
-        /// Take profit price
+        /// ["<c>takeProfit</c>"] Take profit price
         /// </summary>
         [JsonPropertyName("takeProfit")]
         public decimal? TakeProfitPrice { get; set; }
         /// <summary>
-        /// Stop loss price
+        /// ["<c>stopLoss</c>"] Stop loss price
         /// </summary>
         [JsonPropertyName("stopLoss")]
         public decimal? StopLossPrice { get; set; }
         /// <summary>
-        /// Tp trigger by
+        /// ["<c>tpTriggerBy</c>"] Tp trigger by
         /// </summary>
         [JsonPropertyName("tpTriggerBy")]
         public TriggerType? TakeProfitTriggerType { get; set; }
         /// <summary>
-        /// Sl trigger by
+        /// ["<c>slTriggerBy</c>"] Sl trigger by
         /// </summary>
         [JsonPropertyName("slTriggerBy")]
         public TriggerType? StopLossTriggerType { get; set; }

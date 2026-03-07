@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 
 namespace Toobit.Net.Objects.Models
@@ -9,57 +9,57 @@ namespace Toobit.Net.Objects.Models
     public record ToobitTransaction
     {
         /// <summary>
-        /// Id
+        /// ["<c>id</c>"] Id
         /// </summary>
         [JsonPropertyName("id")]
         public string Id { get; set; } = string.Empty;
         /// <summary>
-        /// Account id
+        /// ["<c>accountId</c>"] Account id
         /// </summary>
         [JsonPropertyName("accountId")]
         public string AccountId { get; set; } = string.Empty;
         /// <summary>
-        /// Asset
+        /// ["<c>coin</c>"] Asset
         /// </summary>
         [JsonPropertyName("coin")]
         public string Asset { get; set; } = string.Empty;
         /// <summary>
-        /// Asset id
+        /// ["<c>coinId</c>"] Asset id
         /// </summary>
         [JsonPropertyName("coinId")]
         public string AssetId { get; set; } = string.Empty;
         /// <summary>
-        /// Asset name
+        /// ["<c>coinName</c>"] Asset name
         /// </summary>
         [JsonPropertyName("coinName")]
         public string AssetName { get; set; } = string.Empty;
         /// <summary>
-        /// Flow type value
+        /// ["<c>flowTypeValue</c>"] Flow type value
         /// </summary>
         [JsonPropertyName("flowTypeValue")]
         public int FlowTypeValue { get; set; }
         /// <summary>
-        /// Flow type
+        /// ["<c>flowType</c>"] Flow type
         /// </summary>
         [JsonPropertyName("flowType")]
         public string FlowType { get; set; } = string.Empty;
         /// <summary>
-        /// Flow name
+        /// ["<c>flowName</c>"] Flow name
         /// </summary>
         [JsonPropertyName("flowName")]
         public string FlowName { get; set; } = string.Empty;
         /// <summary>
-        /// Change
+        /// ["<c>change</c>"] Change
         /// </summary>
         [JsonPropertyName("change")]
         public decimal Change { get; set; }
         /// <summary>
-        /// Total
+        /// ["<c>total</c>"] Total
         /// </summary>
         [JsonPropertyName("total")]
         public decimal Total { get; set; }
         /// <summary>
-        /// Create time
+        /// ["<c>created</c>"] Create time
         /// </summary>
         [JsonPropertyName("created")]
         public DateTime CreateTime { get; set; }

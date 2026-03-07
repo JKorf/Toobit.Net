@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Toobit.Net.Enums;
 
 namespace Toobit.Net.Objects.Models
@@ -9,37 +9,37 @@ namespace Toobit.Net.Objects.Models
     public record ToobitOrderRequest
     {
         /// <summary>
-        /// Symbol
+        /// ["<c>symbol</c>"] Symbol
         /// </summary>
         [JsonPropertyName("symbol")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Order side
+        /// ["<c>side</c>"] Order side
         /// </summary>
         [JsonPropertyName("side")]
         public OrderSide OrderSide { get; set; }
         /// <summary>
-        /// Order type
+        /// ["<c>type</c>"] Order type
         /// </summary>
         [JsonPropertyName("type")]
         public OrderType OrderType { get; set; }
         /// <summary>
-        /// Time in force
+        /// ["<c>timeInForce</c>"] Time in force
         /// </summary>
         [JsonPropertyName("timeInForce"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public TimeInForce? TimeInForce { get; set; }
         /// <summary>
-        /// Quantity
+        /// ["<c>quantity</c>"] Quantity
         /// </summary>
         [JsonPropertyName("quantity")]
         public decimal Quantity { get; set; }
         /// <summary>
-        /// Limit price
+        /// ["<c>price</c>"] Limit price
         /// </summary>
         [JsonPropertyName("price"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public decimal? Price { get; set; }
         /// <summary>
-        /// Client order id
+        /// ["<c>newClientOrderId</c>"] Client order id
         /// </summary>
         [JsonPropertyName("newClientOrderId")]
         public string ClientOrderId { get; set; } = string.Empty;

@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Toobit.Net.Enums;
 
 namespace Toobit.Net.Objects.Models
@@ -9,17 +9,17 @@ namespace Toobit.Net.Objects.Models
     public record ToobitMarginType
     {
         /// <summary>
-        /// Code
+        /// ["<c>code</c>"] Code
         /// </summary>
         [JsonPropertyName("code")]
         public int Code { get; set; }
         /// <summary>
-        /// Symbol
+        /// ["<c>symbolId</c>"] Symbol
         /// </summary>
         [JsonPropertyName("symbolId")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Margin type
+        /// ["<c>marginType</c>"] Margin type
         /// </summary>
         [JsonPropertyName("marginType")]
         public MarginType MarginType { get; set; }

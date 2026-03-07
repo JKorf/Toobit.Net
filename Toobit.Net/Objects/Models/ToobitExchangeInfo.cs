@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Text.Json.Serialization;
 using Toobit.Net.Enums;
@@ -11,27 +11,27 @@ namespace Toobit.Net.Objects.Models
     public record ToobitExchangeInfo
     {
         /// <summary>
-        /// Timezone
+        /// ["<c>timezone</c>"] Timezone
         /// </summary>
         [JsonPropertyName("timezone")]
         public string Timezone { get; set; } = string.Empty;
         /// <summary>
-        /// Server time
+        /// ["<c>serverTime</c>"] Server time
         /// </summary>
         [JsonPropertyName("serverTime")]
         public DateTime ServerTime { get; set; }
         /// <summary>
-        /// Spot symbols
+        /// ["<c>symbols</c>"] Spot symbols
         /// </summary>
         [JsonPropertyName("symbols")]
         public ToobitSpotSymbol[] SpotSymbols { get; set; } = [];
         /// <summary>
-        /// Contract symbols
+        /// ["<c>contracts</c>"] Contract symbols
         /// </summary>
         [JsonPropertyName("contracts")]
         public ToobitFuturesSymbol[] ContractSymbols { get; set; } = [];
         /// <summary>
-        /// Assets
+        /// ["<c>coins</c>"] Assets
         /// </summary>
         [JsonPropertyName("coins")]
         public ToobitAsset[] Assets { get; set; } = [];
@@ -43,49 +43,49 @@ namespace Toobit.Net.Objects.Models
     public record ToobitBaseSymbol
     {
         /// <summary>
-        /// Symbol
+        /// ["<c>symbol</c>"] Symbol
         /// </summary>
         [JsonPropertyName("symbol")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Symbol name
+        /// ["<c>symbolName</c>"] Symbol name
         /// </summary>
         [JsonPropertyName("symbolName")]
         public string SymbolName { get; set; } = string.Empty;
         /// <summary>
-        /// Status
+        /// ["<c>status</c>"] Status
         /// </summary>
         [JsonPropertyName("status")]
         public SymbolStatus Status { get; set; }
         /// <summary>
-        /// Base asset
+        /// ["<c>baseAsset</c>"] Base asset
         /// </summary>
         [JsonPropertyName("baseAsset")]
         public string BaseAsset { get; set; } = string.Empty;
         /// <summary>
-        /// Base asset precision
+        /// ["<c>baseAssetPrecision</c>"] Base asset precision
         /// </summary>
         [JsonPropertyName("baseAssetPrecision")]
         public decimal BaseAssetPrecision { get; set; }
         /// <summary>
-        /// Quote asset
+        /// ["<c>quoteAsset</c>"] Quote asset
         /// </summary>
         [JsonPropertyName("quoteAsset")]
         public string QuoteAsset { get; set; } = string.Empty;
         /// <summary>
-        /// Quote precision
+        /// ["<c>quotePrecision</c>"] Quote precision
         /// </summary>
         [JsonPropertyName("quotePrecision")]
         public decimal QuotePrecision { get; set; }
         [JsonInclude, JsonPropertyName("quoteAssetPrecision")]
         internal decimal QuoteAssetPrecision { get => QuotePrecision; set => QuotePrecision = value; }
         /// <summary>
-        /// Iceberg allowed
+        /// ["<c>icebergAllowed</c>"] Iceberg allowed
         /// </summary>
         [JsonPropertyName("icebergAllowed")]
         public bool IcebergAllowed { get; set; }
         /// <summary>
-        /// Filters
+        /// ["<c>filters</c>"] Filters
         /// </summary>
         [JsonPropertyName("filters")]
         public ToobitSymbolFilter[] Filters { get; set; } = [];
@@ -133,22 +133,22 @@ namespace Toobit.Net.Objects.Models
     public record ToobitSpotSymbol : ToobitBaseSymbol
     {
         /// <summary>
-        /// Base asset name
+        /// ["<c>baseAssetName</c>"] Base asset name
         /// </summary>
         [JsonPropertyName("baseAssetName")]
         public string BaseAssetName { get; set; } = string.Empty;
         /// <summary>
-        /// Quote asset name
+        /// ["<c>quoteAssetName</c>"] Quote asset name
         /// </summary>
         [JsonPropertyName("quoteAssetName")]
         public string QuoteAssetName { get; set; } = string.Empty;
         /// <summary>
-        /// Is aggregate
+        /// ["<c>isAggregate</c>"] Is aggregate
         /// </summary>
         [JsonPropertyName("isAggregate")]
         public bool IsAggregate { get; set; }
         /// <summary>
-        /// Allow margin
+        /// ["<c>allowMargin</c>"] Allow margin
         /// </summary>
         [JsonPropertyName("allowMargin")]
         public bool AllowMargin { get; set; }        
@@ -160,42 +160,42 @@ namespace Toobit.Net.Objects.Models
     public record ToobitFuturesSymbol : ToobitBaseSymbol
     {
         /// <summary>
-        /// Exchange id
+        /// ["<c>exchangeId</c>"] Exchange id
         /// </summary>
         [JsonPropertyName("exchangeId")]
         public string ExchangeId { get; set; } = string.Empty;        
         /// <summary>
-        /// Inverse
+        /// ["<c>inverse</c>"] Inverse
         /// </summary>
         [JsonPropertyName("inverse")]
         public bool? Inverse { get; set; }
         /// <summary>
-        /// Index
+        /// ["<c>index</c>"] Index
         /// </summary>
         [JsonPropertyName("index")]
         public string? Index { get; set; } = string.Empty;
         /// <summary>
-        /// Index token
+        /// ["<c>indexToken</c>"] Index token
         /// </summary>
         [JsonPropertyName("indexToken")]
         public string? IndexToken { get; set; } = string.Empty;
         /// <summary>
-        /// Margin token
+        /// ["<c>marginToken</c>"] Margin token
         /// </summary>
         [JsonPropertyName("marginToken")]
         public string? MarginToken { get; set; } = string.Empty;
         /// <summary>
-        /// Underlying
+        /// ["<c>underlying</c>"] Underlying
         /// </summary>
         [JsonPropertyName("underlying")]
         public string? Underlying { get; set; } = string.Empty;
         /// <summary>
-        /// Contract multiplier
+        /// ["<c>contractMultiplier</c>"] Contract multiplier
         /// </summary>
         [JsonPropertyName("contractMultiplier")]
         public decimal? ContractMultiplier { get; set; }
         /// <summary>
-        /// Risk limits
+        /// ["<c>riskLimits</c>"] Risk limits
         /// </summary>
         [JsonPropertyName("riskLimits")]
         public ToobitRiskLimit[] RiskLimits { get; set; } = [];
@@ -207,27 +207,27 @@ namespace Toobit.Net.Objects.Models
     public record ToobitRiskLimit
     {
         /// <summary>
-        /// Risk limit id
+        /// ["<c>riskLimitId</c>"] Risk limit id
         /// </summary>
         [JsonPropertyName("riskLimitId")]
         public string RiskLimitId { get; set; } = string.Empty;
         /// <summary>
-        /// Quantity
+        /// ["<c>quantity</c>"] Quantity
         /// </summary>
         [JsonPropertyName("quantity")]
         public decimal Quantity { get; set; }
         /// <summary>
-        /// Initial margin
+        /// ["<c>initialMargin</c>"] Initial margin
         /// </summary>
         [JsonPropertyName("initialMargin")]
         public decimal InitialMargin { get; set; }
         /// <summary>
-        /// Maintenance margin
+        /// ["<c>mainMargin</c>"] Maintenance margin
         /// </summary>
         [JsonPropertyName("mainMargin")]
         public decimal MaintenanceMargin { get; set; }
         /// <summary>
-        /// Is white
+        /// ["<c>isWhite</c>"] Is white
         /// </summary>
         [JsonPropertyName("isWhite")]
         public bool IsWhite { get; set; }
@@ -239,37 +239,37 @@ namespace Toobit.Net.Objects.Models
     public record ToobitAsset
     {
         /// <summary>
-        /// OriginalId
+        /// ["<c>orgId</c>"] OriginalId
         /// </summary>
         [JsonPropertyName("orgId")]
         public string OriginalId { get; set; } = string.Empty;
         /// <summary>
-        /// Asset id
+        /// ["<c>coinId</c>"] Asset id
         /// </summary>
         [JsonPropertyName("coinId")]
         public string AssetId { get; set; } = string.Empty;
         /// <summary>
-        /// Asset name
+        /// ["<c>coinName</c>"] Asset name
         /// </summary>
         [JsonPropertyName("coinName")]
         public string AssetName { get; set; } = string.Empty;
         /// <summary>
-        /// Full asset name
+        /// ["<c>coinFullName (tokenFullName)</c>"] Full asset name
         /// </summary>
         [JsonPropertyName("coinFullName (tokenFullName)")]
         public string FullName { get; set; } = string.Empty;
         /// <summary>
-        /// Allow withdraw
+        /// ["<c>allowWithdraw</c>"] Allow withdraw
         /// </summary>
         [JsonPropertyName("allowWithdraw")]
         public bool AllowWithdraw { get; set; }
         /// <summary>
-        /// Allow deposit
+        /// ["<c>allowDeposit</c>"] Allow deposit
         /// </summary>
         [JsonPropertyName("allowDeposit")]
         public bool AllowDeposit { get; set; }
         /// <summary>
-        /// Networks
+        /// ["<c>chainTypes</c>"] Networks
         /// </summary>
         [JsonPropertyName("chainTypes")]
         public ToobitAssetNetwork[] Networks { get; set; } = [];
@@ -281,37 +281,37 @@ namespace Toobit.Net.Objects.Models
     public record ToobitAssetNetwork
     {
         /// <summary>
-        /// Network type
+        /// ["<c>chainType</c>"] Network type
         /// </summary>
         [JsonPropertyName("chainType")]
         public string NetworkType { get; set; } = string.Empty;
         /// <summary>
-        /// Withdraw fee
+        /// ["<c>withdrawFee</c>"] Withdraw fee
         /// </summary>
         [JsonPropertyName("withdrawFee")]
         public decimal WithdrawFee { get; set; }
         /// <summary>
-        /// Min withdraw quantity
+        /// ["<c>minWithdrawQuantity</c>"] Min withdraw quantity
         /// </summary>
         [JsonPropertyName("minWithdrawQuantity")]
         public decimal MinWithdrawQuantity { get; set; }
         /// <summary>
-        /// Max withdraw quantity
+        /// ["<c>maxWithdrawQuantity</c>"] Max withdraw quantity
         /// </summary>
         [JsonPropertyName("maxWithdrawQuantity")]
         public decimal MaxWithdrawQuantity { get; set; }
         /// <summary>
-        /// Min deposit quantity
+        /// ["<c>minDepositQuantity</c>"] Min deposit quantity
         /// </summary>
         [JsonPropertyName("minDepositQuantity")]
         public decimal MinDepositQuantity { get; set; }
         /// <summary>
-        /// Allow deposit
+        /// ["<c>allowDeposit</c>"] Allow deposit
         /// </summary>
         [JsonPropertyName("allowDeposit")]
         public bool AllowDeposit { get; set; }
         /// <summary>
-        /// Allow withdraw
+        /// ["<c>allowWithdraw</c>"] Allow withdraw
         /// </summary>
         [JsonPropertyName("allowWithdraw")]
         public bool AllowWithdraw { get; set; }

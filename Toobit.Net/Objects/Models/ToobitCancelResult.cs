@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Toobit.Net.Objects.Models
 {
@@ -8,12 +8,12 @@ namespace Toobit.Net.Objects.Models
     public record ToobitCancelResult
     {
         /// <summary>
-        /// Order id
+        /// ["<c>orderId</c>"] Order id
         /// </summary>
         [JsonPropertyName("orderId")]
         public long OrderId { get; set; }
         /// <summary>
-        /// Error code
+        /// ["<c>code</c>"] Error code
         /// </summary>
         [JsonPropertyName("code")]
         public int Code { get; set; }

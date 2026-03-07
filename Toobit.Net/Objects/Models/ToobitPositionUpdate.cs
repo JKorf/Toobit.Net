@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using Toobit.Net.Enums;
 
@@ -10,87 +10,87 @@ namespace Toobit.Net.Objects.Models
     public record ToobitPositionUpdate
     {
         /// <summary>
-        /// Event
+        /// ["<c>e</c>"] Event
         /// </summary>
         [JsonPropertyName("e")]
         public string Event { get; set; } = string.Empty;
         /// <summary>
-        /// EventTime
+        /// ["<c>E</c>"] EventTime
         /// </summary>
         [JsonPropertyName("E")]
         public DateTime EventTime { get; set; }
         /// <summary>
-        /// Account id
+        /// ["<c>A</c>"] Account id
         /// </summary>
         [JsonPropertyName("A")]
         public string AccountId { get; set; } = string.Empty;
         /// <summary>
-        /// Symbol
+        /// ["<c>s</c>"] Symbol
         /// </summary>
         [JsonPropertyName("s")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Position side
+        /// ["<c>S</c>"] Position side
         /// </summary>
         [JsonPropertyName("S")]
         public PositionSide PositionSide { get; set; }
         /// <summary>
-        /// Average entry price
+        /// ["<c>p</c>"] Average entry price
         /// </summary>
         [JsonPropertyName("p")]
         public decimal AveragePrice { get; set; }
         /// <summary>
-        /// Position quantity
+        /// ["<c>P</c>"] Position quantity
         /// </summary>
         [JsonPropertyName("P")]
         public decimal PositionQuantity { get; set; }
         /// <summary>
-        /// Positions available
+        /// ["<c>a</c>"] Positions available
         /// </summary>
         [JsonPropertyName("a")]
         public decimal AvailablePositions { get; set; }
         /// <summary>
-        /// LiquidationPrice
+        /// ["<c>f</c>"] LiquidationPrice
         /// </summary>
         [JsonPropertyName("f")]
         public decimal LiquidationPrice { get; set; }
         /// <summary>
-        /// Position margin
+        /// ["<c>m</c>"] Position margin
         /// </summary>
         [JsonPropertyName("m")]
         public decimal Margin { get; set; }
         /// <summary>
-        /// Realized profit and loss
+        /// ["<c>r</c>"] Realized profit and loss
         /// </summary>
         [JsonPropertyName("r")]
         public decimal RealizedPnl { get; set; }
         /// <summary>
-        /// Margin typ
+        /// ["<c>mt</c>"] Margin typ
         /// </summary>
         [JsonPropertyName("mt")]
         public MarginType MarginType { get; set; }
         /// <summary>
-        /// RiskRate
+        /// ["<c>rr</c>"] RiskRate
         /// </summary>
         [JsonPropertyName("rr")]
         public decimal RiskRate { get; set; }
         /// <summary>
-        /// Unrealized profit and loss
+        /// ["<c>up</c>"] Unrealized profit and loss
         /// </summary>
         [JsonPropertyName("up")]
         public decimal UnrealizedPnl { get; set; }
         /// <summary>
-        /// Profit rate
+        /// ["<c>pr</c>"] Profit rate
         /// </summary>
         [JsonPropertyName("pr")]
         public decimal ProfitRate { get; set; }
         /// <summary>
-        /// Position value
+        /// ["<c>pv</c>"] Position value
         /// </summary>
         [JsonPropertyName("pv")]
         public decimal PositionValue { get; set; }
         /// <summary>
-        /// Leverage
+        /// ["<c>v</c>"] Leverage
         /// </summary>
         [JsonPropertyName("v")]
         public decimal Leverage { get; set; }

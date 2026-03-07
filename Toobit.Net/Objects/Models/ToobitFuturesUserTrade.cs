@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using Toobit.Net.Enums;
 
@@ -10,72 +10,72 @@ namespace Toobit.Net.Objects.Models
     public record ToobitFuturesUserTrade
     {
         /// <summary>
-        /// Timestamp
+        /// ["<c>time</c>"] Timestamp
         /// </summary>
         [JsonPropertyName("time")]
         public DateTime Timestamp { get; set; }
         /// <summary>
-        /// Id
+        /// ["<c>id</c>"] Id
         /// </summary>
         [JsonPropertyName("id")]
         public string Id { get; set; } = string.Empty;
         /// <summary>
-        /// Order id
+        /// ["<c>orderId</c>"] Order id
         /// </summary>
         [JsonPropertyName("orderId")]
         public string OrderId { get; set; } = string.Empty;
         /// <summary>
-        /// Symbol
+        /// ["<c>symbol</c>"] Symbol
         /// </summary>
         [JsonPropertyName("symbol")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Price
+        /// ["<c>price</c>"] Price
         /// </summary>
         [JsonPropertyName("price")]
         public decimal Price { get; set; }
         /// <summary>
-        /// Quantity
+        /// ["<c>qty</c>"] Quantity
         /// </summary>
         [JsonPropertyName("qty")]
         public decimal Quantity { get; set; }
         /// <summary>
-        /// Fee asset
+        /// ["<c>commissionAsset</c>"] Fee asset
         /// </summary>
         [JsonPropertyName("commissionAsset")]
         public string FeeAsset { get; set; } = string.Empty;
         /// <summary>
-        /// Fee
+        /// ["<c>commission</c>"] Fee
         /// </summary>
         [JsonPropertyName("commission")]
         public decimal Fee { get; set; }
         /// <summary>
-        /// Maker rebate
+        /// ["<c>makerRebate</c>"] Maker rebate
         /// </summary>
         [JsonPropertyName("makerRebate")]
         public decimal MakerRebate { get; set; }
         /// <summary>
-        /// Order type
+        /// ["<c>type</c>"] Order type
         /// </summary>
         [JsonPropertyName("type")]
         public FuturesOrderType OrderType { get; set; }
         /// <summary>
-        /// Is maker
+        /// ["<c>isMaker</c>"] Is maker
         /// </summary>
         [JsonPropertyName("isMaker")]
         public bool IsMaker { get; set; }
         /// <summary>
-        /// Order side
+        /// ["<c>side</c>"] Order side
         /// </summary>
         [JsonPropertyName("side")]
         public FuturesOrderSide? OrderSide { get; set; }
         /// <summary>
-        /// Realized profit and loss
+        /// ["<c>realizedPnl</c>"] Realized profit and loss
         /// </summary>
         [JsonPropertyName("realizedPnl")]
         public decimal RealizedPnl { get; set; }
         /// <summary>
-        /// Trade id
+        /// ["<c>ticketId</c>"] Trade id
         /// </summary>
         [JsonPropertyName("ticketId")]
         public string TradeId { get; set; } = string.Empty;

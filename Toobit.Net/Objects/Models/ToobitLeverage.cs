@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Toobit.Net.Objects.Models
 {
@@ -8,17 +8,17 @@ namespace Toobit.Net.Objects.Models
     public record ToobitLeverage
     {
         /// <summary>
-        /// Code
+        /// ["<c>code</c>"] Code
         /// </summary>
         [JsonPropertyName("code")]
         public decimal Code { get; set; }
         /// <summary>
-        /// Symbol
+        /// ["<c>symbol</c>"] Symbol
         /// </summary>
         [JsonPropertyName("symbol")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Leverage
+        /// ["<c>leverage</c>"] Leverage
         /// </summary>
         [JsonPropertyName("leverage")]
         public int Leverage { get; set; }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 
 namespace Toobit.Net.Objects.Models
@@ -9,32 +9,32 @@ namespace Toobit.Net.Objects.Models
     public record ToobitAccountUpdate
     {
         /// <summary>
-        /// Event
+        /// ["<c>e</c>"] Event
         /// </summary>
         [JsonPropertyName("e")]
         public string Event { get; set; } = string.Empty;
         /// <summary>
-        /// Event time
+        /// ["<c>E</c>"] Event time
         /// </summary>
         [JsonPropertyName("E")]
         public DateTime EventTime { get; set; }
         /// <summary>
-        /// Can trade
+        /// ["<c>T</c>"] Can trade
         /// </summary>
         [JsonPropertyName("T")]
         public bool CanTrade { get; set; }
         /// <summary>
-        /// Can withdraw
+        /// ["<c>W</c>"] Can withdraw
         /// </summary>
         [JsonPropertyName("W")]
         public bool CanWithdraw { get; set; }
         /// <summary>
-        /// Can deposit
+        /// ["<c>D</c>"] Can deposit
         /// </summary>
         [JsonPropertyName("D")]
         public bool CanDeposit { get; set; }
         /// <summary>
-        /// Balances
+        /// ["<c>B</c>"] Balances
         /// </summary>
         [JsonPropertyName("B")]
         public ToobitAccountUpdateBalance[] Balances { get; set; } = [];
@@ -46,17 +46,17 @@ namespace Toobit.Net.Objects.Models
     public record ToobitAccountUpdateBalance
     {
         /// <summary>
-        /// Asset
+        /// ["<c>a</c>"] Asset
         /// </summary>
         [JsonPropertyName("a")]
         public string Asset { get; set; } = string.Empty;
         /// <summary>
-        /// Free balance
+        /// ["<c>f</c>"] Free balance
         /// </summary>
         [JsonPropertyName("f")]
         public decimal Free { get; set; }
         /// <summary>
-        /// Locked balance
+        /// ["<c>l</c>"] Locked balance
         /// </summary>
         [JsonPropertyName("l")]
         public decimal Locked { get; set; }

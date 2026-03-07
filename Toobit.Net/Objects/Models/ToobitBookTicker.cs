@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 
 namespace Toobit.Net.Objects.Models
@@ -9,32 +9,32 @@ namespace Toobit.Net.Objects.Models
     public record ToobitBookTicker
     {
         /// <summary>
-        /// Timestamp of the data
+        /// ["<c>t</c>"] Timestamp of the data
         /// </summary>
         [JsonPropertyName("t")]
         public DateTime Timestamp { get; set; }
         /// <summary>
-        /// Symbol
+        /// ["<c>s</c>"] Symbol
         /// </summary>
         [JsonPropertyName("s")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Best bid price
+        /// ["<c>b</c>"] Best bid price
         /// </summary>
         [JsonPropertyName("b")]
         public decimal? BestBidPrice { get; set; }
         /// <summary>
-        /// Best bid quantity
+        /// ["<c>bq</c>"] Best bid quantity
         /// </summary>
         [JsonPropertyName("bq")]
         public decimal? BestBidQuantity { get; set; }
         /// <summary>
-        /// Best ask price
+        /// ["<c>a</c>"] Best ask price
         /// </summary>
         [JsonPropertyName("a")]
         public decimal? BestAskPrice { get; set; }
         /// <summary>
-        /// Best ask quantity
+        /// ["<c>aq</c>"] Best ask quantity
         /// </summary>
         [JsonPropertyName("aq")]
         public decimal? BestAskQuantity { get; set; }

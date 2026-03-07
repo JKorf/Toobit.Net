@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using Toobit.Net.Enums;
 
@@ -10,92 +10,92 @@ namespace Toobit.Net.Objects.Models
     public record ToobitFuturesOrder
     {
         /// <summary>
-        /// Timestamp
+        /// ["<c>time</c>"] Timestamp
         /// </summary>
         [JsonPropertyName("time")]
         public DateTime CreateTime { get; set; }
         /// <summary>
-        /// Update time
+        /// ["<c>updateTime</c>"] Update time
         /// </summary>
         [JsonPropertyName("updateTime")]
         public DateTime? UpdateTime { get; set; }
         /// <summary>
-        /// Order id
+        /// ["<c>orderId</c>"] Order id
         /// </summary>
         [JsonPropertyName("orderId")]
         public long OrderId { get; set; }
         /// <summary>
-        /// Client order id
+        /// ["<c>clientOrderId</c>"] Client order id
         /// </summary>
         [JsonPropertyName("clientOrderId")]
         public string? ClientOrderId { get; set; }
         /// <summary>
-        /// Symbol
+        /// ["<c>symbol</c>"] Symbol
         /// </summary>
         [JsonPropertyName("symbol")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Price
+        /// ["<c>price</c>"] Price
         /// </summary>
         [JsonPropertyName("price")]
         public decimal Price { get; set; }
         /// <summary>
-        /// Stop price
+        /// ["<c>stopPrice</c>"] Stop price
         /// </summary>
         [JsonPropertyName("stopPrice")]
         public decimal? StopPrice { get; set; }
         /// <summary>
-        /// Leverage
+        /// ["<c>leverage</c>"] Leverage
         /// </summary>
         [JsonPropertyName("leverage")]
         public decimal Leverage { get; set; }
         /// <summary>
-        /// Order quantity
+        /// ["<c>origQty</c>"] Order quantity
         /// </summary>
         [JsonPropertyName("origQty")]
         public decimal Quantity { get; set; }
         /// <summary>
-        /// QuantityFilled
+        /// ["<c>executedQty</c>"] QuantityFilled
         /// </summary>
         [JsonPropertyName("executedQty")]
         public decimal? QuantityFilled { get; set; }
         /// <summary>
-        /// Average price
+        /// ["<c>avgPrice</c>"] Average price
         /// </summary>
         [JsonPropertyName("avgPrice")]
         public decimal? AveragePrice { get; set; }
         /// <summary>
-        /// Margin locked
+        /// ["<c>marginLocked</c>"] Margin locked
         /// </summary>
         [JsonPropertyName("marginLocked")]
         public decimal? MarginLocked { get; set; }
         /// <summary>
-        /// Order type
+        /// ["<c>type</c>"] Order type
         /// </summary>
         [JsonPropertyName("type")]
         public FuturesOrderType OrderType { get; set; }
         /// <summary>
-        /// Order side
+        /// ["<c>side</c>"] Order side
         /// </summary>
         [JsonPropertyName("side")]
         public FuturesOrderSide OrderSide { get; set; }
         /// <summary>
-        /// Time in force
+        /// ["<c>timeInForce</c>"] Time in force
         /// </summary>
         [JsonPropertyName("timeInForce")]
         public TimeInForce? TimeInForce { get; set; }
         /// <summary>
-        /// Status
+        /// ["<c>status</c>"] Status
         /// </summary>
         [JsonPropertyName("status")]
         public OrderStatus Status { get; set; }
         /// <summary>
-        /// Price type
+        /// ["<c>priceType</c>"] Price type
         /// </summary>
         [JsonPropertyName("priceType")]
         public PriceType? PriceType { get; set; }
         /// <summary>
-        /// Active status
+        /// ["<c>activeStatus</c>"] Active status
         /// </summary>
         [JsonPropertyName("activeStatus")]
         public int ActiveStatus { get; set; }
