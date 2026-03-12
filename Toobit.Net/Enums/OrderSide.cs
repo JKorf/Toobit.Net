@@ -11,12 +11,12 @@ namespace Toobit.Net.Enums
     public enum OrderSide
     {
         /// <summary>
-        /// Buy
+        /// ["<c>BUY</c>"] Buy
         /// </summary>
         [Map("BUY")]
         Buy,
         /// <summary>
-        /// Sell
+        /// ["<c>SELL</c>"] Sell
         /// </summary>
         [Map("SELL")]
         Sell

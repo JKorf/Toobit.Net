@@ -11,37 +11,37 @@ namespace Toobit.Net.Enums
     public enum OrderStatus
     {
         /// <summary>
-        /// Order is new
+        /// ["<c>NEW</c>"] Order is new
         /// </summary>
         [Map("NEW", "PENDING_NEW", "ORDER_NEW")]
         New,
         /// <summary>
-        /// Order is partly filled, still has quantity left to fill
+        /// ["<c>PARTIALLY_FILLED</c>"] Order is partly filled, still has quantity left to fill
         /// </summary>
         [Map("PARTIALLY_FILLED")]
         PartiallyFilled,
         /// <summary>
-        /// The order has been filled and completed
+        /// ["<c>FILLED</c>"] The order has been filled and completed
         /// </summary>
         [Map("FILLED")]
         Filled,
         /// <summary>
-        /// The order has been canceled
+        /// ["<c>CANCELED</c>"] The order has been canceled
         /// </summary>
         [Map("CANCELED", "ORDER_CANCELED")]
         Canceled,
         /// <summary>
-        /// Pending cancel
+        /// ["<c>PENDING_CANCEL</c>"] Pending cancel
         /// </summary>
         [Map("PENDING_CANCEL")]
         PendingCancel,
         /// <summary>
-        /// Rejected
+        /// ["<c>REJECTED</c>"] Rejected
         /// </summary>
         [Map("REJECTED")]
         Rejected,
         /// <summary>
-        /// The order was canceled after being partially filled
+        /// ["<c>PARTIALLY_CANCELED</c>"] The order was canceled after being partially filled
         /// </summary>
         [Map("PARTIALLY_CANCELED")]
         PartiallyCanceled

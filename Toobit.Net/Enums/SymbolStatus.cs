@@ -11,22 +11,22 @@ namespace Toobit.Net.Enums
     public enum SymbolStatus
     {
         /// <summary>
-        /// Trading
+        /// ["<c>TRADING</c>"] Trading
         /// </summary>
         [Map("TRADING")]
         Trading,
         /// <summary>
-        /// Api trading forbidden
+        /// ["<c>API_TRADE_FORBIDDEN</c>"] Api trading forbidden
         /// </summary>
         [Map("API_TRADE_FORBIDDEN")]
         ApiTradeForbidden,
         /// <summary>
-        /// Offline
+        /// ["<c>Offline</c>"] Offline
         /// </summary>
         [Map("Offline")]
         Offline,
         /// <summary>
-        /// Online
+        /// ["<c>ONLINE</c>"] Online
         /// </summary>
         [Map("ONLINE")]
         Online,

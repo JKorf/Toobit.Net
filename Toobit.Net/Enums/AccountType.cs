@@ -11,12 +11,12 @@ namespace Toobit.Net.Enums
     public enum AccountType
     {
         /// <summary>
-        /// Spot account
+        /// ["<c>MAIN</c>"] Spot account
         /// </summary>
         [Map("MAIN", "1")]
         Spot,
         /// <summary>
-        /// Futures account
+        /// ["<c>FUTURES</c>"] Futures account
         /// </summary>
         [Map("FUTURES", "3")]
         Futures

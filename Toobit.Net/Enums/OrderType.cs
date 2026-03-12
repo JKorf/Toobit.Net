@@ -11,17 +11,17 @@ namespace Toobit.Net.Enums
     public enum OrderType
     {
         /// <summary>
-        /// Limit order
+        /// ["<c>LIMIT</c>"] Limit order
         /// </summary>
         [Map("LIMIT")]
         Limit,
         /// <summary>
-        /// Market order
+        /// ["<c>MARKET</c>"] Market order
         /// </summary>
         [Map("MARKET", "MARKET_OF_QUOTE", "MARKET_OF_BASE")]
         Market,
         /// <summary>
-        /// Limit maker
+        /// ["<c>LIMIT_MAKER</c>"] Limit maker
         /// </summary>
         [Map("LIMIT_MAKER")]
         LimitMaker

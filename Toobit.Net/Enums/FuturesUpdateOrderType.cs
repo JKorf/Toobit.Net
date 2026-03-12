@@ -11,22 +11,22 @@ namespace Toobit.Net.Enums
     public enum FuturesUpdateOrderType
     {
         /// <summary>
-        /// Limit order
+        /// ["<c>LIMIT</c>"] Limit order
         /// </summary>
         [Map("LIMIT")]
         Limit,
         /// <summary>
-        /// Market
+        /// ["<c>MARKET</c>"] Market
         /// </summary>
         [Map("MARKET", "MARKET_OF_BASE")]
         Market,
         /// <summary>
-        /// Limit maker
+        /// ["<c>LIMIT_MAKER</c>"] Limit maker
         /// </summary>
         [Map("LIMIT_MAKER")]
         LimitMaker,
         /// <summary>
-        /// Stop limit order
+        /// ["<c>STOP_LIMIT</c>"] Stop limit order
         /// </summary>
         [Map("STOP_LIMIT")]
         StopLimit

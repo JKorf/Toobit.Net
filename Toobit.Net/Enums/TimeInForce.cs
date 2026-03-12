@@ -11,22 +11,22 @@ namespace Toobit.Net.Enums
     public enum TimeInForce
     {
         /// <summary>
-        /// Good till canceled
+        /// ["<c>GTC</c>"] Good till canceled
         /// </summary>
         [Map("GTC")]
         GoodTillCanceled,
         /// <summary>
-        /// Immediate or cancel
+        /// ["<c>IOC</c>"] Immediate or cancel
         /// </summary>
         [Map("IOC")]
         ImmediateOrCancel,
         /// <summary>
-        /// Fill or kill
+        /// ["<c>FOK</c>"] Fill or kill
         /// </summary>
         [Map("FOK")]
         FillOrKill,
         /// <summary>
-        /// Limit maker
+        /// ["<c>LIMIT_MAKER</c>"] Limit maker
         /// </summary>
         [Map("LIMIT_MAKER")]
         LimitMaker

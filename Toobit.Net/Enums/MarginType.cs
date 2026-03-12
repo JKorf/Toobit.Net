@@ -11,12 +11,12 @@ namespace Toobit.Net.Enums
     public enum MarginType
     {
         /// <summary>
-        /// Isolated
+        /// ["<c>ISOLATED</c>"] Isolated
         /// </summary>
         [Map("ISOLATED")]
         Isolated,
         /// <summary>
-        /// Cross
+        /// ["<c>CROSS</c>"] Cross
         /// </summary>
         [Map("CROSS")]
         Cross

@@ -11,17 +11,17 @@ namespace Toobit.Net.Enums
     public enum DepositStatus
     {
         /// <summary>
-        /// Success
+        /// ["<c>2</c>"] Success
         /// </summary>
         [Map("2")]
         Success,
         /// <summary>
-        /// Rejected
+        /// ["<c>11</c>"] Rejected
         /// </summary>
         [Map("11")]
         Rejected,
         /// <summary>
-        /// Under audit
+        /// ["<c>12</c>"] Under audit
         /// </summary>
         [Map("12")]
         Audit

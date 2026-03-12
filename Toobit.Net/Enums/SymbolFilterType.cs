@@ -11,37 +11,37 @@ namespace Toobit.Net.Enums
     public enum SymbolFilterType
     {
         /// <summary>
-        /// Price filter
+        /// ["<c>PRICE_FILTER</c>"] Price filter
         /// </summary>
         [Map("PRICE_FILTER")]
         PriceFilter,
         /// <summary>
-        /// Lot size filter
+        /// ["<c>LOT_SIZE</c>"] Lot size filter
         /// </summary>
         [Map("LOT_SIZE")]
         LotSize,
         /// <summary>
-        /// Min notional filter
+        /// ["<c>MIN_NOTIONAL</c>"] Min notional filter
         /// </summary>
         [Map("MIN_NOTIONAL")]
         MinNotional,
         /// <summary>
-        /// Trade amount filter
+        /// ["<c>TRADE_AMOUNT</c>"] Trade amount filter
         /// </summary>
         [Map("TRADE_AMOUNT")]
         TradeAmount,
         /// <summary>
-        /// Limit trading filter
+        /// ["<c>LIMIT_TRADING</c>"] Limit trading filter
         /// </summary>
         [Map("LIMIT_TRADING")]
         LimitTrading,
         /// <summary>
-        /// Market trading filter
+        /// ["<c>MARKET_TRADING</c>"] Market trading filter
         /// </summary>
         [Map("MARKET_TRADING")]
         MarketTrading,
         /// <summary>
-        /// Open quote filter
+        /// ["<c>OPEN_QUOTE</c>"] Open quote filter
         /// </summary>
         [Map("OPEN_QUOTE")]
         OpenQuote

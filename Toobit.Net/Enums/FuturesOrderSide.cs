@@ -11,22 +11,22 @@ namespace Toobit.Net.Enums
     public enum FuturesOrderSide
     {
         /// <summary>
-        /// Buy open long
+        /// ["<c>BUY_OPEN</c>"] Buy open long
         /// </summary>
         [Map("BUY_OPEN")]
         BuyOpen,
         /// <summary>
-        /// Buy close short
+        /// ["<c>BUY_CLOSE</c>"] Buy close short
         /// </summary>
         [Map("BUY_CLOSE")]
         BuyClose,
         /// <summary>
-        /// Sell open short
+        /// ["<c>SELL_OPEN</c>"] Sell open short
         /// </summary>
         [Map("SELL_OPEN")]
         SellOpen,
         /// <summary>
-        /// Sell close long
+        /// ["<c>SELL_CLOSE</c>"] Sell close long
         /// </summary>
         [Map("SELL_CLOSE")]
         SellClose

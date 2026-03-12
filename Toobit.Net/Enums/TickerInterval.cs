@@ -8,17 +8,17 @@ namespace Toobit.Net.Enums
     public enum TickerInterval
     {
         /// <summary>
-        /// 24 hours
+        /// ["<c>24h</c>"] 24 hours
         /// </summary>
         [Map("24h")]
         H24,
         /// <summary>
-        /// One day, reset at 00:00 UTC
+        /// ["<c>1d</c>"] One day, reset at 00:00 UTC
         /// </summary>
         [Map("1d")]
         D1,
         /// <summary>
-        /// One day, reset at 00:00 UTC+8
+        /// ["<c>1d+8</c>"] One day, reset at 00:00 UTC+8
         /// </summary>
         [Map("1d+8")]
         D1Utc8

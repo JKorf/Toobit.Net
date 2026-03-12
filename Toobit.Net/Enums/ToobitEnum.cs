@@ -8,7 +8,7 @@ namespace Toobit.Net.Enums
     public enum ToobitEnum
     {
         /// <summary>
-        /// XXX
+        /// ["<c>XXX</c>"] XXX
         /// </summary>
         [Map("XXX")]
         XXX,

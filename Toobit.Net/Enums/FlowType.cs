@@ -11,32 +11,32 @@ namespace Toobit.Net.Enums
     public enum FlowType
     {
         /// <summary>
-        /// Trade fee
+        /// ["<c>10</c>"] Trade fee
         /// </summary>
         [Map("10")]
         Fee,
         /// <summary>
-        /// Funding fee
+        /// ["<c>32</c>"] Funding fee
         /// </summary>
         [Map("32")]
         FundingFee,
         /// <summary>
-        /// Realized profit and loss
+        /// ["<c>28</c>"] Realized profit and loss
         /// </summary>
         [Map("28")]
         RealizedPnl,
         /// <summary>
-        /// Transfer
+        /// ["<c>51</c>"] Transfer
         /// </summary>
         [Map("51")]
         Transfer,
         /// <summary>
-        /// Forced liquidation
+        /// ["<c>700</c>"] Forced liquidation
         /// </summary>
         [Map("700")]
         ForceLiquidation,
         /// <summary>
-        /// Auto deleverage
+        /// ["<c>701</c>"] Auto deleverage
         /// </summary>
         [Map("701")]
         AutoDeleverage

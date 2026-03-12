@@ -11,12 +11,12 @@ namespace Toobit.Net.Enums
     public enum PositionSide
     {
         /// <summary>
-        /// Long
+        /// ["<c>LONG</c>"] Long
         /// </summary>
         [Map("LONG")]
         Long,
         /// <summary>
-        /// Short
+        /// ["<c>SHORT</c>"] Short
         /// </summary>
         [Map("SHORT")]
         Short
