@@ -37,7 +37,7 @@ namespace Toobit.Net.UnitTests
         {
             var client = new ToobitSocketClient(opts =>
             {
-                opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
+                opts.ApiCredentials = new ToobitCredentials("123", "456");
             });
             var tester = new SocketSubscriptionValidator<ToobitSocketClient>(client, "Subscriptions/Spot", "wss://stream.toobit.com");
             await tester.ValidateAsync<ToobitTradeUpdate[]>((client, handler) => client.SpotApi.SubscribeToTradeUpdatesAsync("ETHUSDT", handler), "Trades", ignoreProperties: ["v"], nestedJsonProperty: "data");
@@ -55,7 +55,7 @@ namespace Toobit.Net.UnitTests
         {
             var client = new ToobitSocketClient(opts =>
             {
-                opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
+                opts.ApiCredentials = new ToobitCredentials("123", "456");
             });
             var tester = new SocketSubscriptionValidator<ToobitSocketClient>(client, "Subscriptions/UsdtFutures", "wss://stream.toobit.com");
 

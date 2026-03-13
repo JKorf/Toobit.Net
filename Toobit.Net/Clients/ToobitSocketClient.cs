@@ -14,7 +14,7 @@ using Toobit.Net.Objects.Options;
 namespace Toobit.Net.Clients
 {
     /// <inheritdoc cref="IToobitSocketClient" />
-    public class ToobitSocketClient : BaseSocketClient, IToobitSocketClient
+    public class ToobitSocketClient : BaseSocketClient<ToobitEnvironment, ToobitCredentials>, IToobitSocketClient
     {
         #region fields
         #endregion
@@ -56,13 +56,6 @@ namespace Toobit.Net.Clients
         }
         #endregion
 
-        /// <inheritdoc />
-        public void SetOptions(UpdateOptions options)
-        {
-            UsdtFuturesApi.SetOptions(options);
-            SpotApi.SetOptions(options);
-        }
-
         /// <summary>
         /// Set the default options to be used when creating new clients
         /// </summary>
@@ -70,16 +63,6 @@ namespace Toobit.Net.Clients
         public static void SetDefaultOptions(Action<ToobitSocketOptions> optionsDelegate)
         {
             ToobitSocketOptions.Default = ApplyOptionsDelegate(optionsDelegate);
-        }
-
-        /// <inheritdoc />
-        public void SetApiCredentials(ApiCredentials credentials)
-        {
-            
-            UsdtFuturesApi.SetApiCredentials(credentials);
-
-            SpotApi.SetApiCredentials(credentials);
-
         }
     }
 }

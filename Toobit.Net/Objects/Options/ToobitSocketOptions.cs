@@ -6,7 +6,7 @@ namespace Toobit.Net.Objects.Options
     /// <summary>
     /// Options for the ToobitSocketClient
     /// </summary>
-    public class ToobitSocketOptions : SocketExchangeOptions<ToobitEnvironment>
+    public class ToobitSocketOptions : SocketExchangeOptions<ToobitEnvironment, ToobitCredentials>
     {
         /// <summary>
         /// Default options for new clients
@@ -36,12 +36,12 @@ namespace Toobit.Net.Objects.Options
          /// <summary>
         /// UsdtFutures API options
         /// </summary>
-        public SocketApiOptions UsdtFuturesOptions { get; private set; } = new SocketApiOptions();
+        public SocketApiOptions<ToobitCredentials> UsdtFuturesOptions { get; private set; } = new SocketApiOptions<ToobitCredentials>();
 
          /// <summary>
         /// Spot API options
         /// </summary>
-        public SocketApiOptions SpotOptions { get; private set; } = new SocketApiOptions();
+        public SocketApiOptions<ToobitCredentials> SpotOptions { get; private set; } = new SocketApiOptions<ToobitCredentials>();
 
 
         internal ToobitSocketOptions Set(ToobitSocketOptions targetOptions)

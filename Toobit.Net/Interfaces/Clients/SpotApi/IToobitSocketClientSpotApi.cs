@@ -13,7 +13,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
     /// <summary>
     /// Toobit Spot streams
     /// </summary>
-    public interface IToobitSocketClientSpotApi : ISocketApiClient, IDisposable
+    public interface IToobitSocketClientSpotApi : ISocketApiClient<ToobitCredentials>, IDisposable
     {
         /// <summary>
         /// Subscribe to live trade updates

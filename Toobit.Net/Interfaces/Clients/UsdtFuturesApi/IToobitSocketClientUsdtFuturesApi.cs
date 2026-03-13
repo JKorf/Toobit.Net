@@ -13,7 +13,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
     /// <summary>
     /// Toobit UsdtFutures streams
     /// </summary>
-    public interface IToobitSocketClientUsdtFuturesApi : ISocketApiClient, IDisposable
+    public interface IToobitSocketClientUsdtFuturesApi : ISocketApiClient<ToobitCredentials>, IDisposable
     {
         /// <summary>
         /// Subscribe to live trade updates

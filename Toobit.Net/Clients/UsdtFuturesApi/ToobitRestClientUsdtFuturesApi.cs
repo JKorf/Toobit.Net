@@ -20,7 +20,7 @@ using Toobit.Net.Objects.Options;
 namespace Toobit.Net.Clients.UsdtFuturesApi
 {
     /// <inheritdoc cref="IToobitRestClientUsdtFuturesApi" />
-    internal partial class ToobitRestClientUsdtFuturesApi : RestApiClient, IToobitRestClientUsdtFuturesApi
+    internal partial class ToobitRestClientUsdtFuturesApi : RestApiClient<ToobitEnvironment, ToobitAuthenticationProvider, ToobitCredentials>, IToobitRestClientUsdtFuturesApi
     {
         #region fields 
         protected override ErrorMapping ErrorMapping => ToobitErrors.Errors;
@@ -57,7 +57,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
 
         /// <inheritdoc />
-        protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
+        protected override ToobitAuthenticationProvider CreateAuthenticationProvider(ToobitCredentials credentials)
             => new ToobitAuthenticationProvider(credentials);
 
         internal Task<WebCallResult> SendAsync(RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null)

@@ -25,7 +25,7 @@ namespace Toobit.Net.UnitTests
             {
                 AutoTimestamp = false,
                 OutputOriginalData = true,
-                ApiCredentials = Authenticated ? new CryptoExchange.Net.Authentication.ApiCredentials(key, sec) : null
+                ApiCredentials = Authenticated ? new ToobitCredentials(key, sec) : null
             }));
         }
 

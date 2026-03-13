@@ -19,7 +19,7 @@ namespace Toobit.Net.UnitTests
             var client = new ToobitRestClient(opts =>
             {
                 opts.AutoTimestamp = false;
-                opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
+                opts.ApiCredentials = new ToobitCredentials("123", "456");
             });
             var tester = new RestRequestValidator<ToobitRestClient>(client, "Endpoints/Spot/Account", "https://api.toobit.com", IsAuthenticated);
             await tester.ValidateAsync(client => client.SpotApi.Account.GetBalancesAsync(), "GetBalances", nestedJsonProperty: "balances");
@@ -38,7 +38,7 @@ namespace Toobit.Net.UnitTests
             var client = new ToobitRestClient(opts =>
             {
                 opts.AutoTimestamp = false;
-                opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
+                opts.ApiCredentials = new ToobitCredentials("123", "456");
             });
             var tester = new RestRequestValidator<ToobitRestClient>(client, "Endpoints/Spot/ExchangeData", "https://api.toobit.com", IsAuthenticated);
             await tester.ValidateAsync(client => client.SpotApi.ExchangeData.GetExchangeInfoAsync(), "GetExchangeInfo");
@@ -56,7 +56,7 @@ namespace Toobit.Net.UnitTests
             var client = new ToobitRestClient(opts =>
             {
                 opts.AutoTimestamp = false;
-                opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
+                opts.ApiCredentials = new ToobitCredentials("123", "456");
             });
             var tester = new RestRequestValidator<ToobitRestClient>(client, "Endpoints/Spot/Trading", "https://api.toobit.com", IsAuthenticated);
             await tester.ValidateAsync(client => client.SpotApi.Trading.PlaceOrderAsync("ETHUSDT", OrderSide.Buy, OrderType.Market, 1), "PlaceOrder");
@@ -74,7 +74,7 @@ namespace Toobit.Net.UnitTests
             var client = new ToobitRestClient(opts =>
             {
                 opts.AutoTimestamp = false;
-                opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
+                opts.ApiCredentials = new ToobitCredentials("123", "456");
             });
             var tester = new RestRequestValidator<ToobitRestClient>(client, "Endpoints/UsdtFutures/Account", "https://api.toobit.com", IsAuthenticated);
             await tester.ValidateAsync(client => client.UsdtFuturesApi.Account.SetMarginTypeAsync("123", MarginType.Isolated), "SetMarginType");
@@ -92,7 +92,7 @@ namespace Toobit.Net.UnitTests
             var client = new ToobitRestClient(opts =>
             {
                 opts.AutoTimestamp = false;
-                opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
+                opts.ApiCredentials = new ToobitCredentials("123", "456");
             });
             var tester = new RestRequestValidator<ToobitRestClient>(client, "Endpoints/UsdtFutures/ExchangeData", "https://api.toobit.com", IsAuthenticated);
             await tester.ValidateAsync(client => client.UsdtFuturesApi.ExchangeData.GetIndexPricesAsync(), "GetIndexPrices");
@@ -107,7 +107,7 @@ namespace Toobit.Net.UnitTests
             var client = new ToobitRestClient(opts =>
             {
                 opts.AutoTimestamp = false;
-                opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
+                opts.ApiCredentials = new ToobitCredentials("123", "456");
             });
             var tester = new RestRequestValidator<ToobitRestClient>(client, "Endpoints/UsdtFutures/Trading", "https://api.toobit.com", IsAuthenticated);
             await tester.ValidateAsync(client => client.UsdtFuturesApi.Trading.PlaceOrderAsync("123", FuturesOrderSide.SellOpen, FuturesNewOrderType.Limit, 123), "PlaceOrder");

@@ -6,7 +6,7 @@ namespace Toobit.Net.Objects.Options
     /// <summary>
     /// Options for the ToobitRestClient
     /// </summary>
-    public class ToobitRestOptions : RestExchangeOptions<ToobitEnvironment>
+    public class ToobitRestOptions : RestExchangeOptions<ToobitEnvironment, ToobitCredentials>
     {
         /// <summary>
         /// Default options for new clients
@@ -33,16 +33,17 @@ namespace Toobit.Net.Objects.Options
         /// <summary>
         /// UsdtFutures API options
         /// </summary>
-        public RestApiOptions UsdtFuturesOptions { get; private set; } = new RestApiOptions();
+        public RestApiOptions<ToobitCredentials> UsdtFuturesOptions { get; private set; } = new RestApiOptions<ToobitCredentials>();
 
          /// <summary>
         /// Spot API options
         /// </summary>
-        public RestApiOptions SpotOptions { get; private set; } = new RestApiOptions();
+        public RestApiOptions<ToobitCredentials> SpotOptions { get; private set; } = new RestApiOptions<ToobitCredentials>();
 
         internal ToobitRestOptions Set(ToobitRestOptions targetOptions)
         {
-            targetOptions = base.Set<ToobitRestOptions>(targetOptions);            
+            targetOptions = base.Set<ToobitRestOptions>(targetOptions);
+            targetOptions.ReceiveWindow = ReceiveWindow;
             targetOptions.UsdtFuturesOptions = UsdtFuturesOptions.Set(targetOptions.UsdtFuturesOptions);
             targetOptions.SpotOptions = SpotOptions.Set(targetOptions.SpotOptions);
             return targetOptions;

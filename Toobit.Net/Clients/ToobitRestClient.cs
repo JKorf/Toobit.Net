@@ -15,7 +15,7 @@ using Toobit.Net.Clients.SpotApi;
 namespace Toobit.Net.Clients
 {
     /// <inheritdoc cref="IToobitRestClient" />
-    public class ToobitRestClient : BaseRestClient, IToobitRestClient
+    public class ToobitRestClient : BaseRestClient<ToobitEnvironment, ToobitCredentials>, IToobitRestClient
     {
         #region Api clients
                 
@@ -54,13 +54,6 @@ namespace Toobit.Net.Clients
 
         #endregion
 
-        /// <inheritdoc />
-        public void SetOptions(UpdateOptions options)
-        {
-            UsdtFuturesApi.SetOptions(options);
-            SpotApi.SetOptions(options);
-        }
-
         /// <summary>
         /// Set the default options to be used when creating new clients
         /// </summary>
@@ -70,11 +63,5 @@ namespace Toobit.Net.Clients
             ToobitRestOptions.Default = ApplyOptionsDelegate(optionsDelegate);
         }
 
-        /// <inheritdoc />
-        public void SetApiCredentials(ApiCredentials credentials)
-        {            
-            UsdtFuturesApi.SetApiCredentials(credentials);
-            SpotApi.SetApiCredentials(credentials);
-        }
     }
 }

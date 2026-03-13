@@ -31,7 +31,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
     /// <summary>
     /// Client providing access to the Toobit UsdtFutures websocket Api
     /// </summary>
-    internal partial class ToobitSocketClientUsdtFuturesApi : SocketApiClient, IToobitSocketClientUsdtFuturesApi
+    internal partial class ToobitSocketClientUsdtFuturesApi : SocketApiClient<ToobitEnvironment, ToobitAuthenticationProvider, ToobitCredentials>, IToobitSocketClientUsdtFuturesApi
     {
         #region fields
         private readonly TimeSpan _waitForErrorTimeout;
@@ -71,7 +71,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         public override ISocketMessageHandler CreateMessageConverter(WebSocketMessageType messageType) => new ToobitSocketFuturesMessageHandler();
 
         /// <inheritdoc />
-        protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
+        protected override ToobitAuthenticationProvider CreateAuthenticationProvider(ToobitCredentials credentials)
             => new ToobitAuthenticationProvider(credentials);
 
         /// <inheritdoc />

@@ -121,7 +121,7 @@ namespace Toobit.Net
         }
 
         /// <inheritdoc />
-        public IUserSpotDataTracker CreateUserSpotDataTracker(string userIdentifier, ApiCredentials credentials, SpotUserDataTrackerConfig? config = null, ToobitEnvironment? environment = null)
+        public IUserSpotDataTracker CreateUserSpotDataTracker(string userIdentifier, ToobitCredentials credentials, SpotUserDataTrackerConfig? config = null, ToobitEnvironment? environment = null)
         {
             var clientProvider = _serviceProvider?.GetRequiredService<IToobitUserClientProvider>() ?? new ToobitUserClientProvider();
             var restClient = clientProvider.GetRestClient(userIdentifier, credentials, environment);
@@ -150,7 +150,7 @@ namespace Toobit.Net
         }
 
         /// <inheritdoc />
-        public IUserFuturesDataTracker CreateUserUsdtFuturesDataTracker(string userIdentifier, ApiCredentials credentials, FuturesUserDataTrackerConfig? config = null, ToobitEnvironment? environment = null)
+        public IUserFuturesDataTracker CreateUserUsdtFuturesDataTracker(string userIdentifier, ToobitCredentials credentials, FuturesUserDataTrackerConfig? config = null, ToobitEnvironment? environment = null)
         {
             var clientProvider = _serviceProvider?.GetRequiredService<IToobitUserClientProvider>() ?? new ToobitUserClientProvider();
             var restClient = clientProvider.GetRestClient(userIdentifier, credentials, environment);

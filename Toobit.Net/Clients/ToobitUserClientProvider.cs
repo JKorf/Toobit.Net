@@ -49,7 +49,7 @@ namespace Toobit.Net.Clients
         }
 
         /// <inheritdoc />
-        public void InitializeUserClient(string userIdentifier, ApiCredentials credentials, ToobitEnvironment? environment = null)
+        public void InitializeUserClient(string userIdentifier, ToobitCredentials credentials, ToobitEnvironment? environment = null)
         {
             CreateRestClient(userIdentifier, credentials, environment);
             CreateSocketClient(userIdentifier, credentials, environment);
@@ -63,7 +63,7 @@ namespace Toobit.Net.Clients
         }
 
         /// <inheritdoc />
-        public IToobitRestClient GetRestClient(string userIdentifier, ApiCredentials? credentials = null, ToobitEnvironment? environment = null)
+        public IToobitRestClient GetRestClient(string userIdentifier, ToobitCredentials? credentials = null, ToobitEnvironment? environment = null)
         {
             if (!_restClients.TryGetValue(userIdentifier, out var client) || client.Disposed)
                 client = CreateRestClient(userIdentifier, credentials, environment);
@@ -72,7 +72,7 @@ namespace Toobit.Net.Clients
         }
 
         /// <inheritdoc />
-        public IToobitSocketClient GetSocketClient(string userIdentifier, ApiCredentials? credentials = null, ToobitEnvironment? environment = null)
+        public IToobitSocketClient GetSocketClient(string userIdentifier, ToobitCredentials? credentials = null, ToobitEnvironment? environment = null)
         {
             if (!_socketClients.TryGetValue(userIdentifier, out var client) || client.Disposed)
                 client = CreateSocketClient(userIdentifier, credentials, environment);
@@ -80,7 +80,7 @@ namespace Toobit.Net.Clients
             return client;
         }
 
-        private IToobitRestClient CreateRestClient(string userIdentifier, ApiCredentials? credentials, ToobitEnvironment? environment)
+        private IToobitRestClient CreateRestClient(string userIdentifier, ToobitCredentials? credentials, ToobitEnvironment? environment)
         {
             var clientRestOptions = SetRestEnvironment(environment);
             var client = new ToobitRestClient(_httpClient, _loggerFactory, clientRestOptions);
@@ -92,7 +92,7 @@ namespace Toobit.Net.Clients
             return client;
         }
 
-        private IToobitSocketClient CreateSocketClient(string userIdentifier, ApiCredentials? credentials, ToobitEnvironment? environment)
+        private IToobitSocketClient CreateSocketClient(string userIdentifier, ToobitCredentials? credentials, ToobitEnvironment? environment)
         {
             var clientSocketOptions = SetSocketEnvironment(environment);
             var client = new ToobitSocketClient(clientSocketOptions!, _loggerFactory);
