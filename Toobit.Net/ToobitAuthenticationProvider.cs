@@ -20,7 +20,7 @@ namespace Toobit.Net
         public override void ProcessRequest(RestApiClient apiClient, RestRequestConfiguration request)
         {
             request.Headers ??= new Dictionary<string, string>();
-            request.Headers.Add("X-BB-APIKEY", Credential.PublicKey);
+            request.Headers.Add("X-BB-APIKEY", Credential.Key);
 
             if (!request.Authenticated)
                 return;
