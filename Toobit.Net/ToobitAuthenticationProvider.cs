@@ -11,7 +11,7 @@ namespace Toobit.Net
 {
     internal class ToobitAuthenticationProvider : AuthenticationProvider<ToobitCredentials, HMACCredential>
     {
-        public override ApiCredentialsType[] SupportedCredentialTypes => [ApiCredentialsType.Hmac];
+        public override ApiCredentialsType[] SupportedCredentialTypes => [ApiCredentialsType.HMAC];
 
         public ToobitAuthenticationProvider(ToobitCredentials credentials) : base(credentials)
         {
