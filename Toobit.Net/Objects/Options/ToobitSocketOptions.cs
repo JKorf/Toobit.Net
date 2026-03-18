@@ -1,3 +1,4 @@
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Objects.Options;
 using System;
 
@@ -36,12 +37,12 @@ namespace Toobit.Net.Objects.Options
          /// <summary>
         /// UsdtFutures API options
         /// </summary>
-        public SocketApiOptions<ToobitCredentials> UsdtFuturesOptions { get; private set; } = new SocketApiOptions<ToobitCredentials>();
+        public SocketApiOptions UsdtFuturesOptions { get; private set; } = new SocketApiOptions();
 
          /// <summary>
         /// Spot API options
         /// </summary>
-        public SocketApiOptions<ToobitCredentials> SpotOptions { get; private set; } = new SocketApiOptions<ToobitCredentials>();
+        public SocketApiOptions SpotOptions { get; private set; } = new SocketApiOptions();
 
 
         internal ToobitSocketOptions Set(ToobitSocketOptions targetOptions)

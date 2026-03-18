@@ -1,35 +1,19 @@
 ﻿using CryptoExchange.Net.Authentication;
-using System;
 
 namespace Toobit.Net
 {
     /// <summary>
-    /// Toobit credentials
+    /// Toobit API credentials
     /// </summary>
-    public class ToobitCredentials : ApiCredentials
+    public class ToobitCredentials : HMACCredential
     {
         /// <summary>
+        /// Create new credentials providing only credentials in HMAC format
         /// </summary>
-        [Obsolete("Parameterless constructor is only for deserialization purposes and should not be used directly. Use parameterized constructor instead.")]
-        public ToobitCredentials() { }
-
-        /// <summary>
-        /// Create credentials using an HMAC key and secret
-        /// </summary>
-        /// <param name="apiKey">The API key</param>
-        /// <param name="secret">The API secret</param>
-        public ToobitCredentials(string apiKey, string secret) : this(new HMACCredential(apiKey, secret)) { }
-
-        /// <summary>
-        /// Create Toobit credentials using HMAC credentials
-        /// </summary>
-        /// <param name="credential">The HMAC credentials</param>
-        public ToobitCredentials(HMACCredential credential) : base(credential) { }
-
-
-        /// <inheritdoc />
-#pragma warning disable CS0618 // Type or member is obsolete
-        public override ApiCredentials Copy() => new ToobitCredentials { CredentialPairs = CredentialPairs };
-#pragma warning restore CS0618 // Type or member is obsolete
+        /// <param name="key">API key</param>
+        /// <param name="secret">API secret</param>
+        public ToobitCredentials(string key, string secret) : base(key, secret)
+        {
+        }
     }
 }

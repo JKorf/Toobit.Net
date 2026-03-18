@@ -9,11 +9,9 @@ using Toobit.Net.Objects.Options;
 
 namespace Toobit.Net
 {
-    internal class ToobitAuthenticationProvider : AuthenticationProvider<ToobitCredentials, HMACCredential>
+    internal class ToobitAuthenticationProvider : AuthenticationProvider<ToobitCredentials, ToobitCredentials>
     {
-        public override ApiCredentialsType[] SupportedCredentialTypes => [ApiCredentialsType.HMAC];
-
-        public ToobitAuthenticationProvider(ToobitCredentials credentials) : base(credentials)
+        public ToobitAuthenticationProvider(ToobitCredentials credentials) : base(credentials, credentials)
         {
         }
 

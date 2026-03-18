@@ -7,6 +7,7 @@ using Toobit.Net.Objects.Models;
 using System.Collections.Generic;
 using Toobit.Net.Enums;
 using CryptoExchange.Net.Interfaces.Clients;
+using CryptoExchange.Net.Authentication;
 
 namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
 {
