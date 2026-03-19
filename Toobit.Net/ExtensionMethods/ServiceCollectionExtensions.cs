@@ -51,10 +51,6 @@ namespace Microsoft.Extensions.DependencyInjection
             if (options.Rest == null || options.Socket == null)
                 throw new ArgumentException("Options null");
 
-            LibraryHelpers.ValidateCredentials(options.ApiCredentials);
-            LibraryHelpers.ValidateCredentials(options.Rest.ApiCredentials);
-            LibraryHelpers.ValidateCredentials(options.Socket.ApiCredentials);
-
             var restEnvName = options.Rest.Environment?.Name ?? options.Environment?.Name ?? ToobitEnvironment.Live.Name;
             var socketEnvName = options.Socket.Environment?.Name ?? options.Environment?.Name ?? ToobitEnvironment.Live.Name;
             options.Rest.Environment = ToobitEnvironment.GetEnvironmentByName(restEnvName) ?? options.Rest.Environment!;
