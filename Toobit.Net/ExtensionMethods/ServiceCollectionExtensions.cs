@@ -109,8 +109,6 @@ namespace Microsoft.Extensions.DependencyInjection
             }).SetHandlerLifetime(Timeout.InfiniteTimeSpan);
             services.Add(new ServiceDescriptor(typeof(IToobitSocketClient), x => { return new ToobitSocketClient(x.GetRequiredService<IOptions<ToobitSocketOptions>>(), x.GetRequiredService<ILoggerFactory>()); }, socketClientLifeTime ?? ServiceLifetime.Singleton));
 
-            services.AddTransient<ICryptoRestClient, CryptoRestClient>();
-            services.AddSingleton<ICryptoSocketClient, CryptoSocketClient>();
             services.AddTransient<IToobitOrderBookFactory, ToobitOrderBookFactory>();
             services.AddTransient<IToobitTrackerFactory, ToobitTrackerFactory>();
             services.AddTransient<ITrackerFactory, ToobitTrackerFactory>();
