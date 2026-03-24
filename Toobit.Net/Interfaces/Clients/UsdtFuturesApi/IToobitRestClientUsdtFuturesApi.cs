@@ -1,3 +1,4 @@
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Interfaces.Clients;
 using System;
 
@@ -6,7 +7,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
     /// <summary>
     /// Toobit UsdtFutures API endpoints
     /// </summary>
-    public interface IToobitRestClientUsdtFuturesApi : IRestApiClient, IDisposable
+    public interface IToobitRestClientUsdtFuturesApi : IRestApiClient<ToobitCredentials>, IDisposable
     {
         /// <summary>
         /// Endpoints related to account settings, info or actions

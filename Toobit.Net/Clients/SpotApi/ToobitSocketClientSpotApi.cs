@@ -31,7 +31,7 @@ namespace Toobit.Net.Clients.SpotApi
     /// <summary>
     /// Client providing access to the Toobit Spot websocket Api
     /// </summary>
-    internal partial class ToobitSocketClientSpotApi : SocketApiClient, IToobitSocketClientSpotApi
+    internal partial class ToobitSocketClientSpotApi : SocketApiClient<ToobitEnvironment, ToobitAuthenticationProvider, ToobitCredentials>, IToobitSocketClientSpotApi
     {
         #region fields
         private readonly TimeSpan _waitForErrorTimeout;
@@ -74,7 +74,7 @@ namespace Toobit.Net.Clients.SpotApi
         public override ISocketMessageHandler CreateMessageConverter(WebSocketMessageType messageType) => new ToobitSocketFuturesMessageHandler();
 
         /// <inheritdoc />
-        protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
+        protected override ToobitAuthenticationProvider CreateAuthenticationProvider(ToobitCredentials credentials)
             => new ToobitAuthenticationProvider(credentials);
 
         /// <inheritdoc />

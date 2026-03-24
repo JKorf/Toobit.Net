@@ -14,7 +14,7 @@ namespace Toobit.Net.UnitTests
         [Test]
         public void CheckSignatureExample1()
         {
-            var authProvider = new ToobitAuthenticationProvider(new ApiCredentials("XXX", "XXX"));
+            var authProvider = new ToobitAuthenticationProvider(new ToobitCredentials("XXX", "XXX"));
             var client = (RestApiClient)new ToobitRestClient().SpotApi;
 
             CryptoExchange.Net.Testing.TestHelpers.CheckSignature(

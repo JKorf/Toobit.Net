@@ -1,3 +1,4 @@
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Objects.Options;
 using System;
 
@@ -6,7 +7,7 @@ namespace Toobit.Net.Objects.Options
     /// <summary>
     /// Options for the ToobitSocketClient
     /// </summary>
-    public class ToobitSocketOptions : SocketExchangeOptions<ToobitEnvironment>
+    public class ToobitSocketOptions : SocketExchangeOptions<ToobitEnvironment, ToobitCredentials>
     {
         /// <summary>
         /// Default options for new clients

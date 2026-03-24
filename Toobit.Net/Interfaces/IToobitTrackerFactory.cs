@@ -17,7 +17,7 @@ namespace Toobit.Net.Interfaces
         /// <param name="config">Configuration</param>
         /// <param name="credentials">Credentials</param>
         /// <param name="environment">Environment</param>
-        IUserSpotDataTracker CreateUserSpotDataTracker(string userIdentifier, ApiCredentials credentials, SpotUserDataTrackerConfig? config = null, ToobitEnvironment? environment = null);
+        IUserSpotDataTracker CreateUserSpotDataTracker(string userIdentifier, ToobitCredentials credentials, SpotUserDataTrackerConfig? config = null, ToobitEnvironment? environment = null);
         /// <summary>
         /// Create a new spot user data tracker
         /// </summary>
@@ -31,7 +31,7 @@ namespace Toobit.Net.Interfaces
         /// <param name="config">Configuration</param>
         /// <param name="credentials">Credentials</param>
         /// <param name="environment">Environment</param>
-        IUserFuturesDataTracker CreateUserUsdtFuturesDataTracker(string userIdentifier, ApiCredentials credentials, FuturesUserDataTrackerConfig? config = null, ToobitEnvironment? environment = null);
+        IUserFuturesDataTracker CreateUserUsdtFuturesDataTracker(string userIdentifier, ToobitCredentials credentials, FuturesUserDataTrackerConfig? config = null, ToobitEnvironment? environment = null);
         /// <summary>
         /// Create a new futures user data tracker
         /// </summary>

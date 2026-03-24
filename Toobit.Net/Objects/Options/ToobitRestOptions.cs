@@ -1,3 +1,4 @@
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Objects.Options;
 using System;
 
@@ -6,7 +7,7 @@ namespace Toobit.Net.Objects.Options
     /// <summary>
     /// Options for the ToobitRestClient
     /// </summary>
-    public class ToobitRestOptions : RestExchangeOptions<ToobitEnvironment>
+    public class ToobitRestOptions : RestExchangeOptions<ToobitEnvironment, ToobitCredentials>
     {
         /// <summary>
         /// Default options for new clients
@@ -42,7 +43,8 @@ namespace Toobit.Net.Objects.Options
 
         internal ToobitRestOptions Set(ToobitRestOptions targetOptions)
         {
-            targetOptions = base.Set<ToobitRestOptions>(targetOptions);            
+            targetOptions = base.Set<ToobitRestOptions>(targetOptions);
+            targetOptions.ReceiveWindow = ReceiveWindow;
             targetOptions.UsdtFuturesOptions = UsdtFuturesOptions.Set(targetOptions.UsdtFuturesOptions);
             targetOptions.SpotOptions = SpotOptions.Set(targetOptions.SpotOptions);
             return targetOptions;

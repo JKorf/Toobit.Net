@@ -27,7 +27,7 @@ namespace Toobit.Net.UnitTests
             return new ToobitSocketClient(Options.Create(new ToobitSocketOptions
             {
                 OutputOriginalData = true,
-                ApiCredentials = Authenticated ? new CryptoExchange.Net.Authentication.ApiCredentials(key, sec) : null
+                ApiCredentials = Authenticated ? new ToobitCredentials(key, sec) : null
             }), loggerFactory);
         }
 
@@ -39,7 +39,7 @@ namespace Toobit.Net.UnitTests
             Authenticated = key != null && sec != null;
             return new ToobitRestClient(x =>
             {
-                x.ApiCredentials = Authenticated ? new CryptoExchange.Net.Authentication.ApiCredentials(key, sec) : null;
+                x.ApiCredentials = Authenticated ? new ToobitCredentials(key, sec) : null;
             });
         }
 

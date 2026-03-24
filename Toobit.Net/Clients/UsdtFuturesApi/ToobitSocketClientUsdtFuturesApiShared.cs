@@ -155,7 +155,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                         x.OrderId.ToString(),
                         (x.PriceType == Enums.PriceType.Market || x.OrderType == Enums.FuturesUpdateOrderType.Market) ? SharedOrderType.Market : x.OrderType != Enums.FuturesUpdateOrderType.Limit ? SharedOrderType.Other : SharedOrderType.Limit,
                         x.OrderSide == Enums.OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
-                        x.Status == Enums.OrderStatus.Canceled ? SharedOrderStatus.Canceled : (x.Status == Enums.OrderStatus.New || x.Status == Enums.OrderStatus.PartiallyFilled) ? SharedOrderStatus.Open : SharedOrderStatus.Filled,
+                        ParseOrderStatus(x.Status),
                         x.UpdateTime)
                     {
                         ClientOrderId = x.ClientOrderId,
@@ -177,6 +177,18 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 ct: ct).ConfigureAwait(false);
 
             return new ExchangeResult<UpdateSubscription>(Exchange, result);
+        }
+
+        private SharedOrderStatus ParseOrderStatus(OrderStatus status)
+        {
+            if (status == Enums.OrderStatus.Canceled || status == Enums.OrderStatus.Rejected || status == OrderStatus.PartiallyCanceled)
+                return SharedOrderStatus.Canceled;
+            if (status == Enums.OrderStatus.New || status == Enums.OrderStatus.PartiallyFilled || status == Enums.OrderStatus.PendingCancel)
+                return SharedOrderStatus.Open;
+            if (status == OrderStatus.Filled)
+                return SharedOrderStatus.Filled;
+
+            return SharedOrderStatus.Unknown;
         }
 
         #endregion

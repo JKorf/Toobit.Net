@@ -20,7 +20,7 @@ using System.Net.Http.Headers;
 namespace Toobit.Net.Clients.SpotApi
 {
     /// <inheritdoc cref="IToobitRestClientSpotApi" />
-    internal partial class ToobitRestClientSpotApi : RestApiClient, IToobitRestClientSpotApi
+    internal partial class ToobitRestClientSpotApi : RestApiClient<ToobitEnvironment, ToobitAuthenticationProvider, ToobitCredentials>, IToobitRestClientSpotApi
     {
         #region fields 
         protected override ErrorMapping ErrorMapping => ToobitErrors.Errors;
@@ -56,7 +56,7 @@ namespace Toobit.Net.Clients.SpotApi
 
 
         /// <inheritdoc />
-        protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
+        protected override ToobitAuthenticationProvider CreateAuthenticationProvider(ToobitCredentials credentials)
             => new ToobitAuthenticationProvider(credentials);
 
         internal Task<WebCallResult> SendAsync(RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null)

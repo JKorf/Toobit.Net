@@ -9,18 +9,16 @@ using Toobit.Net.Objects.Options;
 
 namespace Toobit.Net
 {
-    internal class ToobitAuthenticationProvider : AuthenticationProvider
+    internal class ToobitAuthenticationProvider : AuthenticationProvider<ToobitCredentials, ToobitCredentials>
     {
-        public override ApiCredentialsType[] SupportedCredentialTypes => [ApiCredentialsType.Hmac];
-
-        public ToobitAuthenticationProvider(ApiCredentials credentials) : base(credentials)
+        public ToobitAuthenticationProvider(ToobitCredentials credentials) : base(credentials, credentials)
         {
         }
 
         public override void ProcessRequest(RestApiClient apiClient, RestRequestConfiguration request)
         {
             request.Headers ??= new Dictionary<string, string>();
-            request.Headers.Add("X-BB-APIKEY", ApiKey);
+            request.Headers.Add("X-BB-APIKEY", Credential.Key);
 
             if (!request.Authenticated)
                 return;
