@@ -46,22 +46,40 @@ Toobit.Net is available on [GitHub packages](https://github.com/JKorf/Toobit.Net
 The NuGet package files are added along side the source with the latest GitHub release which can found [here](https://github.com/JKorf/Toobit.Net/releases).
 
 ## How to use
-* REST Endpoints
-	```csharp
-	// Get the ETH/USDT ticker via rest request
-	var restClient = new ToobitRestClient();
-	var tickerResult = await restClient.SpotApi.ExchangeData.GetTickersAsync("ETHUSDT");
-	var lastPrice = tickerResult.Data.Single().LastPrice;
-	```
-* Websocket streams
-	```csharp
-	// Subscribe to ETH/USDT ticker updates via the websocket API
-	var socketClient = new ToobitSocketClient();
-	var tickerSubscriptionResult = socketClient.SpotApi.SubscribeToTickerUpdatesAsync("ETHUSDT", (update) => 
-	{
-	  var lastPrice = update.Data.LastPrice;
-	});
-	```
+*Basic request:* 
+```csharp
+// Get the ETH/USDT ticker via rest request
+var restClient = new ToobitRestClient();
+var tickerResult = await restClient.SpotApi.ExchangeData.GetTickersAsync("ETHUSDT");
+var lastPrice = tickerResult.Data.Single().LastPrice;
+```
+	
+*Place order:*
+```csharp
+var restClient = new ToobitRestClient(opts => {
+	opts.ApiCredentials = new ToobitCredentials("APIKEY", "APISECRET");
+});
+
+// Place Limit order to buy 10 long contracts of ETH/USDT at 2000
+var orderResult = await restClient.UsdtFuturesApi.Trading.PlaceOrderAsync(
+    "ETH-SWAP-USDT",
+    FuturesOrderSide.BuyOpen,
+    FuturesNewOrderType.Limit,
+    10,
+    price: 2000
+    );
+```
+
+*WebSocket subscription:* 
+
+```csharp
+// Subscribe to ETH/USDT ticker updates via the websocket API
+var socketClient = new ToobitSocketClient();
+var tickerSubscriptionResult = socketClient.SpotApi.SubscribeToTickerUpdatesAsync("ETHUSDT", (update) => 
+{
+  var lastPrice = update.Data.LastPrice;
+});
+```
 
 For information on the clients, dependency injection, response processing and more see the [documentation](https://cryptoexchange.jkorf.dev?library=Toobit.Net), or have a look at the examples [here](https://github.com/JKorf/Toobit.Net/tree/main/Examples) or [here](https://github.com/JKorf/CryptoExchange.Net/tree/master/Examples).
 
