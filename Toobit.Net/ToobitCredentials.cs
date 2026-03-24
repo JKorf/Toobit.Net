@@ -43,5 +43,8 @@ namespace Toobit.Net
             Secret = secret;
             return this;
         }
+
+        /// <inheritdoc />
+        public override ApiCredentials Copy() => new ToobitCredentials(this);
     }
 }
