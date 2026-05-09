@@ -8,7 +8,7 @@ Toobit.Net is a client library for accessing the [Toobit REST and Websocket API]
 
 This library provides first-class support for AI coding assistants. The relevant instruction and context files are in this repository:
 
-- **Claude Code**: `CLAUDE.md` (auto-detected at repo root)
+- **Agents**: `AGENTS.md` (auto-detected at repo root)
 - **Cursor**: `.cursor/rules/toobit-net.mdc`
 - **GitHub Copilot**: `.github/copilot-instructions.md`
 - **Other tools** (Windsurf, Codex, Continue, Aider, etc.): `llms.txt` at repo root

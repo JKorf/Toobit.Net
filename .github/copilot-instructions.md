@@ -104,4 +104,4 @@ var ticker = await shared.GetSpotTickerAsync(
 
 ## Reference
 
-For detailed patterns and pitfalls see `CLAUDE.md`, `llms.txt`, `llms-full.txt`, and `docs/ai-api-map.md` in the repository root. Compilable examples are in `Examples/ai-friendly/`.
+For detailed patterns and pitfalls see `AGENTS.md`, `llms.txt`, `llms-full.txt`, and `docs/ai-api-map.md` in the repository root. Compilable examples are in `Examples/ai-friendly/`.
