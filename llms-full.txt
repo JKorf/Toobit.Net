@@ -1,0 +1,1067 @@
+# Toobit.Net Full LLM Context
+
+> Detailed AI/LLM reference for generating correct C#/.NET code with Toobit.Net. Use this file when `llms.txt` is too brief and the task needs concrete examples, endpoint routing guidance, or anti-hallucination rules.
+
+Toobit.Net is a strongly typed .NET client library for the Toobit REST and WebSocket APIs. It is part of the CryptoExchange.Net ecosystem and uses the same result, shared API, logging, rate limiting, dependency injection, and socket patterns as the other JKorf exchange libraries.
+
+Current package version in this repository: 3.9.2.
+CryptoExchange.Net dependency: 11.1.0.
+Target frameworks: netstandard2.0, netstandard2.1, net8.0, net9.0, net10.0.
+Native AOT: supported on compatible .NET targets.
+
+Primary documentation:
+- README.md: overview, installation, feature table, release notes, basic examples
+- docs site: https://cryptoexchange.jkorf.dev/Toobit.Net/
+- API quick map: `docs/ai-api-map.md`
+- source interfaces: `Toobit.Net/Interfaces/Clients/**`
+- AI examples: `Examples/ai-friendly/`
+
+## Golden Rules For AI Code Generation
+
+- Use `ToobitRestClient` for REST and `ToobitSocketClient` for WebSocket. Do not generate raw `HttpClient` calls to Toobit endpoints.
+- Use `ToobitCredentials`, not generic `ApiCredentials`, for API key setup.
+- Include `using Toobit.Net;` when using `ToobitCredentials` or `ToobitEnvironment`.
+- Always check `.Success` before reading `.Data`.
+- REST methods return `WebCallResult<T>` or `WebCallResult`.
+- WebSocket subscriptions return `CallResult<UpdateSubscription>`.
+- Reuse clients. Do not instantiate a REST or socket client per request in production code.
+- Prefer dependency injection for long-running services.
+- Store WebSocket subscriptions and unsubscribe during shutdown.
+- Do not call `.Result` or `.Wait()` on async methods.
+- Do not invent endpoint names. If unsure, inspect `Toobit.Net/Interfaces/Clients/**`.
+- For multi-exchange code, use `CryptoExchange.Net.SharedApis` interfaces from each exchange's `.SharedClient`.
+- Use Toobit futures contract symbols such as `ETH-SWAP-USDT` for USDT futures trading examples.
+- Use `UsdtFuturesApi`, not `UsdFuturesApi`.
+- Toobit.Net has no top-level `GeneralApi`, `CoinFuturesApi`, margin API, options API, brokerage API, earn API, loan API, or NFT API.
+
+## Installation
+
+```bash
+dotnet add package Toobit.Net
+```
+
+## Required Usings
+
+Typical REST/trading code:
+
+```csharp
+using Toobit.Net;
+using Toobit.Net.Clients;
+using Toobit.Net.Enums;
+```
+
+Shared API code:
+
+```csharp
+using Toobit.Net.Clients;
+using CryptoExchange.Net.SharedApis;
+```
+
+Retry/error helper code may also need:
+
+```csharp
+using CryptoExchange.Net.Objects;
+```
+
+Dependency injection setup:
+
+```csharp
+using Toobit.Net;
+using Microsoft.Extensions.DependencyInjection;
+```
+
+Interface injection code:
+
+```csharp
+using Toobit.Net.Interfaces.Clients;
+```
+
+## Client Setup
+
+Public market data does not require credentials:
+
+```csharp
+var client = new ToobitRestClient();
+
+var ticker = await client.SpotApi.ExchangeData.GetTickersAsync("BTCUSDT");
+if (!ticker.Success)
+{
+    Console.WriteLine(ticker.Error);
+    return;
+}
+
+Console.WriteLine(ticker.Data.Single().LastPrice);
+```
+
+Private account and trading endpoints require credentials:
+
+```csharp
+var client = new ToobitRestClient(options =>
+{
+    options.ApiCredentials = new ToobitCredentials("API_KEY", "API_SECRET");
+});
+```
+
+Socket client with credentials:
+
+```csharp
+var socketClient = new ToobitSocketClient(options =>
+{
+    options.ApiCredentials = new ToobitCredentials("API_KEY", "API_SECRET");
+});
+```
+
+Environments:
+
+```csharp
+var live = new ToobitRestClient(options => options.Environment = ToobitEnvironment.Live);
+
+var custom = new ToobitRestClient(options =>
+{
+    options.Environment = ToobitEnvironment.CreateCustom(
+        "custom",
+        "https://example-rest",
+        "wss://example-socket");
+});
+```
+
+Only `ToobitEnvironment.Live` is built in. Do not generate testnet examples unless the user provides custom endpoints.
+
+## Dependency Injection
+
+Current DI shape:
+
+```csharp
+services.AddToobit(options =>
+{
+    options.Rest.ApiCredentials = new ToobitCredentials("API_KEY", "API_SECRET");
+    options.Socket.ApiCredentials = new ToobitCredentials("API_KEY", "API_SECRET");
+});
+```
+
+Inject:
+
+```csharp
+public class MyService
+{
+    private readonly IToobitRestClient _restClient;
+    private readonly IToobitSocketClient _socketClient;
+
+    public MyService(IToobitRestClient restClient, IToobitSocketClient socketClient)
+    {
+        _restClient = restClient;
+        _socketClient = socketClient;
+    }
+}
+```
+
+Interface namespace:
+
+```csharp
+using Toobit.Net.Interfaces.Clients;
+```
+
+DI registers shared REST/socket interfaces for both Spot and USDT futures through the `.SharedClient` properties.
+
+## Result Handling Pattern
+
+Always branch on `.Success`.
+
+```csharp
+var result = await client.SpotApi.ExchangeData.GetTickersAsync("BTCUSDT");
+if (!result.Success)
+{
+    Console.WriteLine($"Code: {result.Error?.Code}");
+    Console.WriteLine($"Message: {result.Error?.Message}");
+    return;
+}
+
+var price = result.Data.Single().LastPrice;
+```
+
+For retry logic, only retry transient errors:
+
+```csharp
+async Task<WebCallResult<T>> WithRetry<T>(Func<Task<WebCallResult<T>>> call, int maxAttempts = 3)
+{
+    WebCallResult<T> last = default!;
+
+    for (var attempt = 1; attempt <= maxAttempts; attempt++)
+    {
+        last = await call();
+        if (last.Success)
+            return last;
+
+        if (last.Error?.IsTransient != true)
+            return last;
+
+        await Task.Delay(TimeSpan.FromMilliseconds(250 * Math.Pow(2, attempt)));
+    }
+
+    return last;
+}
+```
+
+Toobit.Net returns API/network/rate-limit errors through `.Error` on result objects. It generally does not throw for normal API failures. Exceptions are for misconfiguration, disposal, cancellation, or programming errors.
+
+## Main API Surface
+
+REST:
+
+```text
+ToobitRestClient
+  .SpotApi
+    .ExchangeData
+    .Account
+    .Trading
+    .SharedClient
+  .UsdtFuturesApi
+    .ExchangeData
+    .Account
+    .Trading
+    .SharedClient
+```
+
+WebSocket:
+
+```text
+ToobitSocketClient
+  .SpotApi
+    public market subscriptions
+    user data subscriptions
+    .SharedClient
+  .UsdtFuturesApi
+    public market subscriptions
+    user data subscriptions
+    .SharedClient
+```
+
+Important: Toobit.Net does not expose Binance-style `GeneralApi`, `UsdFuturesApi`, `CoinFuturesApi`, or `SpotApi.ExchangeData.GetTickerAsync`. Use the actual Toobit branches and method names.
+
+## Intent To Method Map
+
+For a broader table reference, see `docs/ai-api-map.md`.
+
+Common Spot REST tasks:
+
+```text
+Get spot server time -> client.SpotApi.ExchangeData.GetServerTimeAsync()
+Get spot exchange info -> client.SpotApi.ExchangeData.GetExchangeInfoAsync()
+Get spot ticker -> client.SpotApi.ExchangeData.GetTickersAsync("BTCUSDT")
+Get all spot tickers -> client.SpotApi.ExchangeData.GetTickersAsync()
+Get spot price -> client.SpotApi.ExchangeData.GetPricesAsync("BTCUSDT")
+Get spot order book -> client.SpotApi.ExchangeData.GetOrderBookAsync("BTCUSDT")
+Get recent spot trades -> client.SpotApi.ExchangeData.GetRecentTradesAsync("BTCUSDT")
+Get spot klines -> client.SpotApi.ExchangeData.GetKlinesAsync("BTCUSDT", KlineInterval.OneMinute)
+Get spot book ticker -> client.SpotApi.ExchangeData.GetBookTickersAsync("BTCUSDT")
+Get spot balances -> client.SpotApi.Account.GetBalancesAsync()
+Get deposit address -> client.SpotApi.Account.GetDepositAddressAsync(asset, network)
+Get deposit history -> client.SpotApi.Account.GetDepositsAsync(...)
+Get withdrawal history -> client.SpotApi.Account.GetWithdrawalsAsync(...)
+Withdraw asset -> client.SpotApi.Account.WithdrawAsync(...)
+Transfer asset -> client.SpotApi.Account.TransferAsync(...)
+Get transaction history -> client.SpotApi.Account.GetTransactionHistoryAsync(...)
+Get sub accounts -> client.SpotApi.Account.GetSubAccountsAsync()
+Start listen key -> client.SpotApi.Account.StartUserStreamAsync()
+Keep alive listen key -> client.SpotApi.Account.KeepAliveUserStreamAsync(listenKey)
+Stop listen key -> client.SpotApi.Account.StopUserStreamAsync(listenKey)
+Place spot order -> client.SpotApi.Trading.PlaceOrderAsync(...)
+Place spot test order -> client.SpotApi.Trading.PlaceTestOrderAsync(...)
+Place multiple spot orders -> client.SpotApi.Trading.PlaceMultipleOrdersAsync(orders)
+Get spot order -> client.SpotApi.Trading.GetOrderAsync(orderId: orderId)
+Get spot order by client id -> client.SpotApi.Trading.GetOrderAsync(clientOrderId: clientOrderId)
+Get open spot orders -> client.SpotApi.Trading.GetOpenOrdersAsync(symbol: "BTCUSDT")
+Get historical spot orders -> client.SpotApi.Trading.GetOrdersAsync(symbol: "BTCUSDT")
+Cancel spot order -> client.SpotApi.Trading.CancelOrderAsync(orderId: orderId)
+Cancel all spot orders -> client.SpotApi.Trading.CancelAllOrdersAsync(symbol: "BTCUSDT")
+Cancel multiple spot orders -> client.SpotApi.Trading.CancelMultipleOrdersAsync(orderIds)
+Get spot user trades -> client.SpotApi.Trading.GetUserTradesAsync("BTCUSDT")
+```
+
+Common USDT Futures REST tasks:
+
+```text
+Get futures server time -> client.UsdtFuturesApi.ExchangeData.GetServerTimeAsync()
+Get futures exchange info -> client.UsdtFuturesApi.ExchangeData.GetExchangeInfoAsync()
+Get futures ticker -> client.UsdtFuturesApi.ExchangeData.GetTickersAsync("ETH-SWAP-USDT")
+Get all futures tickers -> client.UsdtFuturesApi.ExchangeData.GetTickersAsync()
+Get futures price -> client.UsdtFuturesApi.ExchangeData.GetPricesAsync("ETH-SWAP-USDT")
+Get futures order book -> client.UsdtFuturesApi.ExchangeData.GetOrderBookAsync("ETH-SWAP-USDT")
+Get recent futures trades -> client.UsdtFuturesApi.ExchangeData.GetRecentTradesAsync("ETH-SWAP-USDT")
+Get futures klines -> client.UsdtFuturesApi.ExchangeData.GetKlinesAsync("ETH-SWAP-USDT", KlineInterval.OneMinute)
+Get mark price klines -> client.UsdtFuturesApi.ExchangeData.GetMarkPriceKlinesAsync("ETH-SWAP-USDT", KlineInterval.OneMinute)
+Get index price klines -> client.UsdtFuturesApi.ExchangeData.GetIndexPriceKlinesAsync("ETHUSDT", KlineInterval.OneMinute)
+Get book ticker -> client.UsdtFuturesApi.ExchangeData.GetBookTickersAsync("ETH-SWAP-USDT")
+Get index prices -> client.UsdtFuturesApi.ExchangeData.GetIndexPricesAsync("ETHUSDT")
+Get mark price -> client.UsdtFuturesApi.ExchangeData.GetMarkPriceAsync("ETH-SWAP-USDT")
+Get funding rate -> client.UsdtFuturesApi.ExchangeData.GetFundingRateAsync("ETH-SWAP-USDT")
+Get funding history -> client.UsdtFuturesApi.ExchangeData.GetFundingRateHistoryAsync("ETH-SWAP-USDT")
+Set margin type -> client.UsdtFuturesApi.Account.SetMarginTypeAsync(symbol, MarginType.Isolated)
+Set leverage -> client.UsdtFuturesApi.Account.SetLeverageAsync(symbol, leverage)
+Get leverage info -> client.UsdtFuturesApi.Account.GetLeverageInfoAsync(symbol)
+Get futures balances -> client.UsdtFuturesApi.Account.GetBalancesAsync()
+Set position margin -> client.UsdtFuturesApi.Account.SetPositionMarginAsync(symbol, positionSide, quantity)
+Get futures transaction history -> client.UsdtFuturesApi.Account.GetTransactionHistoryAsync(...)
+Get futures fees -> client.UsdtFuturesApi.Account.GetFeesAsync(symbol)
+Place futures order -> client.UsdtFuturesApi.Trading.PlaceOrderAsync(...)
+Get futures order -> client.UsdtFuturesApi.Trading.GetOrderAsync(orderId: orderId)
+Cancel futures order -> client.UsdtFuturesApi.Trading.CancelOrderAsync(orderId: orderId)
+Cancel all futures orders -> client.UsdtFuturesApi.Trading.CancelAllOrdersAsync(symbol, side)
+Get open futures orders -> client.UsdtFuturesApi.Trading.GetOpenOrdersAsync(symbol: "ETH-SWAP-USDT")
+Get futures positions -> client.UsdtFuturesApi.Trading.GetPositionsAsync(symbol: "ETH-SWAP-USDT")
+Set futures trading stop -> client.UsdtFuturesApi.Trading.SetTradingStopAsync(...)
+Get futures order history -> client.UsdtFuturesApi.Trading.GetOrderHistoryAsync(...)
+Get futures user trades -> client.UsdtFuturesApi.Trading.GetUserTradesAsync("ETH-SWAP-USDT")
+```
+
+Common WebSocket tasks:
+
+```text
+Subscribe spot ticker -> socketClient.SpotApi.SubscribeToTickerUpdatesAsync(symbol, handler)
+Subscribe spot trades -> socketClient.SpotApi.SubscribeToTradeUpdatesAsync(symbol, handler)
+Subscribe spot klines -> socketClient.SpotApi.SubscribeToKlineUpdatesAsync(symbol, interval, handler)
+Subscribe spot partial order book -> socketClient.SpotApi.SubscribeToPartialOrderBookUpdatesAsync(symbol, handler)
+Subscribe spot diff order book -> socketClient.SpotApi.SubscribeToOrderBookUpdatesAsync(symbol, handler)
+Subscribe spot user data -> socketClient.SpotApi.SubscribeToUserDataUpdatesAsync(listenKey, ...)
+Subscribe futures ticker -> socketClient.UsdtFuturesApi.SubscribeToTickerUpdatesAsync(symbol, handler)
+Subscribe futures trades -> socketClient.UsdtFuturesApi.SubscribeToTradeUpdatesAsync(symbol, handler)
+Subscribe futures klines -> socketClient.UsdtFuturesApi.SubscribeToKlineUpdatesAsync(symbol, interval, handler)
+Subscribe futures partial order book -> socketClient.UsdtFuturesApi.SubscribeToPartialOrderBookUpdatesAsync(symbol, handler)
+Subscribe futures diff order book -> socketClient.UsdtFuturesApi.SubscribeToOrderBookUpdatesAsync(symbol, handler)
+Subscribe futures index price -> socketClient.UsdtFuturesApi.SubscribeToIndexPriceUpdatesAsync(symbol, handler)
+Subscribe futures user data -> socketClient.UsdtFuturesApi.SubscribeToUserDataUpdatesAsync(listenKey, ...)
+```
+
+## Spot Market Data Example
+
+```csharp
+using Toobit.Net.Clients;
+using Toobit.Net.Enums;
+
+var client = new ToobitRestClient();
+
+var tickers = await client.SpotApi.ExchangeData.GetTickersAsync("BTCUSDT");
+if (!tickers.Success)
+{
+    Console.WriteLine(tickers.Error);
+    return;
+}
+
+var ticker = tickers.Data.Single();
+Console.WriteLine($"{ticker.Symbol}: {ticker.LastPrice}");
+
+var klines = await client.SpotApi.ExchangeData.GetKlinesAsync(
+    "BTCUSDT",
+    KlineInterval.OneMinute,
+    limit: 100);
+
+if (!klines.Success)
+{
+    Console.WriteLine(klines.Error);
+    return;
+}
+```
+
+`GetTickersAsync`, `GetPricesAsync`, and `GetBookTickersAsync` return arrays even when a symbol filter is provided. Use `.Single()` or `.FirstOrDefault()` only after checking success and after considering whether the endpoint can return zero results.
+
+## Spot Account Example
+
+```csharp
+using Toobit.Net;
+using Toobit.Net.Clients;
+
+var client = new ToobitRestClient(options =>
+{
+    options.ApiCredentials = new ToobitCredentials("API_KEY", "API_SECRET");
+});
+
+var balances = await client.SpotApi.Account.GetBalancesAsync();
+if (!balances.Success)
+{
+    Console.WriteLine(balances.Error);
+    return;
+}
+
+foreach (var balance in balances.Data.Balances.Where(x => x.Total > 0))
+    Console.WriteLine($"{balance.Asset}: free={balance.Free}, locked={balance.Locked}");
+```
+
+Deposit, withdrawal, transfer, sub-account, and transaction history methods live under `SpotApi.Account`, not a separate `GeneralApi`.
+
+## Spot Order Example
+
+```csharp
+using Toobit.Net;
+using Toobit.Net.Clients;
+using Toobit.Net.Enums;
+
+var client = new ToobitRestClient(options =>
+{
+    options.ApiCredentials = new ToobitCredentials("API_KEY", "API_SECRET");
+});
+
+var order = await client.SpotApi.Trading.PlaceOrderAsync(
+    symbol: "BTCUSDT",
+    orderSide: OrderSide.Buy,
+    orderType: OrderType.Limit,
+    quantity: 0.001m,
+    timeInForce: TimeInForce.GoodTillCanceled,
+    price: 50000m);
+
+if (!order.Success)
+{
+    Console.WriteLine(order.Error);
+    return;
+}
+
+Console.WriteLine(order.Data.OrderId);
+```
+
+For spot market buy orders, the source interface documents `quantity` as quote asset quantity.
+
+Spot order query/cancel methods accept either `orderId` or `clientOrderId`:
+
+```csharp
+var byId = await client.SpotApi.Trading.GetOrderAsync(orderId: 123456);
+var byClientId = await client.SpotApi.Trading.GetOrderAsync(clientOrderId: "my-id");
+
+var cancelById = await client.SpotApi.Trading.CancelOrderAsync(orderId: 123456);
+var cancelByClientId = await client.SpotApi.Trading.CancelOrderAsync(clientOrderId: "my-id");
+```
+
+## Spot Batch Order Example
+
+```csharp
+using Toobit.Net.Objects.Models;
+
+var orders = new[]
+{
+    new ToobitOrderRequest
+    {
+        Symbol = "BTCUSDT",
+        OrderSide = OrderSide.Buy,
+        OrderType = OrderType.Limit,
+        Quantity = 0.001m,
+        Price = 50000m,
+        TimeInForce = TimeInForce.GoodTillCanceled
+    }
+};
+
+var batch = await client.SpotApi.Trading.PlaceMultipleOrdersAsync(orders);
+if (!batch.Success)
+{
+    Console.WriteLine(batch.Error);
+    return;
+}
+
+foreach (var orderResult in batch.Data)
+{
+    if (!orderResult.Success)
+        Console.WriteLine(orderResult.Error);
+}
+```
+
+Spot batch orders have to be for the same symbol according to the source interface documentation.
+
+## USDT Futures Symbol Rules
+
+Toobit.Net USDT futures examples and endpoint fixtures use contract symbols such as:
+
+```text
+ETH-SWAP-USDT
+```
+
+Do not use Binance-style `ETHUSDT` for Toobit futures trading examples. Some index price endpoints use index symbols such as `ETHUSDT`; check the method XML docs and endpoint fixtures.
+
+Futures order side encodes both direction and open/close intent:
+
+```text
+FuturesOrderSide.BuyOpen    -> open long
+FuturesOrderSide.SellClose  -> close long
+FuturesOrderSide.SellOpen   -> open short
+FuturesOrderSide.BuyClose   -> close short
+```
+
+## USDT Futures Order Example
+
+```csharp
+using Toobit.Net;
+using Toobit.Net.Clients;
+using Toobit.Net.Enums;
+
+var client = new ToobitRestClient(options =>
+{
+    options.ApiCredentials = new ToobitCredentials("API_KEY", "API_SECRET");
+});
+
+var leverage = await client.UsdtFuturesApi.Account.SetLeverageAsync("ETH-SWAP-USDT", 10);
+if (!leverage.Success)
+{
+    Console.WriteLine(leverage.Error);
+    return;
+}
+
+var order = await client.UsdtFuturesApi.Trading.PlaceOrderAsync(
+    symbol: "ETH-SWAP-USDT",
+    orderSide: FuturesOrderSide.BuyOpen,
+    orderType: FuturesNewOrderType.Limit,
+    quantity: 10,
+    price: 2000m,
+    timeInForce: TimeInForce.GoodTillCanceled);
+
+if (!order.Success)
+{
+    Console.WriteLine(order.Error);
+    return;
+}
+
+Console.WriteLine(order.Data.OrderId);
+```
+
+Futures `PlaceOrderAsync` supports stop price, price type, client order id, take profit, and stop loss parameters:
+
+```csharp
+var order = await client.UsdtFuturesApi.Trading.PlaceOrderAsync(
+    "ETH-SWAP-USDT",
+    FuturesOrderSide.BuyOpen,
+    FuturesNewOrderType.Limit,
+    quantity: 10,
+    price: 2000m,
+    takeProfit: 2200m,
+    stopLoss: 1900m);
+```
+
+To set or update take profit / stop loss for an existing position:
+
+```csharp
+var stop = await client.UsdtFuturesApi.Trading.SetTradingStopAsync(
+    "ETH-SWAP-USDT",
+    PositionSide.Long,
+    takeProfitPrice: 2200m,
+    stopLossPrice: 1900m);
+```
+
+## USDT Futures Position Example
+
+```csharp
+var positions = await client.UsdtFuturesApi.Trading.GetPositionsAsync("ETH-SWAP-USDT");
+if (!positions.Success)
+{
+    Console.WriteLine(positions.Error);
+    return;
+}
+
+foreach (var position in positions.Data)
+{
+    Console.WriteLine($"{position.Symbol} {position.PositionSide}: {position.Position}");
+    Console.WriteLine($"Entry: {position.AveragePrice}, PnL: {position.UnrealizedPnl}");
+}
+```
+
+Use `SetMarginTypeAsync`, `SetLeverageAsync`, and `SetPositionMarginAsync` under `UsdtFuturesApi.Account` for margin/leverage operations. Position retrieval is under `UsdtFuturesApi.Trading`.
+
+## USDT Futures Batch Order Example
+
+```csharp
+using Toobit.Net.Objects.Models;
+
+var orders = new[]
+{
+    new ToobitFuturesOrderRequest
+    {
+        Symbol = "ETH-SWAP-USDT",
+        OrderSide = FuturesOrderSide.BuyOpen,
+        OrderType = FuturesOrderType.Limit,
+        Quantity = 10,
+        Price = 2000m,
+        TimeInForce = TimeInForce.GoodTillCanceled
+    }
+};
+
+var batch = await client.UsdtFuturesApi.Trading.PlaceMultipleOrdersAsync(orders);
+if (!batch.Success)
+{
+    Console.WriteLine(batch.Error);
+    return;
+}
+```
+
+Note that single-order placement uses `FuturesNewOrderType`, while `ToobitFuturesOrderRequest` uses `FuturesOrderType`.
+
+## WebSocket Subscription Example
+
+```csharp
+using Toobit.Net.Clients;
+using Toobit.Net.Enums;
+
+var socketClient = new ToobitSocketClient();
+
+var tickerSub = await socketClient.SpotApi.SubscribeToTickerUpdatesAsync(
+    "BTCUSDT",
+    update => Console.WriteLine(update.Data.LastPrice));
+
+if (!tickerSub.Success)
+{
+    Console.WriteLine(tickerSub.Error);
+    return;
+}
+
+var klineSub = await socketClient.SpotApi.SubscribeToKlineUpdatesAsync(
+    "BTCUSDT",
+    KlineInterval.OneMinute,
+    update => Console.WriteLine(update.Data.ClosePrice));
+
+if (!klineSub.Success)
+{
+    await socketClient.UnsubscribeAsync(tickerSub.Data);
+    Console.WriteLine(klineSub.Error);
+    return;
+}
+
+Console.ReadLine();
+
+await socketClient.UnsubscribeAsync(klineSub.Data);
+await socketClient.UnsubscribeAsync(tickerSub.Data);
+```
+
+Multiple subscriptions should all be checked before `.Data` is used.
+
+## Authenticated User Stream Example
+
+Authenticated user streams require a listen key from a REST account API. The listen key is shared between Spot and USDT futures APIs.
+
+```csharp
+var restClient = new ToobitRestClient(options =>
+{
+    options.ApiCredentials = new ToobitCredentials("API_KEY", "API_SECRET");
+});
+
+var socketClient = new ToobitSocketClient(options =>
+{
+    options.ApiCredentials = new ToobitCredentials("API_KEY", "API_SECRET");
+});
+
+var listenKey = await restClient.SpotApi.Account.StartUserStreamAsync();
+if (!listenKey.Success)
+{
+    Console.WriteLine(listenKey.Error);
+    return;
+}
+
+var sub = await socketClient.SpotApi.SubscribeToUserDataUpdatesAsync(
+    listenKey.Data,
+    onAccountMessage: update => Console.WriteLine("Account update"),
+    onOrderMessage: update => Console.WriteLine($"Order updates: {update.Data.Length}"),
+    onUserTradeMessage: update => Console.WriteLine($"Trade updates: {update.Data.Length}"));
+
+if (!sub.Success)
+{
+    Console.WriteLine(sub.Error);
+    await restClient.SpotApi.Account.StopUserStreamAsync(listenKey.Data);
+    return;
+}
+
+Console.ReadLine();
+
+await socketClient.UnsubscribeAsync(sub.Data);
+await restClient.SpotApi.Account.StopUserStreamAsync(listenKey.Data);
+```
+
+For USDT futures user data:
+
+```csharp
+var sub = await socketClient.UsdtFuturesApi.SubscribeToUserDataUpdatesAsync(
+    listenKey.Data,
+    onAccountMessage: update => { },
+    onOrderMessage: update => { },
+    onPositionMessage: update => { },
+    onUserTradeMessage: update => { });
+```
+
+## SharedApis Multi-Exchange Pattern
+
+Use CryptoExchange.Net.SharedApis when the user asks for code that can work against Toobit and other exchanges.
+
+```csharp
+using Toobit.Net.Clients;
+using CryptoExchange.Net.SharedApis;
+
+ISpotTickerRestClient tickerClient = new ToobitRestClient().SpotApi.SharedClient;
+var symbol = new SharedSymbol(TradingMode.Spot, "BTC", "USDT");
+
+var ticker = await tickerClient.GetSpotTickerAsync(new GetTickerRequest(symbol));
+if (!ticker.Success)
+{
+    Console.WriteLine(ticker.Error);
+    return;
+}
+
+Console.WriteLine(ticker.Data.LastPrice);
+```
+
+Shared REST clients:
+
+```csharp
+var spotRestShared = new ToobitRestClient().SpotApi.SharedClient;
+var futuresRestShared = new ToobitRestClient().UsdtFuturesApi.SharedClient;
+```
+
+Shared socket clients:
+
+```csharp
+var spotSocketShared = new ToobitSocketClient().SpotApi.SharedClient;
+var futuresSocketShared = new ToobitSocketClient().UsdtFuturesApi.SharedClient;
+```
+
+Shared WebSocket subscriptions return an `UpdateSubscription` in `.Data`. For shared interface variables, unsubscribe through the concrete socket client:
+
+```csharp
+var socketClient = new ToobitSocketClient();
+ITickerSocketClient tickerSocket = socketClient.SpotApi.SharedClient;
+
+var sub = await tickerSocket.SubscribeToTickerUpdatesAsync(
+    new SubscribeTickerRequest(new SharedSymbol(TradingMode.Spot, "BTC", "USDT")),
+    update => Console.WriteLine(update.Data.LastPrice));
+
+if (!sub.Success)
+{
+    Console.WriteLine(sub.Error);
+    return;
+}
+
+Console.ReadLine();
+
+await socketClient.UnsubscribeAsync(sub.Data);
+```
+
+Do not call `tickerSocket.UnsubscribeAsync(...)` on `ITickerSocketClient`; that shared interface does not expose the method.
+
+## Shared Interface Coverage
+
+Spot REST shared client implements:
+
+```text
+IKlineRestClient
+ISpotSymbolRestClient
+ISpotTickerRestClient
+IBookTickerRestClient
+IRecentTradeRestClient
+IOrderBookRestClient
+IBalanceRestClient
+ISpotOrderRestClient
+ISpotOrderClientIdRestClient
+IAssetsRestClient
+IDepositRestClient
+IWithdrawalRestClient
+IWithdrawRestClient
+IListenKeyRestClient
+ITransferRestClient
+```
+
+USDT futures REST shared client implements:
+
+```text
+IKlineRestClient
+IMarkPriceKlineRestClient
+IIndexPriceKlineRestClient
+IFuturesSymbolRestClient
+IFuturesTickerRestClient
+IBookTickerRestClient
+IRecentTradeRestClient
+IFuturesOrderRestClient
+IFuturesOrderClientIdRestClient
+ILeverageRestClient
+IOrderBookRestClient
+IFundingRateRestClient
+IBalanceRestClient
+IListenKeyRestClient
+IFeeRestClient
+IFuturesTriggerOrderRestClient
+```
+
+Spot socket shared client implements:
+
+```text
+ITickerSocketClient
+ITradeSocketClient
+IKlineSocketClient
+IOrderBookSocketClient
+IBalanceSocketClient
+ISpotOrderSocketClient
+IUserTradeSocketClient
+```
+
+USDT futures socket shared client implements:
+
+```text
+ITickerSocketClient
+ITradeSocketClient
+IBalanceSocketClient
+IKlineSocketClient
+IOrderBookSocketClient
+IFuturesOrderSocketClient
+IPositionSocketClient
+IUserTradeSocketClient
+```
+
+## Symbol And Filter Handling
+
+For order quantities and prices, use exchange info filters. Do not manually round with ad hoc decimal string manipulation.
+
+```csharp
+using CryptoExchange.Net.Objects;
+
+var exchangeInfo = await client.SpotApi.ExchangeData.GetExchangeInfoAsync();
+if (!exchangeInfo.Success)
+{
+    Console.WriteLine(exchangeInfo.Error);
+    return;
+}
+
+var symbol = exchangeInfo.Data.SpotSymbols.First(x => x.Symbol == "BTCUSDT");
+var rawQuantity = 0.00123456m;
+
+var validQuantity = symbol.LotSizeFilter == null
+    ? rawQuantity
+    : CryptoExchange.Net.ExchangeHelpers.AdjustValueStep(
+        symbol.LotSizeFilter.MinQuantity,
+        symbol.LotSizeFilter.MaxQuantity,
+        symbol.LotSizeFilter.StepSize,
+        RoundingType.Down,
+        rawQuantity);
+```
+
+Useful symbol filter properties on `ToobitBaseSymbol`:
+
+```text
+LotSizeFilter
+MinNotionalFilter
+PriceFilter
+TradeAmountFilter
+LimitTradeFilter
+MarketTradeFilter
+OpenQuoteFilter
+```
+
+Exchange info model shape:
+
+```text
+ToobitExchangeInfo.SpotSymbols
+ToobitExchangeInfo.ContractSymbols
+ToobitExchangeInfo.Assets
+```
+
+For futures symbols:
+
+```csharp
+var exchangeInfo = await client.UsdtFuturesApi.ExchangeData.GetExchangeInfoAsync();
+if (!exchangeInfo.Success)
+{
+    Console.WriteLine(exchangeInfo.Error);
+    return;
+}
+
+var contract = exchangeInfo.Data.ContractSymbols.First(x => x.Symbol == "ETH-SWAP-USDT");
+```
+
+## Error Handling Notes
+
+Toobit.Net uses the CryptoExchange.Net `WebCallResult<T>` / `CallResult<T>` pattern.
+
+Common error categories:
+
+```text
+Authentication or signature failure: check ToobitCredentials, environment, and API key permissions. Usually permanent.
+Insufficient balance or rejected order: usually permanent; surface to caller.
+Invalid symbol, price, quantity, or filter failure: fix request parameters using exchange info filters.
+Rate limiting, server overload, network errors: may be transient; retry with backoff if Error.IsTransient is true.
+Unknown order: can be expected if the order is already filled, canceled, or never existed.
+```
+
+Do not assume Binance error codes in Toobit examples. Print or log `result.Error?.Code`, `result.Error?.Message`, and `result.Error?.ErrorType` instead.
+
+## AI-Friendly Examples
+
+Use these examples when generating code:
+
+```text
+Examples/ai-friendly/01-spot-quickstart.cs
+  Client setup, public ticker, authenticated balances, limit spot order, order status.
+
+Examples/ai-friendly/02-futures.cs
+  USDT futures leverage, limit order, position lookup, close-order pattern.
+
+Examples/ai-friendly/03-websocket.cs
+  Public ticker stream, kline stream, authenticated user data stream, success checks, teardown.
+
+Examples/ai-friendly/04-multi-exchange.cs
+  CryptoExchange.Net.SharedApis REST and socket patterns.
+
+Examples/ai-friendly/05-error-handling.cs
+  WebCallResult pattern, transient retry, Toobit.Net error handling guidance.
+```
+
+These files are intended to be copied into a console `Program.cs` after `dotnet add package Toobit.Net`. The repository includes a unit test that compiles each AI-friendly example as a console program.
+
+## Anti-Hallucination Checklist
+
+Before finalizing generated code:
+
+- Does it compile with the current package?
+- Does it include `using Toobit.Net;` when using credentials or environments?
+- Does every REST/socket result check `.Success` before `.Data`?
+- Does it use the correct API branch: `SpotApi` or `UsdtFuturesApi`?
+- Does it avoid raw Toobit URLs and manual signing?
+- Does it avoid nonexistent `ToobitClient`?
+- Does it avoid generic `ApiCredentials`?
+- Does it avoid `.Result` and `.Wait()`?
+- Are WebSocket subscriptions unsubscribed on shutdown?
+- For shared socket interfaces, does it keep the concrete socket client for `UnsubscribeAsync(sub.Data)`?
+- Does futures code use contract symbols like `ETH-SWAP-USDT`?
+- Does it use `UsdtFuturesApi`, not `UsdFuturesApi`?
+- Does spot market data use `GetTickersAsync` / `GetPricesAsync`, not singular method names?
+- Does it avoid unsupported API groups such as `GeneralApi`, `CoinFuturesApi`, margin, options, earn, brokerage, loans, mining, NFT, or gift card?
+- For order quantities/prices, does it use exchange info filters or a library helper?
+
+## Source Of Truth For Method Names
+
+When unsure, inspect these files instead of guessing:
+
+```text
+Toobit.Net/Interfaces/Clients/IToobitRestClient.cs
+Toobit.Net/Interfaces/Clients/IToobitSocketClient.cs
+Toobit.Net/Interfaces/Clients/SpotApi/IToobitRestClientSpotApi.cs
+Toobit.Net/Interfaces/Clients/SpotApi/IToobitRestClientSpotApiAccount.cs
+Toobit.Net/Interfaces/Clients/SpotApi/IToobitRestClientSpotApiExchangeData.cs
+Toobit.Net/Interfaces/Clients/SpotApi/IToobitRestClientSpotApiTrading.cs
+Toobit.Net/Interfaces/Clients/SpotApi/IToobitSocketClientSpotApi.cs
+Toobit.Net/Interfaces/Clients/SpotApi/IToobitRestClientSpotApiShared.cs
+Toobit.Net/Interfaces/Clients/SpotApi/IToobitSocketClientSpotApiShared.cs
+Toobit.Net/Interfaces/Clients/UsdtFuturesApi/IToobitRestClientUsdtFuturesApi.cs
+Toobit.Net/Interfaces/Clients/UsdtFuturesApi/IToobitRestClientUsdtFuturesApiAccount.cs
+Toobit.Net/Interfaces/Clients/UsdtFuturesApi/IToobitRestClientUsdtFuturesApiExchangeData.cs
+Toobit.Net/Interfaces/Clients/UsdtFuturesApi/IToobitRestClientUsdtFuturesApiTrading.cs
+Toobit.Net/Interfaces/Clients/UsdtFuturesApi/IToobitSocketClientUsdtFuturesApi.cs
+Toobit.Net/Interfaces/Clients/UsdtFuturesApi/IToobitRestClientUsdtFuturesApiShared.cs
+Toobit.Net/Interfaces/Clients/UsdtFuturesApi/IToobitSocketClientUsdtFuturesApiShared.cs
+```
+
+Prefer the interface files over memory when generating endpoint names, parameters, callback names, and return types.
+
+## Common Wrong Patterns To Avoid
+
+Wrong:
+
+```csharp
+var client = new ToobitClient();
+```
+
+Use:
+
+```csharp
+var client = new ToobitRestClient();
+```
+
+Wrong:
+
+```csharp
+options.ApiCredentials = new ApiCredentials("key", "secret");
+```
+
+Use:
+
+```csharp
+options.ApiCredentials = new ToobitCredentials("key", "secret");
+```
+
+Wrong:
+
+```csharp
+var result = await client.SpotApi.ExchangeData.GetTickerAsync("BTCUSDT");
+Console.WriteLine(result.Data.LastPrice);
+```
+
+Use:
+
+```csharp
+var result = await client.SpotApi.ExchangeData.GetTickersAsync("BTCUSDT");
+if (!result.Success)
+{
+    Console.WriteLine(result.Error);
+    return;
+}
+Console.WriteLine(result.Data.Single().LastPrice);
+```
+
+Wrong:
+
+```csharp
+await sharedTickerSocket.UnsubscribeAsync(sub.Data);
+```
+
+Use:
+
+```csharp
+await socketClient.UnsubscribeAsync(sub.Data);
+```
+
+Wrong:
+
+```csharp
+restClient.UsdFuturesApi.Trading.PlaceOrderAsync("ETHUSDT", ...);
+```
+
+Use:
+
+```csharp
+restClient.UsdtFuturesApi.Trading.PlaceOrderAsync("ETH-SWAP-USDT", ...);
+```
+
+Wrong:
+
+```csharp
+restClient.GeneralApi.SubAccount.GetSubAccountsAsync();
+```
+
+Use:
+
+```csharp
+restClient.SpotApi.Account.GetSubAccountsAsync();
+```
+
+Wrong:
+
+```csharp
+CryptoExchange.Net.ExchangeHelpers.AdjustValueStep(rawQuantity, stepSize);
+```
+
+Use:
+
+```csharp
+CryptoExchange.Net.ExchangeHelpers.AdjustValueStep(min, max, step, RoundingType.Down, rawQuantity);
+```
+
+## Repository AI Files
+
+```text
+CLAUDE.md
+  Concise skill/instructions file for Claude-style agents.
+
+.github/copilot-instructions.md
+  GitHub Copilot instructions with references to CLAUDE.md, llms.txt, llms-full.txt, and docs/ai-api-map.md.
+
+.cursor/rules/toobit-net.mdc
+  Cursor rules with Toobit.Net conventions and references.
+
+llms.txt
+  Short LLM context file.
+
+llms-full.txt
+  This detailed LLM context file.
+
+docs/ai-api-map.md
+  Table-style intent-to-method map.
+
+Examples/ai-friendly/
+  Compilable examples verified by the documentation unit test.
+```

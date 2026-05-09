@@ -4,6 +4,23 @@
 
 Toobit.Net is a client library for accessing the [Toobit REST and Websocket API](https://toobit-docs.github.io/apidocs/spot/v1/en/#change-log). 
 
+## For AI Coding Assistants
+
+This library provides first-class support for AI coding assistants. The relevant instruction and context files are in this repository:
+
+- **Claude Code**: `CLAUDE.md` (auto-detected at repo root)
+- **Cursor**: `.cursor/rules/toobit-net.mdc`
+- **GitHub Copilot**: `.github/copilot-instructions.md`
+- **Other tools** (Windsurf, Codex, Continue, Aider, etc.): `llms.txt` at repo root
+- **Full LLM context**: `llms-full.txt`
+- **API quick map**: `docs/ai-api-map.md`
+- **Compilable examples**: `Examples/ai-friendly/`
+
+**Quick prompt to verify your assistant is using these:**
+> "Show me a minimal example of placing a limit buy order on Toobit Spot using Toobit.Net, including authentication setup."
+
+The expected output should use `ToobitRestClient`, `ToobitCredentials`, and the `WebCallResult` pattern.
+
 ## Features
 * Response data is mapped to descriptive models
 * Input parameters and response values are mapped to discriptive enum values where possible
