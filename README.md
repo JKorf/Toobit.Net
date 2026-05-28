@@ -1,6 +1,7 @@
 # ![Toobit.Net](https://raw.githubusercontent.com/JKorf/Toobit.Net/main/Toobit.Net/Icon/icon.png) Toobit.Net  
 
 [![.NET](https://img.shields.io/github/actions/workflow/status/JKorf/Toobit.Net/dotnet.yml?style=for-the-badge)](https://github.com/JKorf/Toobit.Net/actions/workflows/dotnet.yml) ![License](https://img.shields.io/github/license/JKorf/Toobit.Net?style=for-the-badge)
+![Since](https://img.shields.io/badge/since-2025-brightgreen?style=for-the-badge)
 
 Toobit.Net is a client library for accessing the [Toobit REST and Websocket API](https://toobit-docs.github.io/apidocs/spot/v1/en/#change-log). 
 
