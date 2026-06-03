@@ -1,3 +1,4 @@
+using Toobit.Net;
 using Toobit.Net.Interfaces.Clients;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +14,7 @@ builder.Services.AddToobit();
 /*
 builder.Services.AddToobit(options =>
 {
-    options.ApiCredentials = new ApiCredentials("<APIKEY>", "<APISECRET>");
+    options.ApiCredentials = new ToobitCredentials("<APIKEY>", "<APISECRET>");
     options.Rest.RequestTimeout = TimeSpan.FromSeconds(5);
 });
 */
@@ -27,7 +28,9 @@ app.UseHttpsRedirection();
 app.MapGet("/{Symbol}", async ([FromServices] IToobitRestClient client, string symbol) =>
 {
     var result = await client.SpotApi.ExchangeData.GetTickersAsync(symbol);
-    return result.Data.Single().LastPrice;
+    return result.Success
+        ? Results.Ok(result.Data.Single().LastPrice)
+        : Results.Problem(result.Error?.Message, statusCode: 502);
 })
 .WithOpenApi();
 
@@ -35,7 +38,9 @@ app.MapGet("/{Symbol}", async ([FromServices] IToobitRestClient client, string s
 app.MapGet("/Balances", async ([FromServices] IToobitRestClient client) =>
 {
     var result = await client.SpotApi.Account.GetBalancesAsync();
-    return (object)(result.Success ? result.Data : result.Error!);
+    return result.Success
+        ? Results.Ok(result.Data)
+        : Results.Problem(result.Error?.Message, statusCode: 502);
 })
 .WithOpenApi();
 

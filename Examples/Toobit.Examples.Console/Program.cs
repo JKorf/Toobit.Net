@@ -4,6 +4,12 @@ using Toobit.Net.Clients;
 // REST
 var restClient = new ToobitRestClient();
 var ticker = await restClient.SpotApi.ExchangeData.GetTickersAsync("ETHUSDT");
+if (!ticker.Success)
+{
+    Console.WriteLine($"Failed to get ticker: {ticker.Error}");
+    return;
+}
+
 Console.WriteLine($"Rest client ticker price for ETHUSDT: {ticker.Data.Single().LastPrice}");
 
 Console.WriteLine();
@@ -16,5 +22,11 @@ var subscription = await socketClient.SpotApi.SubscribeToTickerUpdatesAsync("ETH
 {
     Console.WriteLine($"Websocket client ticker price for ETHUSDT: {update.Data.LastPrice}");
 });
+
+if (!subscription.Success)
+{
+    Console.WriteLine($"Failed to subscribe to ticker updates: {subscription.Error}");
+    return;
+}
 
 Console.ReadLine();
