@@ -40,7 +40,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="stopLossLimitPrice">["<c>slLimitPrice</c>"] Stop loss limit price</param>
         /// <param name="stopLossOrderType">["<c>slOrderType</c>"] Stop loss order type</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitFuturesOrder>> PlaceOrderAsync(string symbol, FuturesOrderSide orderSide, FuturesNewOrderType orderType, long quantity, decimal? price = null, PriceType? priceType = null, decimal? stopPrice = null, TimeInForce? timeInForce = null, string? clientOrderId = null, decimal? takeProfit = null, TriggerType? takeProfitTriggerType = null, decimal? takeProfitLimitPrice = null, OrderType? takeProfitOrderType = null, decimal? stopLoss = null, TriggerType? stopLossTriggerType = null, decimal? stopLossLimitPrice = null, OrderType? stopLossOrderType = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitFuturesOrder>> PlaceOrderAsync(string symbol, FuturesOrderSide orderSide, FuturesNewOrderType orderType, long quantity, decimal? price = null, PriceType? priceType = null, decimal? stopPrice = null, TimeInForce? timeInForce = null, string? clientOrderId = null, decimal? takeProfit = null, TriggerType? takeProfitTriggerType = null, decimal? takeProfitLimitPrice = null, OrderType? takeProfitOrderType = null, decimal? stopLoss = null, TriggerType? stopLossTriggerType = null, decimal? stopLossLimitPrice = null, OrderType? stopLossOrderType = null, CancellationToken ct = default);
 
         /// <summary>
         /// Place multiple new orders
@@ -53,7 +53,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </summary>
         /// <param name="orders">Orders to place</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<CallResult<ToobitFuturesOrder>[]>> PlaceMultipleOrdersAsync(IEnumerable<ToobitFuturesOrderRequest> orders, CancellationToken ct = default);
+        Task<HttpResult<CallResult<ToobitFuturesOrder>[]>> PlaceMultipleOrdersAsync(IEnumerable<ToobitFuturesOrderRequest> orders, CancellationToken ct = default);
 
         /// <summary>
         /// Get order info
@@ -68,7 +68,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="clientOrderId">["<c>origClientOrderId</c>"] Client order id, either this or orderId should be provided</param>
         /// <param name="orderType">["<c>type</c>"] Order type</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitFuturesOrder>> GetOrderAsync(long? orderId = null, string? clientOrderId = null, FuturesOrderType? orderType = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitFuturesOrder>> GetOrderAsync(long? orderId = null, string? clientOrderId = null, FuturesOrderType? orderType = null, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel an order
@@ -83,7 +83,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="clientOrderId">["<c>origClientOrderId</c>"] Client order id, either this or orderId should be provided</param>
         /// <param name="orderType">["<c>type</c>"] Order type</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitFuturesOrder>> CancelOrderAsync(long? orderId = null, string? clientOrderId = null, FuturesOrderType? orderType = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitFuturesOrder>> CancelOrderAsync(long? orderId = null, string? clientOrderId = null, FuturesOrderType? orderType = null, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel all orders matching the parameters
@@ -97,7 +97,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
         /// <param name="side">["<c>side</c>"] Order side</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult> CancelAllOrdersAsync(string symbol, OrderSide side, CancellationToken ct = default);
+        Task<HttpResult> CancelAllOrdersAsync(string symbol, OrderSide side, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel multiple orders by id. If successful no result is returned in the data, if unsuccessful an error is returned in the data
@@ -110,7 +110,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </summary>
         /// <param name="orderIds">["<c>ids</c>"] Ids of orders to cancel</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitCancelResult[]>> CancelMultipleOrdersAsync(IEnumerable<long> orderIds, CancellationToken ct = default);
+        Task<HttpResult<ToobitCancelResult[]>> CancelMultipleOrdersAsync(IEnumerable<long> orderIds, CancellationToken ct = default);
 
         /// <summary>
         /// Get open orders
@@ -126,7 +126,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="orderType">["<c>type</c>"] Filter by type of orders</param>
         /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitFuturesOrder[]>> GetOpenOrdersAsync(string? symbol = null, long? orderId = null, FuturesOrderType? orderType = null, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitFuturesOrder[]>> GetOpenOrdersAsync(string? symbol = null, long? orderId = null, FuturesOrderType? orderType = null, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get positions
@@ -140,7 +140,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
         /// <param name="positionSide">["<c>side</c>"] Filter by position side</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitPosition[]>> GetPositionsAsync(string? symbol = null, PositionSide? positionSide = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitPosition[]>> GetPositionsAsync(string? symbol = null, PositionSide? positionSide = null, CancellationToken ct = default);
 
         /// <summary>
         /// Set take profit / stop loss
@@ -158,7 +158,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="takeProfitTriggerType">["<c>tpTriggerBy</c>"] Take profit trigger type</param>
         /// <param name="StopLossTriggerType">["<c>slTriggerBy</c>"] Stop loss trigger type</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitTradingStop>> SetTradingStopAsync(string symbol, PositionSide positionSide, decimal? takeProfitPrice = null, decimal? stopLossPrice = null, TriggerType? takeProfitTriggerType = null, TriggerType? StopLossTriggerType = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitTradingStop>> SetTradingStopAsync(string symbol, PositionSide positionSide, decimal? takeProfitPrice = null, decimal? stopLossPrice = null, TriggerType? takeProfitTriggerType = null, TriggerType? StopLossTriggerType = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get order history
@@ -176,7 +176,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="endTime">["<c>endTime</c>"] Filter by end time</param>
         /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitFuturesOrder[]>> GetOrderHistoryAsync(string? symbol = null, long? toId = null, FuturesOrderType? orderType = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitFuturesOrder[]>> GetOrderHistoryAsync(string? symbol = null, long? toId = null, FuturesOrderType? orderType = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get user trades
@@ -194,7 +194,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="endTime">Filter by end time</param>
         /// <param name="limit">Max number of results</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitFuturesUserTrade[]>> GetUserTradesAsync(string symbol, long? fromId = null, long? toId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitFuturesUserTrade[]>> GetUserTradesAsync(string symbol, long? fromId = null, long? toId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
 
     }
 }

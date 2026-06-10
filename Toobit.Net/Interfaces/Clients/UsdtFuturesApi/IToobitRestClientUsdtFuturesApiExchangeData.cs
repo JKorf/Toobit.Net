@@ -23,7 +23,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </summary>
         /// <param name="ct">Cancellation token</param>
         /// <returns></returns>
-        Task<WebCallResult<DateTime>> GetServerTimeAsync(CancellationToken ct = default);
+        Task<HttpResult<DateTime>> GetServerTimeAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Get exchange info
@@ -35,7 +35,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </para>
         /// </summary>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitExchangeInfo>> GetExchangeInfoAsync(CancellationToken ct = default);
+        Task<HttpResult<ToobitExchangeInfo>> GetExchangeInfoAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Get the current order book
@@ -49,7 +49,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
         /// <param name="limit">["<c>limit</c>"] Max number of results, max 200</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitOrderBook>> GetOrderBookAsync(string symbol, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitOrderBook>> GetOrderBookAsync(string symbol, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get the most recent trades for a symbol
@@ -63,7 +63,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
         /// <param name="limit">["<c>limit</c>"] Max number of results, max 60</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitTrade[]>> GetRecentTradesAsync(string symbol, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitTrade[]>> GetRecentTradesAsync(string symbol, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get klines
@@ -80,7 +80,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="endTime">["<c>endTime</c>"] Filter by end time</param>
         /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitKline[]>> GetKlinesAsync(string symbol, KlineInterval interval, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitKline[]>> GetKlinesAsync(string symbol, KlineInterval interval, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get mark price klines
@@ -97,7 +97,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="endTime">["<c>endTime</c>"] Filter by end time</param>
         /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitMarkKline[]>> GetMarkPriceKlinesAsync(string symbol, KlineInterval interval, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitMarkKline[]>> GetMarkPriceKlinesAsync(string symbol, KlineInterval interval, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get index price klines
@@ -114,7 +114,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="endTime">["<c>endTime</c>"] Filter by end time</param>
         /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitFuturesKline[]>> GetIndexPriceKlinesAsync(string symbol, KlineInterval interval, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitFuturesKline[]>> GetIndexPriceKlinesAsync(string symbol, KlineInterval interval, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get 24h price info
@@ -128,7 +128,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
         /// <param name="interval">["<c>realtimeInterval</c>"] Stats interval</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitTicker[]>> GetTickersAsync(string? symbol = null, TickerInterval? interval = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitTicker[]>> GetTickersAsync(string? symbol = null, TickerInterval? interval = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get price info
@@ -141,7 +141,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </summary>
         /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitPrice[]>> GetPricesAsync(string? symbol = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitPrice[]>> GetPricesAsync(string? symbol = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get best book prices info
@@ -154,7 +154,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </summary>
         /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitBookTicker[]>> GetBookTickersAsync(string? symbol = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitBookTicker[]>> GetBookTickersAsync(string? symbol = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get index prices
@@ -167,7 +167,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </summary>
         /// <param name="symbol">["<c>symbol</c>"] Filter by symbol, for example `ETHUSDT`</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitIndexPrices>> GetIndexPricesAsync(string? symbol = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitIndexPrices>> GetIndexPricesAsync(string? symbol = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get mark price
@@ -180,7 +180,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </summary>
         /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitMarkPrice>> GetMarkPriceAsync(string symbol, CancellationToken ct = default);
+        Task<HttpResult<ToobitMarkPrice>> GetMarkPriceAsync(string symbol, CancellationToken ct = default);
 
         /// <summary>
         /// Get funding rate
@@ -193,7 +193,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </summary>
         /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitFundingRate[]>> GetFundingRateAsync(string? symbol = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitFundingRate[]>> GetFundingRateAsync(string? symbol = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get funding rate history for a symbol
@@ -209,7 +209,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="endId">["<c>endId</c>"] Filter by end id</param>
         /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitFundingHistory[]>> GetFundingRateHistoryAsync(string symbol, long? fromId = null, long? endId = null, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitFundingHistory[]>> GetFundingRateHistoryAsync(string symbol, long? fromId = null, long? endId = null, int? limit = null, CancellationToken ct = default);
 
     }
 }

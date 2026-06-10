@@ -39,10 +39,10 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             _userTradeHandler = tradeHandler;
 
             MessageRouter = MessageRouter.Create([
-                MessageRoute<ToobitAccountUpdate[]>.CreateWithoutTopicFilter("outboundContractAccountInfo", HandleAccountInfo),
-                MessageRoute<ToobitPositionUpdate[]>.CreateWithoutTopicFilter("outboundContractPositionInfo", HandlePositionUpdate),
-                MessageRoute<ToobitFuturesOrderUpdate[]>.CreateWithoutTopicFilter("contractExecutionReport", HandleOrderUpdate),
-                MessageRoute<ToobitUserTradeUpdate[]>.CreateWithoutTopicFilter("ticketInfo", HandleUserTradeUpdate)
+                MessageRoute.CreateForEvent<ToobitAccountUpdate[]>("outboundContractAccountInfo", HandleAccountInfo),
+                MessageRoute.CreateForEvent<ToobitPositionUpdate[]>("outboundContractPositionInfo", HandlePositionUpdate),
+                MessageRoute.CreateForEvent<ToobitFuturesOrderUpdate[]>("contractExecutionReport", HandleOrderUpdate),
+                MessageRoute.CreateForEvent<ToobitUserTradeUpdate[]>("ticketInfo", HandleUserTradeUpdate)
                 ]);
         }
 
@@ -66,7 +66,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
                         .WithDataTimestamp(timestamp, _client.GetTimeOffset())
                 );
             
-            return CallResult.SuccessResult;
+            return CallResult.Ok();
         }
 
         public CallResult HandleOrderUpdate(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitFuturesOrderUpdate[] message)
@@ -82,7 +82,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
                         .WithDataTimestamp(timestamp, _client.GetTimeOffset())
                 );
             
-            return CallResult.SuccessResult;
+            return CallResult.Ok();
         }
 
         public CallResult HandleUserTradeUpdate(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitUserTradeUpdate[] message)
@@ -98,7 +98,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
                         .WithDataTimestamp(timestamp, _client.GetTimeOffset())
                 );
 
-            return CallResult.SuccessResult;
+            return CallResult.Ok();
         }
 
         public CallResult HandlePositionUpdate(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitPositionUpdate[] message)
@@ -114,7 +114,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
                         .WithDataTimestamp(timestamp, _client.GetTimeOffset())
                 );
 
-            return CallResult.SuccessResult;
+            return CallResult.Ok();
         }
     }
 }

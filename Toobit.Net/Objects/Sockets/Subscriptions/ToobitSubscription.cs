@@ -44,7 +44,11 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
 
             IndividualSubscriptionCount = symbols?.Length ?? 1;
 
-            MessageRouter = MessageRouter.CreateWithOptionalTopicFilters<SocketUpdate<T>>(topic, symbols?.Select(x => _interval == null ? x : x + EnumConverter.GetString(_interval.Value)), DoHandleMessage);
+            var topicFilters = symbols?.Select(x => _interval == null ? x : x + EnumConverter.GetString(_interval.Value));
+            if (topicFilters == null)
+                MessageRouter = MessageRouter.CreateForEvent<SocketUpdate<T>>(topic, DoHandleMessage);
+            else
+                MessageRouter = MessageRouter.CreateForEvent<SocketUpdate<T>>(topic, topicFilters, DoHandleMessage);
         }
 
         /// <inheritdoc />
@@ -89,7 +93,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, SocketUpdate<T> message)
         {
             _handler.Invoke(receiveTime, originalData, message);
-            return new CallResult(null);
+            return CallResult.Ok();
         }
     }
 }

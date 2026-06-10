@@ -61,6 +61,11 @@ namespace Toobit.Net
         public static ExchangeType Type { get; } = ExchangeType.CEX;
 
         internal static JsonSerializerContext _serializerContext = new ToobitSourceGenerationContext();
+        internal static ParameterSerializationSettings _parameterSerializationSettings = new ParameterSerializationSettings
+        {
+            Sort = false,
+            Decimal = DecimalSerialization.Number
+        };
 
         /// <summary>
         /// Aliases for Toobit assets

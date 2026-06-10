@@ -31,27 +31,27 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Place Order
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitFuturesOrder>> PlaceOrderAsync(string symbol, FuturesOrderSide orderSide, FuturesNewOrderType orderType, long quantity, decimal? price = null, PriceType? priceType = null, decimal? stopPrice = null, TimeInForce? timeInForce = null, string? clientOrderId = null, decimal? takeProfit = null, TriggerType? takeProfitTriggerType = null, decimal? takeProfitLimitPrice = null, OrderType? takeProfitOrderType = null, decimal? stopLoss = null, TriggerType? stopLossTriggerType = null, decimal? stopLossLimitPrice = null, OrderType? stopLossOrderType = null, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitFuturesOrder>> PlaceOrderAsync(string symbol, FuturesOrderSide orderSide, FuturesNewOrderType orderType, long quantity, decimal? price = null, PriceType? priceType = null, decimal? stopPrice = null, TimeInForce? timeInForce = null, string? clientOrderId = null, decimal? takeProfit = null, TriggerType? takeProfitTriggerType = null, decimal? takeProfitLimitPrice = null, OrderType? takeProfitOrderType = null, decimal? stopLoss = null, TriggerType? stopLossTriggerType = null, decimal? stopLossLimitPrice = null, OrderType? stopLossOrderType = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
             parameters.Add("symbol", symbol);
-            parameters.AddEnum("side", orderSide);
-            parameters.AddEnum("type", orderType);
+            parameters.Add("side", orderSide);
+            parameters.Add("type", orderType);
             parameters.Add("quantity", quantity);
             parameters.Add("newClientOrderId", clientOrderId ?? ExchangeHelpers.RandomString(24));
-            parameters.AddOptional("price", price);
-            parameters.AddOptionalEnum("priceType", priceType);
-            parameters.AddOptional("stopPrice", stopPrice);
-            parameters.AddOptionalEnum("timeInForce", timeInForce);
-            parameters.AddOptional("takeProfit", takeProfit);
-            parameters.AddOptionalEnum("tpTriggerBy", takeProfitTriggerType);
-            parameters.AddOptional("tpLimitPrice", takeProfitLimitPrice);
-            parameters.AddOptionalEnum("tpOrderType", takeProfitOrderType);
-            parameters.AddOptional("stopLoss", stopLoss);
-            parameters.AddOptionalEnum("slTriggerBy", stopLossTriggerType);
-            parameters.AddOptional("slLimitPrice", stopLossLimitPrice);
-            parameters.AddOptionalEnum("slOrderType", stopLossOrderType);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "/api/v1/futures/order", ToobitExchange.RateLimiter.Toobit, 1, true);
+            parameters.Add("price", price);
+            parameters.Add("priceType", priceType);
+            parameters.Add("stopPrice", stopPrice);
+            parameters.Add("timeInForce", timeInForce);
+            parameters.Add("takeProfit", takeProfit);
+            parameters.Add("tpTriggerBy", takeProfitTriggerType);
+            parameters.Add("tpLimitPrice", takeProfitLimitPrice);
+            parameters.Add("tpOrderType", takeProfitOrderType);
+            parameters.Add("stopLoss", stopLoss);
+            parameters.Add("slTriggerBy", stopLossTriggerType);
+            parameters.Add("slLimitPrice", stopLossLimitPrice);
+            parameters.Add("slOrderType", stopLossOrderType);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "/api/v1/futures/order", ToobitExchange.RateLimiter.Toobit, 1, true);
             var result = await _baseClient.SendAsync<ToobitFuturesOrder>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
@@ -61,31 +61,30 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Place Multiple Orders
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CallResult<ToobitFuturesOrder>[]>> PlaceMultipleOrdersAsync(IEnumerable<ToobitFuturesOrderRequest> orders, CancellationToken ct = default)
+        public async Task<HttpResult<CallResult<ToobitFuturesOrder>[]>> PlaceMultipleOrdersAsync(IEnumerable<ToobitFuturesOrderRequest> orders, CancellationToken ct = default)
         {
             foreach (var order in orders.Where(x => x.ClientOrderId == null))
                 order.ClientOrderId = ExchangeHelpers.RandomString(24);
 
-            var parameters = new ParameterCollection();
-            parameters.SetBody(orders.ToArray());
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "/api/v1/futures/batchOrders", ToobitExchange.RateLimiter.Toobit, 2, true, requestBodyFormat: RequestBodyFormat.Json);
+            var parameters = new Parameters(orders.ToArray(), ToobitExchange._parameterSerializationSettings);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "/api/v1/futures/batchOrders", ToobitExchange.RateLimiter.Toobit, 2, true, requestBodyFormat: RequestBodyFormat.Json);
             var resultData = await _baseClient.SendAsync<ToobitDataResult<ToobitFuturesOrderResult[]>>(request, parameters, ct).ConfigureAwait(false);
-            if (!resultData)
-                return resultData.As<CallResult<ToobitFuturesOrder>[]>(default);
+            if (!resultData.Success)
+                return HttpResult.Fail<CallResult<ToobitFuturesOrder>[]>(resultData);
 
             var result = new List<CallResult<ToobitFuturesOrder>>();
             foreach (var item in resultData.Data.Result)
             {
                 if (item.Order != null)
-                    result.Add(new CallResult<ToobitFuturesOrder>(item.Order));
+                    result.Add(CallResult.Ok(item.Order));
                 else
-                    result.Add(new CallResult<ToobitFuturesOrder>(new ServerError(item.Code, _baseClient.GetErrorInfo(item.Code, item.Message!))));
+                    result.Add(CallResult.Fail<ToobitFuturesOrder>(new ServerError(item.Code, _baseClient.GetErrorInfo(item.Code, item.Message!))));
             }
 
             if (result.All(x => !x.Success))
-                return resultData.AsErrorWithData(new ServerError(new ErrorInfo(ErrorType.AllOrdersFailed, "All orders failed")), result.ToArray());
+                return HttpResult.Fail<CallResult<ToobitFuturesOrder>[]>(resultData, new ServerError(new ErrorInfo(ErrorType.AllOrdersFailed, "All orders failed")), result.ToArray());
 
-            return resultData.As(result.ToArray());
+            return HttpResult.Ok(resultData, result.ToArray());
         }
 
         #endregion
@@ -93,13 +92,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Get Order
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitFuturesOrder>> GetOrderAsync(long? orderId = null, string? clientOrderId = null, FuturesOrderType? orderType = null, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitFuturesOrder>> GetOrderAsync(long? orderId = null, string? clientOrderId = null, FuturesOrderType? orderType = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
-            parameters.AddOptional("orderId", orderId);
-            parameters.AddOptional("origClientOrderId", clientOrderId);
-            parameters.AddOptionalEnum("type", orderType);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "/api/v1/futures/order", ToobitExchange.RateLimiter.Toobit, 1, true);
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
+            parameters.Add("orderId", orderId);
+            parameters.Add("origClientOrderId", clientOrderId);
+            parameters.Add("type", orderType);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/order", ToobitExchange.RateLimiter.Toobit, 1, true);
             var result = await _baseClient.SendAsync<ToobitFuturesOrder>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
@@ -109,13 +108,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Cancel Order
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitFuturesOrder>> CancelOrderAsync(long? orderId = null, string? clientOrderId = null, FuturesOrderType? orderType = null, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitFuturesOrder>> CancelOrderAsync(long? orderId = null, string? clientOrderId = null, FuturesOrderType? orderType = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
-            parameters.AddOptional("orderId", orderId);
-            parameters.AddOptional("origClientOrderId", clientOrderId);
-            parameters.AddOptionalEnum("type", orderType);
-            var request = _definitions.GetOrCreate(HttpMethod.Delete, "/api/v1/futures/order", ToobitExchange.RateLimiter.Toobit, 1, true);
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
+            parameters.Add("orderId", orderId);
+            parameters.Add("origClientOrderId", clientOrderId);
+            parameters.Add("type", orderType);
+            var request = _definitions.GetOrCreate(HttpMethod.Delete, _baseClient.BaseAddress, "/api/v1/futures/order", ToobitExchange.RateLimiter.Toobit, 1, true);
             var result = await _baseClient.SendAsync<ToobitFuturesOrder>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
@@ -125,20 +124,20 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Cancel All Orders
 
         /// <inheritdoc />
-        public async Task<WebCallResult> CancelAllOrdersAsync(string symbol, OrderSide side, CancellationToken ct = default)
+        public async Task<HttpResult> CancelAllOrdersAsync(string symbol, OrderSide side, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
             parameters.Add("symbol", symbol);
-            parameters.AddEnum("side", side);
-            var request = _definitions.GetOrCreate(HttpMethod.Delete, "/api/v1/futures/batchOrders", ToobitExchange.RateLimiter.Toobit, 5, true);
+            parameters.Add("side", side);
+            var request = _definitions.GetOrCreate(HttpMethod.Delete, _baseClient.BaseAddress, "/api/v1/futures/batchOrders", ToobitExchange.RateLimiter.Toobit, 5, true);
             var result = await _baseClient.SendAsync<ToobitResult>(request, parameters, ct).ConfigureAwait(false);
-            if (!result)
-                return result.AsDataless();
+            if (!result.Success)
+                return HttpResult.Fail(result);
 
             if (result.Data.Code != 200)
-                return result.AsDatalessError(new ServerError(result.Data.Code, _baseClient.GetErrorInfo(result.Data.Code, result.Data.Message)));
+                return HttpResult.Fail(result, new ServerError(result.Data.Code, _baseClient.GetErrorInfo(result.Data.Code, result.Data.Message)));
 
-            return result.AsDataless();
+            return HttpResult.Ok(result);
         }
 
         #endregion
@@ -146,19 +145,19 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Cancel Multiple Orders
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitCancelResult[]>> CancelMultipleOrdersAsync(IEnumerable<long> orderIds, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitCancelResult[]>> CancelMultipleOrdersAsync(IEnumerable<long> orderIds, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
             parameters.Add("ids", string.Join(",", orderIds));
-            var request = _definitions.GetOrCreate(HttpMethod.Delete, "/api/v1/futures/cancelOrderByIds", ToobitExchange.RateLimiter.Toobit, 5, true);
+            var request = _definitions.GetOrCreate(HttpMethod.Delete, _baseClient.BaseAddress, "/api/v1/futures/cancelOrderByIds", ToobitExchange.RateLimiter.Toobit, 5, true);
             var result = await _baseClient.SendAsync<ToobitDataResult<ToobitCancelResult[]>>(request, parameters, ct).ConfigureAwait(false);
-            if (!result)
-                return result.As<ToobitCancelResult[]>(default);
+            if (!result.Success)
+                return HttpResult.Fail<ToobitCancelResult[]>(result);
 
-            if (result.Data.Code != 0)
-                return result.AsError<ToobitCancelResult[]>(new ServerError(result.Data.Code, _baseClient.GetErrorInfo(result.Data.Code, "Failed")));
+            if (result.Data.Code != 200)
+                return HttpResult.Fail<ToobitCancelResult[]>(result, new ServerError(result.Data.Code, _baseClient.GetErrorInfo(result.Data.Code, "Failed")));
 
-            return result.As<ToobitCancelResult[]>(result.Data.Result.ToArray());
+            return HttpResult.Ok(result, result.Data.Result);
         }
 
         #endregion
@@ -166,14 +165,14 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Get Open Orders
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitFuturesOrder[]>> GetOpenOrdersAsync(string? symbol = null, long? orderId = null, FuturesOrderType? orderType = null, int? limit = null, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitFuturesOrder[]>> GetOpenOrdersAsync(string? symbol = null, long? orderId = null, FuturesOrderType? orderType = null, int? limit = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
-            parameters.AddOptional("symbol", symbol);
-            parameters.AddOptional("orderId", orderId);
-            parameters.AddOptionalEnum("type", orderType);
-            parameters.AddOptional("limit", limit);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "/api/v1/futures/openOrders", ToobitExchange.RateLimiter.Toobit, 1, true);
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
+            parameters.Add("symbol", symbol);
+            parameters.Add("orderId", orderId);
+            parameters.Add("type", orderType);
+            parameters.Add("limit", limit);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/openOrders", ToobitExchange.RateLimiter.Toobit, 1, true);
             var result = await _baseClient.SendAsync<ToobitFuturesOrder[]>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
@@ -183,12 +182,12 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Get Positions
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitPosition[]>> GetPositionsAsync(string? symbol = null, PositionSide? positionSide = null, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitPosition[]>> GetPositionsAsync(string? symbol = null, PositionSide? positionSide = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
-            parameters.AddOptional("symbol", symbol);
-            parameters.AddOptionalEnum("side", positionSide);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "/api/v1/futures/positions", ToobitExchange.RateLimiter.Toobit, 5, true);
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
+            parameters.Add("symbol", symbol);
+            parameters.Add("side", positionSide);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/positions", ToobitExchange.RateLimiter.Toobit, 5, true);
             var result = await _baseClient.SendAsync<ToobitPosition[]>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
@@ -198,16 +197,16 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Set Trading Stop
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitTradingStop>> SetTradingStopAsync(string symbol, PositionSide positionSide, decimal? takeProfitPrice = null, decimal? stopLossPrice = null, TriggerType? takeProfitTriggerType = null, TriggerType? StopLossTriggerType = null, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitTradingStop>> SetTradingStopAsync(string symbol, PositionSide positionSide, decimal? takeProfitPrice = null, decimal? stopLossPrice = null, TriggerType? takeProfitTriggerType = null, TriggerType? StopLossTriggerType = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
             parameters.Add("symbol", symbol);
-            parameters.AddEnum("side", positionSide);
-            parameters.AddOptionalString("takeProfit", takeProfitPrice);
-            parameters.AddOptionalString("stopLoss", stopLossPrice);
-            parameters.AddOptionalEnum("tpTriggerBy", takeProfitTriggerType);
-            parameters.AddOptionalEnum("slTriggerBy", StopLossTriggerType);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "/api/v1/futures/position/trading-stop", ToobitExchange.RateLimiter.Toobit, 3, true);
+            parameters.Add("side", positionSide);
+            parameters.AddAsString("takeProfit", takeProfitPrice);
+            parameters.AddAsString("stopLoss", stopLossPrice);
+            parameters.Add("tpTriggerBy", takeProfitTriggerType);
+            parameters.Add("slTriggerBy", StopLossTriggerType);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "/api/v1/futures/position/trading-stop", ToobitExchange.RateLimiter.Toobit, 3, true);
             var result = await _baseClient.SendAsync<ToobitTradingStop>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
@@ -217,16 +216,16 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Get Order History
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitFuturesOrder[]>> GetOrderHistoryAsync(string? symbol = null, long? toId = null, FuturesOrderType? orderType = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitFuturesOrder[]>> GetOrderHistoryAsync(string? symbol = null, long? toId = null, FuturesOrderType? orderType = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
-            parameters.AddOptional("symbol", symbol);
-            parameters.AddOptional("orderId", toId);
-            parameters.AddOptionalEnum("type", orderType);
-            parameters.AddOptionalMillisecondsString("startTime", startTime);
-            parameters.AddOptionalMillisecondsString("endTime", endTime);
-            parameters.AddOptional("limit", limit);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "/api/v1/futures/historyOrders", ToobitExchange.RateLimiter.Toobit, 5, true);
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
+            parameters.Add("symbol", symbol);
+            parameters.Add("orderId", toId);
+            parameters.Add("type", orderType);
+            parameters.Add("startTime", startTime);
+            parameters.Add("endTime", endTime);
+            parameters.Add("limit", limit);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/historyOrders", ToobitExchange.RateLimiter.Toobit, 5, true);
             var result = await _baseClient.SendAsync<ToobitFuturesOrder[]>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
@@ -236,16 +235,16 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Get User Trades
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitFuturesUserTrade[]>> GetUserTradesAsync(string symbol, long? fromId = null, long? toId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitFuturesUserTrade[]>> GetUserTradesAsync(string symbol, long? fromId = null, long? toId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
             parameters.Add("symbol", symbol);
-            parameters.AddOptional("fromId", fromId);
-            parameters.AddOptional("toId", toId);
-            parameters.AddOptionalMillisecondsString("", startTime);
-            parameters.AddOptionalMillisecondsString("", endTime);
-            parameters.AddOptional("", limit);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "/api/v1/futures/userTrades", ToobitExchange.RateLimiter.Toobit, 5, true);
+            parameters.Add("fromId", fromId);
+            parameters.Add("toId", toId);
+            parameters.Add("", startTime);
+            parameters.Add("", endTime);
+            parameters.Add("", limit);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/userTrades", ToobitExchange.RateLimiter.Toobit, 5, true);
             var result = await _baseClient.SendAsync<ToobitFuturesUserTrade[]>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }

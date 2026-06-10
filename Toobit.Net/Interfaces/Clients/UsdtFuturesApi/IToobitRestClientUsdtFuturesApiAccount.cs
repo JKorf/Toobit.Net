@@ -24,7 +24,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
         /// <param name="marginType">["<c>marginType</c>"] Type of margin</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitMarginType>> SetMarginTypeAsync(string symbol, MarginType marginType, CancellationToken ct = default);
+        Task<HttpResult<ToobitMarginType>> SetMarginTypeAsync(string symbol, MarginType marginType, CancellationToken ct = default);
 
         /// <summary>
         /// Change the initial leverage for a symbol
@@ -38,7 +38,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
         /// <param name="leverage">["<c>leverage</c>"] New leverage value</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitLeverage>> SetLeverageAsync(string symbol, int leverage, CancellationToken ct = default);
+        Task<HttpResult<ToobitLeverage>> SetLeverageAsync(string symbol, int leverage, CancellationToken ct = default);
 
         /// <summary>
         /// Get leverage info
@@ -51,7 +51,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </summary>
         /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitLeverageInfo>> GetLeverageInfoAsync(string symbol, CancellationToken ct = default);
+        Task<HttpResult<ToobitLeverageInfo>> GetLeverageInfoAsync(string symbol, CancellationToken ct = default);
 
         /// <summary>
         /// Get futures balances
@@ -63,7 +63,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </para>
         /// </summary>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitFuturesBalance[]>> GetBalancesAsync(CancellationToken ct = default);
+        Task<HttpResult<ToobitFuturesBalance[]>> GetBalancesAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Adjust the position margin
@@ -78,7 +78,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="positionSide">["<c>side</c>"] Position side</param>
         /// <param name="quantity">["<c>amount</c>"] Quantity of margin to adjust, positive to add, negative to remove</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitPositionMargin>> SetPositionMarginAsync(string symbol, PositionSide positionSide, decimal quantity, CancellationToken ct = default);
+        Task<HttpResult<ToobitPositionMargin>> SetPositionMarginAsync(string symbol, PositionSide positionSide, decimal quantity, CancellationToken ct = default);
 
         /// <summary>
         /// Get transaction history
@@ -97,7 +97,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="endTime">["<c>endTime</c>"] Filter by end time</param>
         /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitFuturesTransaction[]>> GetTransactionHistoryAsync(string? asset = null, FlowType? flowType = null, long? fromId = null, long? endId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitFuturesTransaction[]>> GetTransactionHistoryAsync(string? asset = null, FlowType? flowType = null, long? fromId = null, long? endId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get fee rates
@@ -110,7 +110,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </summary>
         /// <param name="symbol">["<c>symbol</c>"] The symbol, for example `ETH-SWAP-USDT`</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitFeeRates>> GetFeesAsync(string symbol, CancellationToken ct = default);
+        Task<HttpResult<ToobitFeeRates>> GetFeesAsync(string symbol, CancellationToken ct = default);
 
         /// <summary>
         /// Starts a user stream by requesting a listen key. This listen key can be used in subsequent requests to SubscribeToUserDataUpdates. The stream will close after 60 minutes unless a keep alive is send.
@@ -123,7 +123,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </para>
         /// </summary>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<string>> StartUserStreamAsync(CancellationToken ct = default);
+        Task<HttpResult<string>> StartUserStreamAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Sends a keep alive for the current user stream listen key to keep the stream from closing. Stream auto closes after 60 minutes if no keep alive is send. 30 minute interval for keep alive is recommended.
@@ -136,7 +136,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </summary>
         /// <param name="listenKey">["<c>listenKey</c>"] The listen key to keep alive</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult> KeepAliveUserStreamAsync(string listenKey, CancellationToken ct = default);
+        Task<HttpResult> KeepAliveUserStreamAsync(string listenKey, CancellationToken ct = default);
 
         /// <summary>
         /// Stops the current user stream
@@ -149,6 +149,6 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// </summary>
         /// <param name="listenKey">["<c>listenKey</c>"] The listen key to stop</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult> StopUserStreamAsync(string listenKey, CancellationToken ct = default);
+        Task<HttpResult> StopUserStreamAsync(string listenKey, CancellationToken ct = default);
     }
 }
