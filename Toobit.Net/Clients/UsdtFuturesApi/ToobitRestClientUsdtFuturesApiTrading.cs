@@ -202,8 +202,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
             parameters.Add("symbol", symbol);
             parameters.Add("side", positionSide);
-            parameters.AddAsString("takeProfit", takeProfitPrice);
-            parameters.AddAsString("stopLoss", stopLossPrice);
+            parameters.Add("takeProfit", takeProfitPrice, DecimalSerialization.String);
+            parameters.Add("stopLoss", stopLossPrice, DecimalSerialization.String);
             parameters.Add("tpTriggerBy", takeProfitTriggerType);
             parameters.Add("slTriggerBy", StopLossTriggerType);
             var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "/api/v1/futures/position/trading-stop", ToobitExchange.RateLimiter.Toobit, 3, true);
