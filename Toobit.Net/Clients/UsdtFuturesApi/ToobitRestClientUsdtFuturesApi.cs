@@ -40,15 +40,15 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #endregion
 
         #region constructor/destructor
-        internal ToobitRestClientUsdtFuturesApi(ILogger logger, HttpClient? httpClient, ToobitRestOptions options)
-            : base(logger, ToobitExchange.Metadata.Id, httpClient, options.Environment.RestClientAddress, options, options.UsdtFuturesOptions)
+        internal ToobitRestClientUsdtFuturesApi(ILoggerFactory? loggerFactory, HttpClient? httpClient, ToobitRestOptions options)
+            : base(loggerFactory, ToobitExchange.Metadata.Id, httpClient, options.Environment.RestClientAddress, options, options.UsdtFuturesOptions)
         {
             RequestBodyFormat = RequestBodyFormat.FormData;
             RequestBodyEmptyContent = "";
 
             Account = new ToobitRestClientUsdtFuturesApiAccount(this);
-            ExchangeData = new ToobitRestClientUsdtFuturesApiExchangeData(logger, this);
-            Trading = new ToobitRestClientUsdtFuturesApiTrading(logger, this);
+            ExchangeData = new ToobitRestClientUsdtFuturesApiExchangeData(_logger, this);
+            Trading = new ToobitRestClientUsdtFuturesApiTrading(_logger, this);
         }
         #endregion
 

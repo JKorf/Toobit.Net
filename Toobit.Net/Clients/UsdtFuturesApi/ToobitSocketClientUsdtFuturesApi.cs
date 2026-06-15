@@ -42,8 +42,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         /// <summary>
         /// ctor
         /// </summary>
-        internal ToobitSocketClientUsdtFuturesApi(ILogger logger, ToobitSocketOptions options) :
-            base(logger, ToobitExchange.Metadata.Id, options.Environment.SocketClientAddress!, options, options.UsdtFuturesOptions)
+        internal ToobitSocketClientUsdtFuturesApi(ILoggerFactory? loggerFactory, ToobitSocketOptions options) :
+            base(loggerFactory, ToobitExchange.Metadata.Id, options.Environment.SocketClientAddress!, options, options.UsdtFuturesOptions)
         {
             _waitForErrorTimeout = options.SubscribeMaxWaitForError;
 

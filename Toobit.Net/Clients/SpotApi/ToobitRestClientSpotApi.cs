@@ -39,15 +39,15 @@ namespace Toobit.Net.Clients.SpotApi
         #endregion
 
         #region constructor/destructor
-        internal ToobitRestClientSpotApi(ILogger logger, HttpClient? httpClient, ToobitRestOptions options)
-            : base(logger, ToobitExchange.Metadata.Id, httpClient, options.Environment.RestClientAddress, options, options.SpotOptions)
+        internal ToobitRestClientSpotApi(ILoggerFactory? loggerFactory, HttpClient? httpClient, ToobitRestOptions options)
+            : base(loggerFactory, ToobitExchange.Metadata.Id, httpClient, options.Environment.RestClientAddress, options, options.SpotOptions)
         {
             RequestBodyFormat = RequestBodyFormat.FormData;
             RequestBodyEmptyContent = "";
 
             Account = new ToobitRestClientSpotApiAccount(this);
-            ExchangeData = new ToobitRestClientSpotApiExchangeData(logger, this);
-            Trading = new ToobitRestClientSpotApiTrading(logger, this);
+            ExchangeData = new ToobitRestClientSpotApiExchangeData(_logger, this);
+            Trading = new ToobitRestClientSpotApiTrading(_logger, this);
         }
         #endregion
 

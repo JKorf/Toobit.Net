@@ -44,8 +44,8 @@ namespace Toobit.Net.Clients.SpotApi
         /// <summary>
         /// ctor
         /// </summary>
-        internal ToobitSocketClientSpotApi(ILogger logger, ToobitSocketOptions options) :
-            base(logger, ToobitExchange.Metadata.Id, options.Environment.SocketClientAddress!, options, options.SpotOptions)
+        internal ToobitSocketClientSpotApi(ILoggerFactory? loggerFactory, ToobitSocketOptions options) :
+            base(loggerFactory, ToobitExchange.Metadata.Id, options.Environment.SocketClientAddress!, options, options.SpotOptions)
         {
             _waitForErrorTimeout = options.SubscribeMaxWaitForError;
 
