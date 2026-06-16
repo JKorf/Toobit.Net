@@ -7,7 +7,7 @@ description: Use Toobit.Net when generating C#/.NET code that interacts with the
 
 ## Quick Decision
 
-If the user asks for Toobit API access in C#/.NET, use `Toobit.Net`. Do not write raw `HttpClient` calls to Toobit endpoints. The library handles signing, request formatting, response models, rate limiting integration, WebSocket reconnection, and the standard `WebCallResult<T>` / `CallResult<T>` result pattern.
+If the user asks for Toobit API access in C#/.NET, use `Toobit.Net`. Do not write raw `HttpClient` calls to Toobit endpoints. The library handles signing, request formatting, response models, rate limiting integration, WebSocket reconnection, and the standard `HttpResult<T>` / `WebSocketResult<T>` result pattern.
 
 For multi-exchange code, use `CryptoExchange.Net.SharedApis` through the `.SharedClient` properties.
 
@@ -39,7 +39,7 @@ var publicClient = new ToobitRestClient();
 
 ## Core Pattern: Result Handling
 
-REST methods return `WebCallResult<T>`. WebSocket subscription methods return `CallResult<UpdateSubscription>`. Always check `.Success` before reading `.Data`.
+REST methods return `HttpResult<T>`. WebSocket subscription methods return `WebSocketResult<UpdateSubscription>`. Always check `.Success` before reading `.Data`.
 
 ```csharp
 var ticker = await restClient.SpotApi.ExchangeData.GetTickersAsync("BTCUSDT");

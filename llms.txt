@@ -18,7 +18,7 @@ Toobit.Net provides typed REST clients, WebSocket subscriptions with automatic c
 - [USDT Futures](https://github.com/JKorf/Toobit.Net/blob/main/Examples/ai-friendly/02-futures.cs): Leverage, limit order, positions, close order pattern
 - [WebSocket Streams](https://github.com/JKorf/Toobit.Net/blob/main/Examples/ai-friendly/03-websocket.cs): Ticker subscription, kline subscription, user data stream with proper teardown
 - [Multi-Exchange Pattern](https://github.com/JKorf/Toobit.Net/blob/main/Examples/ai-friendly/04-multi-exchange.cs): Using CryptoExchange.Net SharedApis for exchange-agnostic code
-- [Error Handling](https://github.com/JKorf/Toobit.Net/blob/main/Examples/ai-friendly/05-error-handling.cs): `WebCallResult` patterns, retry logic, common errors and their handling
+- [Error Handling](https://github.com/JKorf/Toobit.Net/blob/main/Examples/ai-friendly/05-error-handling.cs): `HttpResult` patterns, retry logic, common errors and their handling
 - [Full Examples Repository](https://github.com/JKorf/Toobit.Net/tree/main/Examples): Console, API, order book, and tracker examples
 
 ## Reference

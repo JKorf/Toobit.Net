@@ -22,8 +22,8 @@ Primary documentation:
 - Use `ToobitCredentials`, not generic `ApiCredentials`, for API key setup.
 - Include `using Toobit.Net;` when using `ToobitCredentials` or `ToobitEnvironment`.
 - Always check `.Success` before reading `.Data`.
-- REST methods return `WebCallResult<T>` or `WebCallResult`.
-- WebSocket subscriptions return `CallResult<UpdateSubscription>`.
+- REST methods return `HttpResult<T>` or `HttpResult`.
+- WebSocket subscriptions return `WebSocketResult<UpdateSubscription>`.
 - Reuse clients. Do not instantiate a REST or socket client per request in production code.
 - Prefer dependency injection for long-running services.
 - Store WebSocket subscriptions and unsubscribe during shutdown.
@@ -182,9 +182,9 @@ var price = result.Data.Single().LastPrice;
 For retry logic, only retry transient errors:
 
 ```csharp
-async Task<WebCallResult<T>> WithRetry<T>(Func<Task<WebCallResult<T>>> call, int maxAttempts = 3)
+async Task<HttpResult<T>> WithRetry<T>(Func<Task<HttpResult<T>>> call, int maxAttempts = 3)
 {
-    WebCallResult<T> last = default!;
+    HttpResult<T> last = default!;
 
     for (var attempt = 1; attempt <= maxAttempts; attempt++)
     {
@@ -866,7 +866,7 @@ var contract = exchangeInfo.Data.ContractSymbols.First(x => x.Symbol == "ETH-SWA
 
 ## Error Handling Notes
 
-Toobit.Net uses the CryptoExchange.Net `WebCallResult<T>` / `CallResult<T>` pattern.
+Toobit.Net uses the CryptoExchange.Net `HttpResult<T>` / `CallResult<T>` pattern.
 
 Common error categories:
 
@@ -898,7 +898,7 @@ Examples/ai-friendly/04-multi-exchange.cs
   CryptoExchange.Net.SharedApis REST and socket patterns.
 
 Examples/ai-friendly/05-error-handling.cs
-  WebCallResult pattern, transient retry, Toobit.Net error handling guidance.
+  HttpResult pattern, transient retry, Toobit.Net error handling guidance.
 ```
 
 These files are intended to be copied into a console `Program.cs` after `dotnet add package Toobit.Net`. The repository includes a unit test that compiles each AI-friendly example as a console program.
