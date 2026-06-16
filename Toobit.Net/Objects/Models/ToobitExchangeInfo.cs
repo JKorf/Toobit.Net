@@ -195,6 +195,11 @@ namespace Toobit.Net.Objects.Models
         [JsonPropertyName("contractMultiplier")]
         public decimal? ContractMultiplier { get; set; }
         /// <summary>
+        /// ["<c>minTradePrecision</c>"] Minimal trade quantity step in contracts
+        /// </summary>
+        [JsonPropertyName("minTradePrecision")]
+        public decimal? MinTradePrecision { get; set; }
+        /// <summary>
         /// ["<c>riskLimits</c>"] Risk limits
         /// </summary>
         [JsonPropertyName("riskLimits")]
