@@ -56,6 +56,9 @@ if (!ticker.Success)
 }
 
 // Common Toobit.Net guidance:
+// - Direct and SharedApis REST methods return HttpResult<T> or HttpResult.
+// - Direct and SharedApis WebSocket subscriptions return WebSocketResult<UpdateSubscription>.
+// - Shared symbol/cache helpers can return ExchangeCallResult<T>.
 // - API errors are returned in result.Error; do not expect normal API failures
 //   to be thrown as exceptions.
 // - Retry only transient errors. Validation errors, bad credentials, and

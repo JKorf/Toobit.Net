@@ -12,6 +12,10 @@ ISpotTickerRestClient toobitShared = new ToobitRestClient().SpotApi.SharedClient
 
 var btcusdt = new SharedSymbol(TradingMode.Spot, "BTC", "USDT");
 
+// Use Discover() when you need runtime capability and option metadata.
+var capabilities = toobitShared.Discover();
+Console.WriteLine($"Shared features: {capabilities.Features.Count(x => x.Supported)}");
+
 await PrintTicker(toobitShared, btcusdt);
 
 async Task PrintTicker(ISpotTickerRestClient client, SharedSymbol symbol)
@@ -29,6 +33,7 @@ async Task PrintTicker(ISpotTickerRestClient client, SharedSymbol symbol)
 var socketClient = new ToobitSocketClient();
 ITickerSocketClient tickerSocket = socketClient.SpotApi.SharedClient;
 
+// Shared socket subscriptions return WebSocketResult<UpdateSubscription>.
 var sub = await tickerSocket.SubscribeToTickerUpdatesAsync(
     new SubscribeTickerRequest(btcusdt),
     update => Console.WriteLine($"[{tickerSocket.Exchange}] {update.Data.Symbol}: {update.Data.LastPrice}"));
