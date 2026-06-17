@@ -117,20 +117,14 @@ namespace Toobit.Net.Clients.SpotApi
         #endregion
 
         #region Balance client
-        SubscribeBalanceOptions IBalanceSocketClient.SubscribeBalanceOptions { get; } = new SubscribeBalanceOptions(_exchangeName, false)
-        {
-            RequiredOptionalParameters = new List<ParameterDescription>
-            {
-                new ParameterDescription(nameof(SubscribeBalancesRequest.ListenKey), typeof(string), "The listenkey for starting the user stream", "123123123")
-            }
-        };
+        SubscribeBalanceOptions IBalanceSocketClient.SubscribeBalanceOptions { get; } = new SubscribeBalanceOptions(_exchangeName, true);
         async Task<WebSocketResult<UpdateSubscription>> IBalanceSocketClient.SubscribeToBalanceUpdatesAsync(SubscribeBalancesRequest request, Action<DataEvent<SharedBalance[]>> handler, CancellationToken ct)
         {
             var validationError = SharedClient.SubscribeBalanceOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
-            var result = await SubscribeToUserDataUpdatesAsync(request.ListenKey!,
+            var result = await SubscribeToUserDataUpdatesAsync(
                 onAccountMessage: update => handler(update.ToType(update.Data.Balances.Select(x => new SharedBalance(x.Asset, x.Free, x.Free + x.Locked)).ToArray())),
                 ct: ct).ConfigureAwait(false);
 
@@ -141,20 +135,14 @@ namespace Toobit.Net.Clients.SpotApi
 
         #region Spot Order client
 
-        SubscribeSpotOrderOptions ISpotOrderSocketClient.SubscribeSpotOrderOptions { get; } = new SubscribeSpotOrderOptions(_exchangeName, false)
-        {
-            RequiredOptionalParameters = new List<ParameterDescription>
-            {
-                new ParameterDescription(nameof(SubscribeSpotOrderRequest.ListenKey), typeof(string), "Listenkey for the user stream", "123123123")
-            }
-        };
+        SubscribeSpotOrderOptions ISpotOrderSocketClient.SubscribeSpotOrderOptions { get; } = new SubscribeSpotOrderOptions(_exchangeName, true);
         async Task<WebSocketResult<UpdateSubscription>> ISpotOrderSocketClient.SubscribeToSpotOrderUpdatesAsync(SubscribeSpotOrderRequest request, Action<DataEvent<SharedSpotOrder[]>> handler, CancellationToken ct)
         {
             var validationError = SharedClient.SubscribeSpotOrderOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
-            var result = await SubscribeToUserDataUpdatesAsync(request.ListenKey!,
+            var result = await SubscribeToUserDataUpdatesAsync(
                 onOrderMessage: update => handler(update.ToType(update.Data.Select(x => 
                     new SharedSpotOrder(
                         ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol),
@@ -211,20 +199,14 @@ namespace Toobit.Net.Clients.SpotApi
 
         #region User Trade client
 
-        SubscribeUserTradeOptions IUserTradeSocketClient.SubscribeUserTradeOptions { get; } = new SubscribeUserTradeOptions(_exchangeName, false)
-        {
-            RequiredOptionalParameters = new List<ParameterDescription>
-            {
-                new ParameterDescription(nameof(SubscribeUserTradeRequest.ListenKey), typeof(string), "Listenkey for the user stream", "123123123")
-            }
-        };
+        SubscribeUserTradeOptions IUserTradeSocketClient.SubscribeUserTradeOptions { get; } = new SubscribeUserTradeOptions(_exchangeName, true);
         async Task<WebSocketResult<UpdateSubscription>> IUserTradeSocketClient.SubscribeToUserTradeUpdatesAsync(SubscribeUserTradeRequest request, Action<DataEvent<SharedUserTrade[]>> handler, CancellationToken ct)
         {
             var validationError = SharedClient.SubscribeUserTradeOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
-            var result = await SubscribeToUserDataUpdatesAsync(request.ListenKey!,
+            var result = await SubscribeToUserDataUpdatesAsync(
                 onUserTradeMessage: update =>
                 {
                     // Filter for spot updates
