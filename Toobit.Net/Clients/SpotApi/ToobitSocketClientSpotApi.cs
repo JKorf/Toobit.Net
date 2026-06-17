@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
-using System.Threading;
-using System.Threading.Tasks;
 using CryptoExchange.Net;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Clients;
@@ -17,7 +11,16 @@ using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.SharedApis;
 using CryptoExchange.Net.Sockets;
 using CryptoExchange.Net.Sockets.Default;
+using CryptoExchange.Net.Sockets.Interfaces;
+using CryptoExchange.Net.TokenManagement;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.WebSockets;
+using System.Threading;
+using System.Threading.Tasks;
 using Toobit.Net.Clients.MessageHandlers;
 using Toobit.Net.Enums;
 using Toobit.Net.Interfaces.Clients.SpotApi;
@@ -37,6 +40,27 @@ namespace Toobit.Net.Clients.SpotApi
         private readonly TimeSpan _waitForErrorTimeout;
 
         protected override ErrorMapping ErrorMapping => ToobitErrors.Errors;
+        private readonly ILoggerFactory? _loggerFactory;
+        private ToobitRestClient? _tokenClient;
+        internal TokenManager TokenManager { get; }
+        private ToobitRestClient TokenClient
+        {
+            get
+            {
+                if (_tokenClient == null)
+                {
+                    _tokenClient = new ToobitRestClient(null, _loggerFactory, Options.Create(new ToobitRestOptions
+                    {
+                        ApiCredentials = ApiCredentials,
+                        Environment = ClientOptions.Environment,
+                        Proxy = ClientOptions.Proxy,
+                        OutputOriginalData = ClientOptions.OutputOriginalData
+                    }));
+                }
+
+                return _tokenClient;
+            }
+        }
         #endregion
 
         #region constructor/destructor
@@ -47,6 +71,7 @@ namespace Toobit.Net.Clients.SpotApi
         internal ToobitSocketClientSpotApi(ILoggerFactory? loggerFactory, ToobitSocketOptions options) :
             base(loggerFactory, ToobitExchange.Metadata.Id, options.Environment.SocketClientAddress!, options, options.SpotOptions)
         {
+            _loggerFactory = loggerFactory;
             _waitForErrorTimeout = options.SubscribeMaxWaitForError;
 
             RegisterPeriodicQuery("Ping",
@@ -65,6 +90,15 @@ namespace Toobit.Net.Clients.SpotApi
             AddSystemSubscription(new ToobitPingSubscription(_logger));
 
             RateLimiter = ToobitExchange.RateLimiter.ToobitSocket;
+
+            TokenManager = new TokenManager(
+                ToobitExchange.Metadata.Id,
+                loggerFactory,
+                TimeSpan.FromMinutes(30),
+                TimeSpan.FromMinutes(60),
+                startToken: StartListenKeyAsync,
+                keepAliveToken: KeepAliveListenKeyAsync,
+                stopToken: StopListenKeyAsync);
         }
         #endregion
 
@@ -209,16 +243,52 @@ namespace Toobit.Net.Clients.SpotApi
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
         }
 
+
+        /// <inheritdoc />
+        public Task<WebSocketResult<UpdateSubscription>> SubscribeToUserDataUpdatesAsync(
+            Action<DataEvent<ToobitAccountUpdate>>? onAccountMessage = null,
+            Action<DataEvent<ToobitOrderUpdate[]>>? onOrderMessage = null,
+            Action<DataEvent<ToobitUserTradeUpdate[]>>? onUserTradeMessage = null,
+            CancellationToken ct = default)
+            => SubscribeToUserDataUpdatesAsync(null, onAccountMessage, onOrderMessage, onUserTradeMessage, ct);
+
         /// <inheritdoc />
         public async Task<WebSocketResult<UpdateSubscription>> SubscribeToUserDataUpdatesAsync(
-            string listenKey,
+            string? listenKey,
             Action<DataEvent<ToobitAccountUpdate>>? onAccountMessage = null,
             Action<DataEvent<ToobitOrderUpdate[]>>? onOrderMessage = null,
             Action<DataEvent<ToobitUserTradeUpdate[]>>? onUserTradeMessage = null,
             CancellationToken ct = default)
         {
-            var subscription = new ToobitUserDataSubscription(_logger, this, onAccountMessage, onOrderMessage, onUserTradeMessage);
-            return await SubscribeAsync(BaseAddress.AppendPath("/api/v1/ws/" + listenKey), subscription, ct).ConfigureAwait(false);
+            if (listenKey == null && !Authenticated)
+                return WebSocketResult.Fail<UpdateSubscription>(Exchange, new NoApiCredentialsError());
+
+            TokenLease? lease = null;
+            if (listenKey == null)
+            {
+                var leaseResult = await TokenManager.AcquireAsync(new TokenScope(
+                    ToobitExchange.Metadata.Id,
+                    EnvironmentName,
+                    "Spot",
+                    ApiCredentials!.Key), ct).ConfigureAwait(false);
+                if (!leaseResult.Success)
+                    return WebSocketResult.Fail<UpdateSubscription>(Exchange, leaseResult.Error);
+
+                lease = leaseResult.Data;
+            }
+
+            var lk = listenKey ?? lease!.Token.Token;
+
+            var subscription = new ToobitUserDataSubscription(_logger, this, onAccountMessage, onOrderMessage, onUserTradeMessage)
+            {
+                TokenLease = lease
+            };
+            var result = await SubscribeAsync(BaseAddress.AppendPath("/api/v1/ws/" + lk), subscription, ct).ConfigureAwait(false);
+            if (!result.Success && lease != null)
+                await lease.ReleaseAsync().ConfigureAwait(false);
+
+            return result;
+
         }
 
         /// <inheritdoc />
@@ -227,5 +297,55 @@ namespace Toobit.Net.Clients.SpotApi
         /// <inheritdoc />
         public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverDate = null)
             => ToobitExchange.FormatSymbol(baseAsset, quoteAsset, tradingMode, deliverDate);
+
+
+        protected override async Task<Uri?> GetReconnectUriAsync(ISocketConnection connection)
+        {
+            if (!connection.HasAuthenticatedSubscription)
+                return await base.GetReconnectUriAsync(connection).ConfigureAwait(false);
+
+            
+            var subscriptions = ((SocketConnection)connection).Subscriptions.Where(x => x.TokenLease != null).ToList();
+
+            // We have authenticated subscription via the token manager
+            var scope = new TokenScope(
+                    ToobitExchange.Metadata.Id,
+                    EnvironmentName,
+                    "Spot",
+                    ApiCredentials!.Key);
+
+            var token = await TokenManager.AcquireAndReplaceAsync(subscriptions[0], scope).ConfigureAwait(false);
+            if (!token.Success)
+                return null;
+
+            return new Uri(BaseAddress.AppendPath("/api/v1/ws/" + token.Data.Token.Token));
+        }
+
+        private async Task<CallResult<string>> StartListenKeyAsync(TokenScope tokenScope, CancellationToken ct)
+        {
+            var result = await TokenClient.SpotApi.Account.StartUserStreamAsync(ct).ConfigureAwait(false);
+            if (!result.Success)
+                return CallResult.Fail<string>(result.Error);
+
+            return CallResult.Ok(result.Data);
+        }
+
+        private async Task<CallResult> KeepAliveListenKeyAsync(TokenInfo token, CancellationToken ct)
+        {
+            var result = await TokenClient.SpotApi.Account.KeepAliveUserStreamAsync(token.Token, ct).ConfigureAwait(false);
+            if (!result.Success)
+                return CallResult.Fail<string>(result.Error);
+
+            return CallResult.Ok();
+        }
+
+        private async Task<CallResult> StopListenKeyAsync(TokenInfo token, CancellationToken ct)
+        {
+            var result = await TokenClient.SpotApi.Account.StopUserStreamAsync(token.Token, ct).ConfigureAwait(false);
+            if (!result.Success)
+                return CallResult.Fail<string>(result.Error);
+
+            return CallResult.Ok();
+        }
     }
 }

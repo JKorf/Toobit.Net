@@ -213,6 +213,28 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         Task<WebSocketResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitIndexUpdate>> onMessage, CancellationToken ct = default);
 
         /// <summary>
+        /// Subscribe to user data updates. Listen key is automatically obtained by the client and will be renewed as needed
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#user-data-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /api/v1/ws/{listenKey}
+        /// </para>
+        /// </summary>
+        /// <param name="onAccountMessage">Event handler for account and balance updates</param>
+        /// <param name="onPositionMessage">Event handler for position updates</param>
+        /// <param name="onOrderMessage">Event handler for order updates</param>
+        /// <param name="onUserTradeMessage">Event handler for user trade updates</param>
+        /// <param name="ct">Cancellation token for closing this subscription</param>
+        /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        Task<WebSocketResult<UpdateSubscription>> SubscribeToUserDataUpdatesAsync(
+            Action<DataEvent<ToobitAccountUpdate>>? onAccountMessage = null,
+            Action<DataEvent<ToobitFuturesOrderUpdate[]>>? onOrderMessage = null,
+            Action<DataEvent<ToobitPositionUpdate[]>>? onPositionMessage = null,
+            Action<DataEvent<ToobitUserTradeUpdate[]>>? onUserTradeMessage = null,
+            CancellationToken ct = default);
+
+        /// <summary>
         /// Subscribe to user data updates
         /// <para>
         /// Docs:<br />
