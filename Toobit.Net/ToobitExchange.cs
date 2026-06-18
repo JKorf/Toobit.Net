@@ -100,7 +100,7 @@ namespace Toobit.Net
         /// <summary>
         /// Rate limiter configuration for the Toobit API
         /// </summary>
-        public static ToobitRateLimiters RateLimiter { get; } = new ToobitRateLimiters();
+        public static ToobitRateLimiters RateLimiter { get; set; } = new ToobitRateLimiters();
     }
 
     /// <summary>
@@ -118,13 +118,19 @@ namespace Toobit.Net
         public event Action<RateLimitUpdateEvent> RateLimitUpdated;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        internal ToobitRateLimiters()
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public ToobitRateLimiters()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             Initialize();
         }
 
-        private void Initialize()
+        /// <summary>
+        /// Initialize the rate limits
+        /// </summary>
+        protected virtual void Initialize()
         {
             Toobit = new RateLimitGate("Toobit")
                             .AddGuard(new RateLimitGuard(RateLimitGuard.PerHost, [], 3000, TimeSpan.FromMinutes(1), RateLimitWindowType.Fixed)); // IP limit of 3000 request weight per minute
