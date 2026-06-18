@@ -9,6 +9,7 @@ using System.Linq;
 using Toobit.Net.Enums;
 using CryptoExchange.Net;
 using CryptoExchange.Net.Objects.Errors;
+using Toobit.Net.Objects.Models;
 
 namespace Toobit.Net.Clients.SpotApi
 {
@@ -784,7 +785,14 @@ namespace Toobit.Net.Clients.SpotApi
 
             return HttpResult.Ok(result, ExchangeHelpers.ApplyFilter(result.Data, x => x.Timestamp, request.StartTime, request.EndTime, direction)
                 .Select(x =>
-                    new SharedWithdrawal(x.AssetId, x.Address, x.Quantity, true, x.Timestamp)
+                    new SharedWithdrawal(
+                        x.AssetId, 
+                        x.Address,
+                        x.Quantity, 
+                        true, 
+                        x.Timestamp,
+                        SharedTransferStatus.Unknown
+                        )
                     {
                         Confirmations = x.ConfirmTimes,
                         Tag = x.Tag,
@@ -794,7 +802,6 @@ namespace Toobit.Net.Clients.SpotApi
                     })
                 .ToArray(), nextPageRequest);
         }
-
         #endregion
 
         #region Withdraw client
