@@ -25,7 +25,8 @@ namespace Toobit.Net
                 "https://www.toobit.com",
                 ["https://toobit-docs.github.io/apidocs/spot/v1/en/"],
                 PlatformType.CryptoCurrencyExchange,
-                CentralizationType.Centralized
+                CentralizationType.Centralized,
+                ToobitEnvironment.All
                 );
 
         /// <summary>

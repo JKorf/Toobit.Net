@@ -21,7 +21,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         public void SetDefaultExchangeParameter(string key, object value) => ExchangeParameters.SetStaticParameter(Exchange, key, value);
         public void ResetDefaultExchangeParameters() => ExchangeParameters.ResetStaticParameters();
-        public SharedClientInfo Discover() => SharedUtils.GetClientInfo(this);
+        public SharedClientInfo Discover() => SharedUtils.GetClientInfo(ToobitExchange.Metadata, this);
 
         #region Ticker client
 
@@ -36,7 +36,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)).ToArray() : [request.Symbol!.GetSymbol(FormatSymbol)];
-            var result = await SubscribeToTickerUpdatesAsync(symbols, update => handler(update.ToType(new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, update.Data.Symbol), update.Data.Symbol, update.Data.LastPrice, update.Data.HighPrice, update.Data.LowPrice, update.Data.Volume, update.Data.OpenPrice == null ? null : (Math.Round((update.Data.LastPrice ?? 0) / update.Data.OpenPrice.Value * 100 - 100, 3)))
+            var result = await SubscribeToTickerUpdatesAsync(symbols, update => handler(update.ToType(new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Data.Symbol), update.Data.Symbol, update.Data.LastPrice, update.Data.HighPrice, update.Data.LowPrice, update.Data.Volume, update.Data.OpenPrice == null ? null : (Math.Round((update.Data.LastPrice ?? 0) / update.Data.OpenPrice.Value * 100 - 100, 3)))
             {
                 QuoteVolume = update.Data.QuoteVolume
             })), ct: ct).ConfigureAwait(false);
@@ -60,7 +60,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)).ToArray() : [request.Symbol!.GetSymbol(FormatSymbol)];
             var result = await SubscribeToTradeUpdatesAsync(symbols, update => handler(update.ToType(update.Data.Select(x => 
-            new SharedTrade(ExchangeSymbolCache.ParseSymbol(_topicId, update.Symbol), update.Symbol!, x.Quantity, x.Price, x.Timestamp)
+            new SharedTrade(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Symbol), update.Symbol!, x.Quantity, x.Price, x.Timestamp)
             {
                 Side = x.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
             }).ToArray())), ct: ct).ConfigureAwait(false);
@@ -101,7 +101,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)).ToArray() : [request.Symbol!.GetSymbol(FormatSymbol)];
             var result = await SubscribeToKlineUpdatesAsync(symbols, interval, update => handler(update.ToType(
-                new SharedKline(ExchangeSymbolCache.ParseSymbol(_topicId, update.Data.Symbol), update.Data.Symbol, update.Data.OpenTime, update.Data.ClosePrice, update.Data.HighPrice, update.Data.LowPrice, update.Data.OpenPrice, update.Data.Volume))), ct).ConfigureAwait(false);
+                new SharedKline(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Data.Symbol), update.Data.Symbol, update.Data.OpenTime, update.Data.ClosePrice, update.Data.HighPrice, update.Data.LowPrice, update.Data.OpenPrice, update.Data.Volume))), ct).ConfigureAwait(false);
 
             return result;
         }
@@ -137,7 +137,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             var result = await SubscribeToUserDataUpdatesAsync(
                 onOrderMessage: update => handler(update.ToType(update.Data.Select(x =>
                     new SharedFuturesOrder(
-                        ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol,
+                        ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol,
                         x.OrderId.ToString(),
                         (x.PriceType == Enums.PriceType.Market || x.OrderType == Enums.FuturesUpdateOrderType.Market) ? SharedOrderType.Market : x.OrderType != Enums.FuturesUpdateOrderType.Limit ? SharedOrderType.Other : SharedOrderType.Limit,
                         x.OrderSide == Enums.OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
@@ -153,7 +153,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                         FeeAsset = x.FeeAsset,
                         TimeInForce = x.TimeInForce == Enums.TimeInForce.ImmediateOrCancel ? SharedTimeInForce.ImmediateOrCancel : x.TimeInForce == Enums.TimeInForce.FillOrKill ? SharedTimeInForce.FillOrKill : SharedTimeInForce.GoodTillCanceled,
                         IsCloseOrder = x.IsCloseOrder,
-                        LastTrade = x.LastFillQuantity > 0 ? new SharedUserTrade(ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol, x.OrderId.ToString(), x.LastTradeId?.ToString()!, x.OrderSide == Enums.OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell, x.LastFillQuantity ?? 0, x.LastFillPrice ?? 0, x.UpdateTime)
+                        LastTrade = x.LastFillQuantity > 0 ? new SharedUserTrade(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, x.OrderId.ToString(), x.LastTradeId?.ToString()!, x.OrderSide == Enums.OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell, x.LastFillQuantity ?? 0, x.LastFillPrice ?? 0, x.UpdateTime)
                         {
                             ClientOrderId = x.ClientOrderId,
                             Role = x.IsMaker ? SharedRole.Maker : SharedRole.Taker
@@ -188,7 +188,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
             var result = await SubscribeToUserDataUpdatesAsync(
-                onPositionMessage: update => handler(update.ToType(update.Data.Select(x => new SharedPosition(ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol, x.PositionQuantity, x.EventTime)
+                onPositionMessage: update => handler(update.ToType(update.Data.Select(x => new SharedPosition(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, x.PositionQuantity, x.EventTime)
                 {
                     AverageOpenPrice = x.AveragePrice,
                     PositionMode = SharedPositionMode.HedgeMode,
@@ -223,7 +223,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
                     handler(update.ToType(data.Select(x =>
                         new SharedUserTrade(
-                            ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol),
+                            ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol),
                             x.Symbol,
                             x.OrderId.ToString(),
                             x.TradeId,

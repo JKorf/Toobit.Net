@@ -21,7 +21,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         public void SetDefaultExchangeParameter(string key, object value) => ExchangeParameters.SetStaticParameter(Exchange, key, value);
         public void ResetDefaultExchangeParameters() => ExchangeParameters.ResetStaticParameters();
-        public SharedClientInfo Discover() => SharedUtils.GetClientInfo(this);
+        public SharedClientInfo Discover() => SharedUtils.GetClientInfo(ToobitExchange.Metadata, this);
 
         #region Klines client
 
@@ -181,20 +181,20 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 ContractSize = s.ContractMultiplier
             }).ToArray());
 
-            ExchangeSymbolCache.UpdateSymbolInfo(_topicId, resultData.Data!);
+            ExchangeSymbolCache.UpdateSymbolInfo(_topicId, EnvironmentName, null, resultData.Data!);
             return resultData;
         }
 
         async Task<ExchangeCallResult<SharedSymbol[]>> IFuturesSymbolRestClient.GetFuturesSymbolsForBaseAssetAsync(string baseAsset)
         {
-            if (!ExchangeSymbolCache.HasCached(_topicId))
+            if (!ExchangeSymbolCache.HasCached(_topicId, EnvironmentName, null))
             {
                 var symbols = await ((IFuturesSymbolRestClient)this).GetFuturesSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
                 if (!symbols.Success)
                     return ExchangeCallResult<SharedSymbol[]>.Fail(Exchange, symbols.Error!);
             }
 
-            return ExchangeCallResult<SharedSymbol[]>.Ok(Exchange, ExchangeSymbolCache.GetSymbolsForBaseAsset(_topicId, baseAsset));
+            return ExchangeCallResult<SharedSymbol[]>.Ok(Exchange, ExchangeSymbolCache.GetSymbolsForBaseAsset(_topicId, EnvironmentName, null, baseAsset));
         }
 
         async Task<ExchangeCallResult<bool>> IFuturesSymbolRestClient.SupportsFuturesSymbolAsync(SharedSymbol symbol)
@@ -202,26 +202,26 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             if (symbol.TradingMode == TradingMode.Spot)
                 throw new ArgumentException(nameof(symbol), "Spot symbols not allowed");
 
-            if (!ExchangeSymbolCache.HasCached(_topicId))
+            if (!ExchangeSymbolCache.HasCached(_topicId, EnvironmentName, null))
             {
                 var symbols = await ((IFuturesSymbolRestClient)this).GetFuturesSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
                 if (!symbols.Success)
                     return ExchangeCallResult<bool>.Fail(Exchange, symbols.Error!);
             }
 
-            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, symbol));
+            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, EnvironmentName, null, symbol));
         }
 
         async Task<ExchangeCallResult<bool>> IFuturesSymbolRestClient.SupportsFuturesSymbolAsync(string symbolName)
         {
-            if (!ExchangeSymbolCache.HasCached(_topicId))
+            if (!ExchangeSymbolCache.HasCached(_topicId, EnvironmentName, null))
             {
                 var symbols = await ((IFuturesSymbolRestClient)this).GetFuturesSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
                 if (!symbols.Success)
                     return ExchangeCallResult<bool>.Fail(Exchange, symbols.Error!);
             }
 
-            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, symbolName));
+            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, EnvironmentName, null, symbolName));
         }
         #endregion
 
@@ -250,7 +250,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             var funding = resultFunding.Result.Data.Single();
 
             return HttpResult.Ok(resultTicker.Result, new SharedFuturesTicker(
-                ExchangeSymbolCache.ParseSymbol(_topicId, ticker.Symbol), ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, ticker.PriceChangePercentage * 100)
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol), ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, ticker.PriceChangePercentage * 100)
             {
                 MarkPrice = resultMarkPrice.Result.Data.Price,
                 FundingRate = funding.FundingRate,
@@ -276,7 +276,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return HttpResult.Ok(resultTickers.Result, resultTickers.Result.Data.Select(x =>
             {
                 var funding = resultFunding.Result.Data.SingleOrDefault(p => p.Symbol == x.Symbol);
-                return new SharedFuturesTicker(ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.PriceChangePercentage * 100)
+                return new SharedFuturesTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.PriceChangePercentage * 100)
                 {
                     FundingRate = funding?.FundingRate,
                     NextFundingTime = funding?.NextFundingTime == default ? null : funding?.NextFundingTime
@@ -301,7 +301,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
             var ticker = resultTicker.Data.Single();
             return HttpResult.Ok(resultTicker, new SharedBookTicker(
-                ExchangeSymbolCache.ParseSymbol(_topicId, ticker.Symbol),
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol),
                 ticker.Symbol,
                 ticker.BestAskPrice ?? 0,
                 ticker.BestAskQuantity ?? 0,
@@ -407,7 +407,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 return HttpResult.Fail<SharedFuturesOrder>(order);
 
             return HttpResult.Ok(order, new SharedFuturesOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, order.Data.Symbol), order.Data.Symbol,
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, order.Data.Symbol), order.Data.Symbol,
                 order.Data.OrderId.ToString(),
                 ParseOrderType(order.Data.OrderType, order.Data.PriceType ?? PriceType.Input),
                 (order.Data.OrderSide == FuturesOrderSide.BuyClose || order.Data.OrderSide == FuturesOrderSide.BuyClose) ? SharedOrderSide.Buy : SharedOrderSide.Sell,
@@ -439,7 +439,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 return HttpResult.Fail<SharedFuturesOrder[]>(orders);
 
             return HttpResult.Ok(orders, orders.Data.Select(x => new SharedFuturesOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol,
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol,
                 x.OrderId.ToString(),
                 ParseOrderType(x.OrderType, x.PriceType ?? PriceType.Input),
                 (x.OrderSide == FuturesOrderSide.BuyClose || x.OrderSide == FuturesOrderSide.BuyClose) ? SharedOrderSide.Buy : SharedOrderSide.Sell,
@@ -489,7 +489,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return HttpResult.Ok(result, ExchangeHelpers.ApplyFilter(result.Data, x => x.CreateTime, request.StartTime, request.EndTime, direction)
                 .Select(x => 
                     new SharedFuturesOrder(
-                        ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol,
+                        ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol,
                         x.OrderId.ToString(),
                         ParseOrderType(x.OrderType, x.PriceType ?? PriceType.Input),
                         (x.OrderSide == FuturesOrderSide.BuyClose || x.OrderSide == FuturesOrderSide.BuyClose) ? SharedOrderSide.Buy : SharedOrderSide.Sell,
@@ -527,7 +527,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 return HttpResult.Fail<SharedUserTrade[]>(orders);
 
             return HttpResult.Ok(orders, orders.Data.Select(x => new SharedUserTrade(
-                ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol,
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol,
                 x.OrderId.ToString(),
                 x.Id.ToString(),
                 (x.OrderSide == FuturesOrderSide.BuyClose || x.OrderSide == FuturesOrderSide.BuyOpen) ? SharedOrderSide.Buy : SharedOrderSide.Sell,
@@ -574,7 +574,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return HttpResult.Ok(result, ExchangeHelpers.ApplyFilter(result.Data, x => x.Timestamp, request.StartTime, request.EndTime, direction)
                 .Select(x => 
                     new SharedUserTrade(
-                        ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol,
+                        ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol,
                         x.OrderId.ToString(),
                         x.Id.ToString(),
                         (x.OrderSide == FuturesOrderSide.BuyClose || x.OrderSide == FuturesOrderSide.BuyOpen) ? SharedOrderSide.Buy : SharedOrderSide.Sell,
@@ -617,7 +617,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 return HttpResult.Fail<SharedPosition[]>(result);
 
             var resultTypes = request.Symbol == null && request.TradingMode == null ? SupportedTradingModes : request.Symbol != null ? new[] { request.Symbol.TradingMode } : new[] { request.TradingMode!.Value };
-            return HttpResult.Ok(result, result.Data.Select(x => new SharedPosition(ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol, Math.Abs(x.Position), DateTime.UtcNow)
+            return HttpResult.Ok(result, result.Data.Select(x => new SharedPosition(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, Math.Abs(x.Position), DateTime.UtcNow)
             {
                 UnrealizedPnl = x.UnrealizedPnl,
                 LiquidationPrice = x.LiquidationPrice == 0 ? null : x.LiquidationPrice,
@@ -714,7 +714,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 return HttpResult.Fail<SharedFuturesOrder>(order);
 
             return HttpResult.Ok(order, new SharedFuturesOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, order.Data.Symbol), order.Data.Symbol,
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, order.Data.Symbol), order.Data.Symbol,
                 order.Data.OrderId.ToString(),
                 ParseOrderType(order.Data.OrderType, order.Data.PriceType ?? PriceType.Input),
                 (order.Data.OrderSide == FuturesOrderSide.BuyClose || order.Data.OrderSide == FuturesOrderSide.BuyClose) ? SharedOrderSide.Buy : SharedOrderSide.Sell,
@@ -921,7 +921,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
             // Return
             return HttpResult.Ok(order, new SharedFuturesTriggerOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, order.Data.Symbol),
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, order.Data.Symbol),
                 order.Data.Symbol,
                 order.Data.OrderId.ToString(),
                 order.Data.PriceType == PriceType.Market ? SharedOrderType.Market : SharedOrderType.Limit,
