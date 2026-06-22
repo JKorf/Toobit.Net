@@ -1,3 +1,4 @@
+using CryptoExchange.Net.Objects;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -80,6 +81,8 @@ namespace Toobit.Net.Converters
     [JsonSerializable(typeof(ToobitDataResult<ToobitOrderResult[]>))]
     [JsonSerializable(typeof(ToobitDataResult<ToobitCancelResult[]>))]
     [JsonSerializable(typeof(ToobitListenKey))]
+    [JsonSerializable(typeof(Parameters))]
+    [JsonSerializable(typeof(Parameters[]))]
     internal partial class ToobitSourceGenerationContext : JsonSerializerContext
     {
     }

@@ -79,7 +79,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
             var result = await SubscribeToUserDataUpdatesAsync(
-                onAccountMessage: update => handler(update.ToType(update.Data.Balances.Select(x => new SharedBalance(x.Asset, x.Free, x.Free + x.Locked)).ToArray())),
+                onAccountMessage: update => handler(update.ToType(update.Data.Balances.Select(x => 
+                    new SharedBalance(SupportedTradingModes, x.Asset, x.Free, x.Free + x.Locked)).ToArray())),
                 ct: ct).ConfigureAwait(false);
 
             return result;

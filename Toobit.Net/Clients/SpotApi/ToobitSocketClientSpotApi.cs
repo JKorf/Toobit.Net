@@ -283,12 +283,7 @@ namespace Toobit.Net.Clients.SpotApi
             {
                 TokenLease = lease
             };
-            var result = await SubscribeAsync(BaseAddress.AppendPath("/api/v1/ws/" + lk), subscription, ct).ConfigureAwait(false);
-            if (!result.Success && lease != null)
-                await lease.ReleaseAsync().ConfigureAwait(false);
-
-            return result;
-
+            return await SubscribeAsync(BaseAddress.AppendPath("/api/v1/ws/" + lk), subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
