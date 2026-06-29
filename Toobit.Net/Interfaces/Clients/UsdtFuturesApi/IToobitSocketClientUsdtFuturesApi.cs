@@ -29,7 +29,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="onMessage">The event handler for the received data</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<ToobitTradeUpdate[]>> onMessage, CancellationToken ct = default);
+        Task<WebSocketResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<ToobitTradeUpdate[]>> onMessage, CancellationToken ct = default);
 
         /// <summary>
         /// Subscribe to live trade updates
@@ -44,7 +44,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="onMessage">The event handler for the received data</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitTradeUpdate[]>> onMessage, CancellationToken ct = default);
+        Task<WebSocketResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitTradeUpdate[]>> onMessage, CancellationToken ct = default);
 
         ///// <summary>
         ///// Subscribe to live mark price updates
@@ -54,7 +54,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         ///// <param name="onMessage">The event handler for the received data</param>
         ///// <param name="ct">Cancellation token for closing this subscription</param>
         ///// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        //Task<CallResult<UpdateSubscription>> SubscribeToMarkPriceUpdatesAsync(string symbol, Action<DataEvent<ToobitMarkPriceUpdate>> onMessage, CancellationToken ct = default);
+        //Task<WebSocketResult<UpdateSubscription>> SubscribeToMarkPriceUpdatesAsync(string symbol, Action<DataEvent<ToobitMarkPriceUpdate>> onMessage, CancellationToken ct = default);
 
         ///// <summary>
         ///// Subscribe to live mark price updates
@@ -64,7 +64,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         ///// <param name="onMessage">The event handler for the received data</param>
         ///// <param name="ct">Cancellation token for closing this subscription</param>
         ///// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        //Task<CallResult<UpdateSubscription>> SubscribeToMarkPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitMarkPriceUpdate>> onMessage, CancellationToken ct = default);
+        //Task<WebSocketResult<UpdateSubscription>> SubscribeToMarkPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitMarkPriceUpdate>> onMessage, CancellationToken ct = default);
 
         /// <summary>
         /// Subscribe to live kline/candlestick updates
@@ -80,7 +80,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="interval">Kline interval</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(string symbol, KlineInterval interval, Action<DataEvent<ToobitKlineUpdate>> onMessage, CancellationToken ct = default);
+        Task<WebSocketResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(string symbol, KlineInterval interval, Action<DataEvent<ToobitKlineUpdate>> onMessage, CancellationToken ct = default);
         /// <summary>
         /// Subscribe to live kline/candlestick updates
         /// <para>
@@ -95,7 +95,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="onMessage">The event handler for the received data</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(IEnumerable<string> symbols, KlineInterval interval, Action<DataEvent<ToobitKlineUpdate>> onMessage, CancellationToken ct = default);
+        Task<WebSocketResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(IEnumerable<string> symbols, KlineInterval interval, Action<DataEvent<ToobitKlineUpdate>> onMessage, CancellationToken ct = default);
 
         /// <summary>
         /// Subscribe to live price ticker updates
@@ -110,7 +110,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="onMessage">The event handler for the received data</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToPartialOrderBookUpdatesAsync(string symbol, Action<DataEvent<ToobitOrderBookUpdate>> onMessage, CancellationToken ct = default);
+        Task<WebSocketResult<UpdateSubscription>> SubscribeToPartialOrderBookUpdatesAsync(string symbol, Action<DataEvent<ToobitOrderBookUpdate>> onMessage, CancellationToken ct = default);
         /// <summary>
         /// Subscribe to live price ticker updates
         /// <para>
@@ -124,7 +124,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="onMessage">The event handler for the received data</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToPartialOrderBookUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitOrderBookUpdate>> onMessage, CancellationToken ct = default);
+        Task<WebSocketResult<UpdateSubscription>> SubscribeToPartialOrderBookUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitOrderBookUpdate>> onMessage, CancellationToken ct = default);
 
         /// <summary>
         /// Subscribe to live price ticker updates
@@ -139,7 +139,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="onMessage">The event handler for the received data</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, Action<DataEvent<ToobitOrderBookUpdate>> onMessage, CancellationToken ct = default);
+        Task<WebSocketResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, Action<DataEvent<ToobitOrderBookUpdate>> onMessage, CancellationToken ct = default);
         /// <summary>
         /// Subscribe to live price ticker updates
         /// <para>
@@ -153,7 +153,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="onMessage">The event handler for the received data</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitOrderBookUpdate>> onMessage, CancellationToken ct = default);
+        Task<WebSocketResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitOrderBookUpdate>> onMessage, CancellationToken ct = default);
 
         /// <summary>
         /// Subscribe to live price ticker updates
@@ -168,7 +168,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="onMessage">The event handler for the received data</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(string symbol, Action<DataEvent<ToobitTickerUpdate>> onMessage, CancellationToken ct = default);
+        Task<WebSocketResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(string symbol, Action<DataEvent<ToobitTickerUpdate>> onMessage, CancellationToken ct = default);
         /// <summary>
         /// Subscribe to live price ticker updates
         /// <para>
@@ -182,7 +182,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="onMessage">The event handler for the received data</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitTickerUpdate>> onMessage, CancellationToken ct = default);
+        Task<WebSocketResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitTickerUpdate>> onMessage, CancellationToken ct = default);
         /// <summary>
         /// Subscribe to live index price updates
         /// <para>
@@ -196,7 +196,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="onMessage">The event handler for the received data</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(string symbol, Action<DataEvent<ToobitIndexUpdate>> onMessage, CancellationToken ct = default);
+        Task<WebSocketResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(string symbol, Action<DataEvent<ToobitIndexUpdate>> onMessage, CancellationToken ct = default);
         /// <summary>
         /// Subscribe to live index price updates
         /// <para>
@@ -210,7 +210,29 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="onMessage">The event handler for the received data</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitIndexUpdate>> onMessage, CancellationToken ct = default);
+        Task<WebSocketResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitIndexUpdate>> onMessage, CancellationToken ct = default);
+
+        /// <summary>
+        /// Subscribe to user data updates. Listen key is automatically obtained by the client and will be renewed as needed
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#user-data-streams" /><br />
+        /// Endpoint:<br />
+        /// SUBSCRIBE /api/v1/ws/{listenKey}
+        /// </para>
+        /// </summary>
+        /// <param name="onAccountMessage">Event handler for account and balance updates</param>
+        /// <param name="onPositionMessage">Event handler for position updates</param>
+        /// <param name="onOrderMessage">Event handler for order updates</param>
+        /// <param name="onUserTradeMessage">Event handler for user trade updates</param>
+        /// <param name="ct">Cancellation token for closing this subscription</param>
+        /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        Task<WebSocketResult<UpdateSubscription>> SubscribeToUserDataUpdatesAsync(
+            Action<DataEvent<ToobitAccountUpdate>>? onAccountMessage = null,
+            Action<DataEvent<ToobitFuturesOrderUpdate[]>>? onOrderMessage = null,
+            Action<DataEvent<ToobitPositionUpdate[]>>? onPositionMessage = null,
+            Action<DataEvent<ToobitUserTradeUpdate[]>>? onUserTradeMessage = null,
+            CancellationToken ct = default);
 
         /// <summary>
         /// Subscribe to user data updates
@@ -228,7 +250,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="onUserTradeMessage">Event handler for user trade updates</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToUserDataUpdatesAsync(
+        Task<WebSocketResult<UpdateSubscription>> SubscribeToUserDataUpdatesAsync(
             string listenKey,
             Action<DataEvent<ToobitAccountUpdate>>? onAccountMessage = null,
             Action<DataEvent<ToobitFuturesOrderUpdate[]>>? onOrderMessage = null,

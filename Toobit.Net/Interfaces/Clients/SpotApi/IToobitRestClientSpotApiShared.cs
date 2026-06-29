@@ -19,7 +19,6 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         IDepositRestClient,
         IWithdrawalRestClient,
         IWithdrawRestClient,
-        IListenKeyRestClient,
         ITransferRestClient
     {
     }

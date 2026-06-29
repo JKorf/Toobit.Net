@@ -37,9 +37,9 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             _userTradeHandler = tradeHandler;
 
             MessageRouter = MessageRouter.Create([
-                MessageRoute<ToobitAccountUpdate[]>.CreateWithoutTopicFilter("outboundAccountInfo", HandleAccountInfo),
-                MessageRoute<ToobitOrderUpdate[]>.CreateWithoutTopicFilter("executionReport", HandleOrderUpdate),
-                MessageRoute<ToobitUserTradeUpdate[]>.CreateWithoutTopicFilter("ticketInfo", HandleUserTrade)
+                MessageRoute.CreateForEvent<ToobitAccountUpdate[]>("outboundAccountInfo", HandleAccountInfo),
+                MessageRoute.CreateForEvent<ToobitOrderUpdate[]>("executionReport", HandleOrderUpdate),
+                MessageRoute.CreateForEvent<ToobitUserTradeUpdate[]>("ticketInfo", HandleUserTrade)
                 ]);
         }
 
@@ -62,7 +62,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
                         .WithDataTimestamp(timestamp, _client.GetTimeOffset())
                 );
 
-            return CallResult.SuccessResult;
+            return CallResult.Ok();
         }
 
         public CallResult HandleOrderUpdate(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitOrderUpdate[] message)
@@ -79,7 +79,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
                         .WithDataTimestamp(timestamp, _client.GetTimeOffset())
                 );
 
-            return CallResult.SuccessResult;
+            return CallResult.Ok();
         }
 
         public CallResult HandleUserTrade(SocketConnection connection, DateTime receiveTime, string? originalData, ToobitUserTradeUpdate[] message)
@@ -95,7 +95,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
                         .WithDataTimestamp(timestamp, _client.GetTimeOffset())
                 );
 
-            return CallResult.SuccessResult;
+            return CallResult.Ok();
         }
     }
 }

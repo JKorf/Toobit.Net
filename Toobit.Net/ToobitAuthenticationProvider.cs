@@ -20,13 +20,13 @@ namespace Toobit.Net
             request.Headers ??= new Dictionary<string, string>();
             request.Headers.Add("X-BB-APIKEY", Credential.Key);
 
-            if (!request.Authenticated)
+            if (!request.RequestDefinition.Authenticated)
                 return;
 
             var timestamp = GetMillisecondTimestampLong(apiClient);
             var receiveWindow = ((ToobitRestOptions)apiClient.ClientOptions).ReceiveWindow.TotalMilliseconds;
 
-            request.QueryParameters ??= new Dictionary<string, object>();
+            request.QueryParameters ??= new Parameters(ToobitExchange._parameterSerializationSettings);
             request.QueryParameters.Add("timestamp", timestamp);
             request.QueryParameters.Add("recvWindow", receiveWindow);
 

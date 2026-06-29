@@ -30,7 +30,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <param name="price">["<c>price</c>"] Limit order price</param>
         /// <param name="clientOrderId">["<c>newClientOrderId</c>"] Client order id</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult> PlaceTestOrderAsync(string symbol, OrderSide orderSide, OrderType orderType, decimal quantity, TimeInForce? timeInForce = null, decimal? price = null, string? clientOrderId = null, CancellationToken ct = default);
+        Task<HttpResult> PlaceTestOrderAsync(string symbol, OrderSide orderSide, OrderType orderType, decimal quantity, TimeInForce? timeInForce = null, decimal? price = null, string? clientOrderId = null, CancellationToken ct = default);
 
         /// <summary>
         /// Place a new order
@@ -49,7 +49,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <param name="price">["<c>price</c>"] Limit order price</param>
         /// <param name="clientOrderId">["<c>newClientOrderId</c>"] Client order id</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitOrder>> PlaceOrderAsync(string symbol, OrderSide orderSide, OrderType orderType, decimal quantity, TimeInForce? timeInForce = null, decimal? price = null, string? clientOrderId = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitOrder>> PlaceOrderAsync(string symbol, OrderSide orderSide, OrderType orderType, decimal quantity, TimeInForce? timeInForce = null, decimal? price = null, string? clientOrderId = null, CancellationToken ct = default);
 
         /// <summary>
         /// Place multiple orders. Orders have to be for the same symbol.
@@ -62,7 +62,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// </summary>
         /// <param name="orders">Orders to place</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<CallResult<ToobitOrder>[]>> PlaceMultipleOrdersAsync(IEnumerable<ToobitOrderRequest> orders, CancellationToken ct = default);
+        Task<HttpResult<CallResult<ToobitOrder>[]>> PlaceMultipleOrdersAsync(IEnumerable<ToobitOrderRequest> orders, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel an open order
@@ -76,7 +76,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <param name="orderId">["<c>orderId</c>"] Id of order to cancel. Either this or clientOrderId should be provided</param>
         /// <param name="clientOrderId">["<c>clientOrderId</c>"] Client order id of order to cancel. Either this or orderId should be provided</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitOrder>> CancelOrderAsync(long? orderId = null, string? clientOrderId = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitOrder>> CancelOrderAsync(long? orderId = null, string? clientOrderId = null, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel all orders matching the parameters
@@ -90,7 +90,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <param name="symbol">["<c>symbol</c>"] Filter by symbol, for example `ETHUSDT`</param>
         /// <param name="side">["<c>side</c>"] Filter by order side</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult> CancelAllOrdersAsync(string? symbol = null, OrderSide? side = null, CancellationToken ct = default);
+        Task<HttpResult> CancelAllOrdersAsync(string? symbol = null, OrderSide? side = null, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel multiple orders by id. If successful no result is returned in the data, if unsuccessful an error is returned in the data
@@ -103,7 +103,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// </summary>
         /// <param name="orderIds">["<c>ids</c>"] Ids of the orders to cancel</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitCancelResult[]>> CancelMultipleOrdersAsync(IEnumerable<long> orderIds, CancellationToken ct = default);
+        Task<HttpResult<ToobitCancelResult[]>> CancelMultipleOrdersAsync(IEnumerable<long> orderIds, CancellationToken ct = default);
 
         /// <summary>
         /// Get order info
@@ -117,7 +117,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <param name="orderId">["<c>orderId</c>"] Id of order to cancel, either this or clientOrderId should be provided</param>
         /// <param name="clientOrderId">["<c>origClientOrderId</c>"] Client order id of the order to cancel, either this or orderId should be provided</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitOrder>> GetOrderAsync(long? orderId = null, string? clientOrderId = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitOrder>> GetOrderAsync(long? orderId = null, string? clientOrderId = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get open orders
@@ -132,7 +132,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <param name="symbol">["<c>symbol</c>"] Filter by symbol</param>
         /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitOrder[]>> GetOpenOrdersAsync(long? orderId = null, string? symbol = null, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitOrder[]>> GetOpenOrdersAsync(long? orderId = null, string? symbol = null, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get orders
@@ -149,7 +149,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <param name="endTime">["<c>endTime</c>"] Filter by end time</param>
         /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitOrder[]>> GetOrdersAsync(long? orderId = null, string? symbol = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitOrder[]>> GetOrdersAsync(long? orderId = null, string? symbol = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get user trades
@@ -167,7 +167,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <param name="endTime">["<c>endTime</c>"] Filter by end time</param>
         /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitUserTrade[]>> GetUserTradesAsync(string symbol, long? fromId = null, long? toId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitUserTrade[]>> GetUserTradesAsync(string symbol, long? fromId = null, long? toId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
 
     }
 }

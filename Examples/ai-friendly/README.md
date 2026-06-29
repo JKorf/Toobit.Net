@@ -15,7 +15,7 @@ These examples are optimized for AI coding assistants and quick onboarding. Each
 | `02-futures.cs` | USDT futures: set leverage, place limit order, get position, close order pattern |
 | `03-websocket.cs` | Subscribe to ticker updates, klines, user data stream, with proper teardown |
 | `04-multi-exchange.cs` | `CryptoExchange.Net.SharedApis` pattern for exchange-agnostic code |
-| `05-error-handling.cs` | `WebCallResult` patterns, retry, common error scenarios |
+| `05-error-handling.cs` | `HttpResult` patterns, retry, common error scenarios |
 
 ## Running
 

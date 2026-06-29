@@ -16,14 +16,14 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         /// </summary>
         public ToobitPingSubscription(ILogger logger) : base(logger, false)
         {
-            MessageRouter = MessageRouter.CreateWithoutTopicFilter<PingRequest>("ping", DoHandleMessage);
+            MessageRouter = MessageRouter.CreateForEvent<PingRequest>("ping", DoHandleMessage);
         }
 
         /// <inheritdoc />
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, PingRequest message)
         {
             _ = connection.SendAsync(ExchangeHelpers.NextId(), new PingResponse { Pong = message.Ping }, 1);
-            return CallResult.SuccessResult;
+            return CallResult.Ok();
         }
     }
 }

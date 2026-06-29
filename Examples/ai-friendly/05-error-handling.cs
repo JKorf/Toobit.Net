@@ -1,6 +1,6 @@
 // 05-error-handling.cs
 //
-// Demonstrates: WebCallResult patterns, retry logic, and common Toobit.Net
+// Demonstrates: HttpResult patterns, retry logic, and common Toobit.Net
 // error handling rules.
 //
 // Setup: dotnet add package Toobit.Net
@@ -29,11 +29,11 @@ else
     Console.WriteLine($"Transient: {result.Error?.IsTransient}");
 }
 
-async Task<WebCallResult<T>> WithRetry<T>(
-    Func<Task<WebCallResult<T>>> call,
+async Task<HttpResult<T>> WithRetry<T>(
+    Func<Task<HttpResult<T>>> call,
     int maxAttempts = 3)
 {
-    WebCallResult<T> last = default!;
+    HttpResult<T> last = default!;
     for (var attempt = 1; attempt <= maxAttempts; attempt++)
     {
         last = await call();
@@ -56,6 +56,9 @@ if (!ticker.Success)
 }
 
 // Common Toobit.Net guidance:
+// - Direct and SharedApis REST methods return HttpResult<T> or HttpResult.
+// - Direct and SharedApis WebSocket subscriptions return WebSocketResult<UpdateSubscription>.
+// - Shared symbol/cache helpers can return ExchangeCallResult<T>.
 // - API errors are returned in result.Error; do not expect normal API failures
 //   to be thrown as exceptions.
 // - Retry only transient errors. Validation errors, bad credentials, and

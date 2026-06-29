@@ -121,7 +121,7 @@ namespace Toobit.Net.UnitTests
             await tester.ValidateAsync(client => client.UsdtFuturesApi.Trading.GetUserTradesAsync("123"), "GetUserTrades");
         }
 
-        private bool IsAuthenticated(WebCallResult result)
+        private bool IsAuthenticated(IHttpResult result)
         {
             return result.RequestUrl?.Contains("signature") == true || result.RequestBody?.Contains("signature=") == true;
         }

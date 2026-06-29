@@ -20,7 +20,7 @@ This library provides first-class support for AI coding assistants. The relevant
 **Quick prompt to verify your assistant is using these:**
 > "Show me a minimal example of placing a limit buy order on Toobit Spot using Toobit.Net, including authentication setup."
 
-The expected output should use `ToobitRestClient`, `ToobitCredentials`, and the `WebCallResult` pattern.
+The expected output should use `ToobitRestClient`, `ToobitCredentials`, and the `HttpResult` pattern.
 
 ## Features
 * Response data is mapped to descriptive models

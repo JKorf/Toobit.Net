@@ -6,22 +6,22 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Concurrent;
 using System.Net.Http;
+using CryptoExchange.Net.Clients;
 
 namespace Toobit.Net.Clients
 {
     /// <inheritdoc />
-    public class ToobitUserClientProvider : IToobitUserClientProvider
+    public class ToobitUserClientProvider : UserClientProvider<
+        IToobitRestClient,
+        IToobitSocketClient,
+        ToobitRestOptions,
+        ToobitSocketOptions,
+        ToobitCredentials,
+        ToobitEnvironment
+        >, IToobitUserClientProvider
     {
-        private ConcurrentDictionary<string, IToobitRestClient> _restClients = new ConcurrentDictionary<string, IToobitRestClient>();
-        private ConcurrentDictionary<string, IToobitSocketClient> _socketClients = new ConcurrentDictionary<string, IToobitSocketClient>();
-        
-        private readonly IOptions<ToobitRestOptions> _restOptions;
-        private readonly IOptions<ToobitSocketOptions> _socketOptions;
-        private readonly HttpClient _httpClient;
-        private readonly ILoggerFactory? _loggerFactory;
-
         /// <inheritdoc />
-        public string ExchangeName => ToobitExchange.ExchangeName;
+        public override string ExchangeName => ToobitExchange.ExchangeName;
 
         /// <summary>
         /// ctor
@@ -40,97 +40,15 @@ namespace Toobit.Net.Clients
             ILoggerFactory? loggerFactory,
             IOptions<ToobitRestOptions> restOptions,
             IOptions<ToobitSocketOptions> socketOptions)
+            : base(httpClient, loggerFactory, restOptions, socketOptions)
         {
-            _httpClient = httpClient ?? new HttpClient();
-            _httpClient.Timeout = restOptions.Value.RequestTimeout;
-            _loggerFactory = loggerFactory;
-            _restOptions = restOptions;
-            _socketOptions = socketOptions;
         }
 
         /// <inheritdoc />
-        public void InitializeUserClient(string userIdentifier, ToobitCredentials credentials, ToobitEnvironment? environment = null)
-        {
-            CreateRestClient(userIdentifier, credentials, environment);
-            CreateSocketClient(userIdentifier, credentials, environment);
-        }
-
+        protected override IToobitRestClient ConstructRestClient(HttpClient client, ILoggerFactory? loggerFactory, IOptions<ToobitRestOptions> options)
+            => new ToobitRestClient(client, loggerFactory, options);
         /// <inheritdoc />
-        public void ClearUserClients(string userIdentifier)
-        {
-            _restClients.TryRemove(userIdentifier, out _);
-            _socketClients.TryRemove(userIdentifier, out _);
-        }
-
-        /// <inheritdoc />
-        public IToobitRestClient GetRestClient(string userIdentifier, ToobitCredentials? credentials = null, ToobitEnvironment? environment = null)
-        {
-            if (!_restClients.TryGetValue(userIdentifier, out var client) || client.Disposed)
-                client = CreateRestClient(userIdentifier, credentials, environment);
-
-            return client;
-        }
-
-        /// <inheritdoc />
-        public IToobitSocketClient GetSocketClient(string userIdentifier, ToobitCredentials? credentials = null, ToobitEnvironment? environment = null)
-        {
-            if (!_socketClients.TryGetValue(userIdentifier, out var client) || client.Disposed)
-                client = CreateSocketClient(userIdentifier, credentials, environment);
-
-            return client;
-        }
-
-        private IToobitRestClient CreateRestClient(string userIdentifier, ToobitCredentials? credentials, ToobitEnvironment? environment)
-        {
-            var clientRestOptions = SetRestEnvironment(environment);
-            var client = new ToobitRestClient(_httpClient, _loggerFactory, clientRestOptions);
-            if (credentials != null)
-            {
-                client.SetApiCredentials(credentials);
-                _restClients[userIdentifier] = client;
-            }
-            return client;
-        }
-
-        private IToobitSocketClient CreateSocketClient(string userIdentifier, ToobitCredentials? credentials, ToobitEnvironment? environment)
-        {
-            var clientSocketOptions = SetSocketEnvironment(environment);
-            var client = new ToobitSocketClient(clientSocketOptions!, _loggerFactory);
-            if (credentials != null)
-            {
-                client.SetApiCredentials(credentials);
-                _socketClients[userIdentifier] = client;
-            }
-            return client;
-        }
-
-        private IOptions<ToobitRestOptions> SetRestEnvironment(ToobitEnvironment? environment)
-        {
-            if (environment == null)
-                return _restOptions;
-
-            var newRestClientOptions = new ToobitRestOptions();
-            var restOptions = _restOptions.Value.Set(newRestClientOptions);
-            newRestClientOptions.Environment = environment;
-            return Options.Create(newRestClientOptions);
-        }
-
-        private IOptions<ToobitSocketOptions> SetSocketEnvironment(ToobitEnvironment? environment)
-        {
-            if (environment == null)
-                return _socketOptions;
-
-            var newSocketClientOptions = new ToobitSocketOptions();
-            var restOptions = _socketOptions.Value.Set(newSocketClientOptions);
-            newSocketClientOptions.Environment = environment;
-            return Options.Create(newSocketClientOptions);
-        }
-
-        private static T ApplyOptionsDelegate<T>(Action<T>? del) where T : new()
-        {
-            var opts = new T();
-            del?.Invoke(opts);
-            return opts;
-        }
+        protected override IToobitSocketClient ConstructSocketClient(ILoggerFactory? loggerFactory, IOptions<ToobitSocketOptions> options) 
+            => new ToobitSocketClient(options, loggerFactory);
     }
 }

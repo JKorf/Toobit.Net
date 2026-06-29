@@ -22,7 +22,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// </para>
         /// </summary>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitUserBalance>> GetBalancesAsync(CancellationToken ct = default);
+        Task<HttpResult<ToobitUserBalance>> GetBalancesAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Withdraw funds
@@ -43,7 +43,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <param name="targetPersonLastName">["<c>targetPersonLastName</c>"] Target person last name</param>
         /// <param name="clientOrderId">["<c>clientOrderId</c>"] Client order id</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitWithdrawResult>> WithdrawAsync(string asset, string address, decimal quantity, string? network = null, string? tag = null, string? vaspCode = null, string? targetPersonFirstName = null, string? targetPersonLastName = null, string? clientOrderId = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitWithdrawResult>> WithdrawAsync(string asset, string address, decimal quantity, string? network = null, string? tag = null, string? vaspCode = null, string? targetPersonFirstName = null, string? targetPersonLastName = null, string? clientOrderId = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get withdrawal history
@@ -61,7 +61,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <param name="endTime">["<c>endTime</c>"] Filter by end time</param>
         /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitWithdrawal[]>> GetWithdrawalsAsync(string? asset = null, string? fromId = null, long? withdrawOrderId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitWithdrawal[]>> GetWithdrawalsAsync(string? asset = null, string? fromId = null, long? withdrawOrderId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get deposit address
@@ -75,7 +75,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <param name="asset">["<c>coin</c>"] The asset, for example `ETH`</param>
         /// <param name="network">["<c>chainType</c>"] The network</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitDepositAddress>> GetDepositAddressAsync(string asset, string network, CancellationToken ct = default);
+        Task<HttpResult<ToobitDepositAddress>> GetDepositAddressAsync(string asset, string network, CancellationToken ct = default);
 
         /// <summary>
         /// Get deposit history
@@ -92,7 +92,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <param name="endTime">["<c>endTime</c>"] Filter by end time</param>
         /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitDeposit[]>> GetDepositsAsync(string? asset = null, string? fromId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitDeposit[]>> GetDepositsAsync(string? asset = null, string? fromId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
         /// Transfer asset. Can be between account types or between parent and sub account. If transferring between Spot and Futures for the current account the fromUid and toUid should be set to the current account id which can be retrieved with GetBalances
@@ -110,7 +110,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <param name="asset">["<c>asset</c>"] The asset, for example `ETH`</param>
         /// <param name="quantity">["<c>quantity</c>"] Quantity</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult> TransferAsync(long fromUid, long toUid, AccountType fromAccountType, AccountType toAccountType, string asset, decimal quantity, CancellationToken ct = default);
+        Task<HttpResult> TransferAsync(long fromUid, long toUid, AccountType fromAccountType, AccountType toAccountType, string asset, decimal quantity, CancellationToken ct = default);
 
         /// <summary>
         /// Get transaction history
@@ -129,7 +129,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <param name="endTime">["<c>endTime</c>"] Filter by end time</param>
         /// <param name="limit">["<c>limit</c>"] Max number of results</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitTransaction[]>> GetTransactionHistoryAsync(int? accountType = null, string? asset = null, int? flowType = null, long? fromId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitTransaction[]>> GetTransactionHistoryAsync(int? accountType = null, string? asset = null, int? flowType = null, long? fromId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default);
         
         /// <summary>
         /// Get sub account list
@@ -141,7 +141,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// </para>
         /// </summary>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<ToobitSubAccount[]>> GetSubAccountsAsync(CancellationToken ct = default);
+        Task<HttpResult<ToobitSubAccount[]>> GetSubAccountsAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Starts a user stream by requesting a listen key. This listen key can be used in subsequent requests to SubscribeToUserDataUpdates. The stream will close after 60 minutes unless a keep alive is send.
@@ -154,7 +154,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// </para>
         /// </summary>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<string>> StartUserStreamAsync(CancellationToken ct = default);
+        Task<HttpResult<string>> StartUserStreamAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Sends a keep alive for the current user stream listen key to keep the stream from closing. Stream auto closes after 60 minutes if no keep alive is send. 30 minute interval for keep alive is recommended.
@@ -167,7 +167,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// </summary>
         /// <param name="listenKey">["<c>listenKey</c>"] The listen key to keep alive</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult> KeepAliveUserStreamAsync(string listenKey, CancellationToken ct = default);
+        Task<HttpResult> KeepAliveUserStreamAsync(string listenKey, CancellationToken ct = default);
 
         /// <summary>
         /// Stops the current user stream
@@ -180,6 +180,6 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// </summary>
         /// <param name="listenKey">["<c>listenKey</c>"] The listen key to stop</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult> StopUserStreamAsync(string listenKey, CancellationToken ct = default);
+        Task<HttpResult> StopUserStreamAsync(string listenKey, CancellationToken ct = default);
     }
 }

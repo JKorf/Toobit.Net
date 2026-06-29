@@ -19,12 +19,12 @@ namespace Toobit.Net.Objects.Sockets
             RequestTimeout = waitForErrorTimeout;
             TimeoutBehavior = TimeoutBehavior.Succeed;
 
-            MessageRouter = MessageRouter.CreateWithoutTopicFilter<SocketError>("-100010", HandleSymbolError);
+            MessageRouter = MessageRouter.CreateForQuery<SocketError>("-100010", HandleSymbolError);
         }
 
-        private CallResult HandleSymbolError(SocketConnection connection, DateTime receiveTime, string? originalData, SocketError @event)
+        private CallResult<SocketError> HandleSymbolError(SocketConnection connection, DateTime receiveTime, string? originalData, SocketError @event)
         {
-            return new CallResult(new ServerError(@event.Code, _client.GetErrorInfo(@event.Code, @event.Description)));
+            return CallResult.Fail<SocketError>(new ServerError(@event.Code, _client.GetErrorInfo(@event.Code, @event.Description)));
         }
     }
 }

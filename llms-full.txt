@@ -22,14 +22,15 @@ Primary documentation:
 - Use `ToobitCredentials`, not generic `ApiCredentials`, for API key setup.
 - Include `using Toobit.Net;` when using `ToobitCredentials` or `ToobitEnvironment`.
 - Always check `.Success` before reading `.Data`.
-- REST methods return `WebCallResult<T>` or `WebCallResult`.
-- WebSocket subscriptions return `CallResult<UpdateSubscription>`.
+- Direct and SharedApis REST methods return `HttpResult<T>` or `HttpResult`.
+- Direct and SharedApis WebSocket subscriptions return `WebSocketResult<UpdateSubscription>`.
+- Shared symbol/cache helper methods can return `ExchangeCallResult<T>`.
 - Reuse clients. Do not instantiate a REST or socket client per request in production code.
 - Prefer dependency injection for long-running services.
 - Store WebSocket subscriptions and unsubscribe during shutdown.
 - Do not call `.Result` or `.Wait()` on async methods.
 - Do not invent endpoint names. If unsure, inspect `Toobit.Net/Interfaces/Clients/**`.
-- For multi-exchange code, use `CryptoExchange.Net.SharedApis` interfaces from each exchange's `.SharedClient`.
+- For multi-exchange code, use `CryptoExchange.Net.SharedApis` interfaces from each exchange's `.SharedClient`; use `.SharedClient.Discover()` to inspect implemented shared interfaces and endpoint/subscription options at runtime.
 - Use Toobit futures contract symbols such as `ETH-SWAP-USDT` for USDT futures trading examples.
 - Use `UsdtFuturesApi`, not `UsdFuturesApi`.
 - Toobit.Net has no top-level `GeneralApi`, `CoinFuturesApi`, margin API, options API, brokerage API, earn API, loan API, or NFT API.
@@ -182,9 +183,9 @@ var price = result.Data.Single().LastPrice;
 For retry logic, only retry transient errors:
 
 ```csharp
-async Task<WebCallResult<T>> WithRetry<T>(Func<Task<WebCallResult<T>>> call, int maxAttempts = 3)
+async Task<HttpResult<T>> WithRetry<T>(Func<Task<HttpResult<T>>> call, int maxAttempts = 3)
 {
-    WebCallResult<T> last = default!;
+    HttpResult<T> last = default!;
 
     for (var attempt = 1; attempt <= maxAttempts; attempt++)
     {
@@ -713,7 +714,14 @@ var spotSocketShared = new ToobitSocketClient().SpotApi.SharedClient;
 var futuresSocketShared = new ToobitSocketClient().UsdtFuturesApi.SharedClient;
 ```
 
-Shared WebSocket subscriptions return an `UpdateSubscription` in `.Data`. For shared interface variables, unsubscribe through the concrete socket client:
+Shared clients expose `Discover()` for runtime metadata about implemented shared interfaces, supported request options, and supported subscription options.
+
+```csharp
+var info = spotRestShared.Discover();
+Console.WriteLine(string.Join(", ", info.Features.Where(x => x.Supported).Select(x => x.EndpointName)));
+```
+
+Shared REST methods return `HttpResult<T>` or `HttpResult`. Shared symbol/cache helper methods can return `ExchangeCallResult<T>`. Shared WebSocket subscriptions return `WebSocketResult<UpdateSubscription>` with an `UpdateSubscription` in `.Data`. For shared interface variables, unsubscribe through the concrete socket client:
 
 ```csharp
 var socketClient = new ToobitSocketClient();
@@ -866,7 +874,7 @@ var contract = exchangeInfo.Data.ContractSymbols.First(x => x.Symbol == "ETH-SWA
 
 ## Error Handling Notes
 
-Toobit.Net uses the CryptoExchange.Net `WebCallResult<T>` / `CallResult<T>` pattern.
+Toobit.Net uses the CryptoExchange.Net result pattern: REST calls return `HttpResult<T>` or `HttpResult`, WebSocket subscriptions return `WebSocketResult<UpdateSubscription>`, and shared non-I/O helper methods can return `ExchangeCallResult<T>`.
 
 Common error categories:
 
@@ -895,10 +903,10 @@ Examples/ai-friendly/03-websocket.cs
   Public ticker stream, kline stream, authenticated user data stream, success checks, teardown.
 
 Examples/ai-friendly/04-multi-exchange.cs
-  CryptoExchange.Net.SharedApis REST and socket patterns.
+  CryptoExchange.Net.SharedApis REST, socket, and discovery patterns.
 
 Examples/ai-friendly/05-error-handling.cs
-  WebCallResult pattern, transient retry, Toobit.Net error handling guidance.
+  HttpResult, WebSocketResult, ExchangeCallResult, transient retry, Toobit.Net error handling guidance.
 ```
 
 These files are intended to be copied into a console `Program.cs` after `dotnet add package Toobit.Net`. The repository includes a unit test that compiles each AI-friendly example as a console program.

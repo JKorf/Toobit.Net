@@ -19,7 +19,6 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         IOrderBookRestClient,
         IFundingRateRestClient,
         IBalanceRestClient,
-        IListenKeyRestClient,
         IFeeRestClient,
         IFuturesTriggerOrderRestClient
     {

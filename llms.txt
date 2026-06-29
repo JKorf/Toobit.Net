@@ -4,6 +4,8 @@
 
 Toobit.Net provides typed REST clients, WebSocket subscriptions with automatic connection management, typed request/response models, HMAC credentials through `ToobitCredentials`, dependency injection helpers, native AOT support, and CryptoExchange.Net SharedApis support. Targets netstandard2.0, netstandard2.1, net8.0, net9.0, net10.0.
 
+Direct and SharedApis REST methods return `HttpResult<T>` or `HttpResult`; direct and SharedApis WebSocket subscriptions return `WebSocketResult<UpdateSubscription>`. Shared symbol/cache helper methods can return `ExchangeCallResult<T>`. Use `SharedClient.Discover()` to inspect implemented shared interfaces and endpoint/subscription options at runtime.
+
 ## Documentation
 
 - [README](https://github.com/JKorf/Toobit.Net/blob/main/README.md): Overview, installation, supported features, basic usage examples, release notes
@@ -18,7 +20,7 @@ Toobit.Net provides typed REST clients, WebSocket subscriptions with automatic c
 - [USDT Futures](https://github.com/JKorf/Toobit.Net/blob/main/Examples/ai-friendly/02-futures.cs): Leverage, limit order, positions, close order pattern
 - [WebSocket Streams](https://github.com/JKorf/Toobit.Net/blob/main/Examples/ai-friendly/03-websocket.cs): Ticker subscription, kline subscription, user data stream with proper teardown
 - [Multi-Exchange Pattern](https://github.com/JKorf/Toobit.Net/blob/main/Examples/ai-friendly/04-multi-exchange.cs): Using CryptoExchange.Net SharedApis for exchange-agnostic code
-- [Error Handling](https://github.com/JKorf/Toobit.Net/blob/main/Examples/ai-friendly/05-error-handling.cs): `WebCallResult` patterns, retry logic, common errors and their handling
+- [Error Handling](https://github.com/JKorf/Toobit.Net/blob/main/Examples/ai-friendly/05-error-handling.cs): `HttpResult` patterns, retry logic, common errors and their handling
 - [Full Examples Repository](https://github.com/JKorf/Toobit.Net/tree/main/Examples): Console, API, order book, and tracker examples
 
 ## Reference

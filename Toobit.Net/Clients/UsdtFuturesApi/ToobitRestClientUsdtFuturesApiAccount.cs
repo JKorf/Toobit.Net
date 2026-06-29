@@ -25,12 +25,12 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Set Margin Type
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitMarginType>> SetMarginTypeAsync(string symbol, MarginType marginType, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitMarginType>> SetMarginTypeAsync(string symbol, MarginType marginType, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
             parameters.Add("symbol", symbol);
-            parameters.AddEnum("marginType", marginType);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "/api/v1/futures/marginType", ToobitExchange.RateLimiter.Toobit, 1, true);
+            parameters.Add("marginType", marginType);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "/api/v1/futures/marginType", ToobitExchange.RateLimiter.Toobit, 1, true);
             var result = await _baseClient.SendAsync<ToobitMarginType>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
@@ -40,12 +40,12 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Set Leverage
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitLeverage>> SetLeverageAsync(string symbol, int leverage, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitLeverage>> SetLeverageAsync(string symbol, int leverage, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
             parameters.Add("symbol", symbol);
             parameters.Add("leverage", leverage);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "/api/v1/futures/leverage", ToobitExchange.RateLimiter.Toobit, 1, true);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "/api/v1/futures/leverage", ToobitExchange.RateLimiter.Toobit, 1, true);
             var result = await _baseClient.SendAsync<ToobitLeverage>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
@@ -55,13 +55,16 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Get Leverage Info
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitLeverageInfo>> GetLeverageInfoAsync(string symbol, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitLeverageInfo>> GetLeverageInfoAsync(string symbol, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
             parameters.Add("symbol", symbol);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "/api/v1/futures/accountLeverage", ToobitExchange.RateLimiter.Toobit, 1, true);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/accountLeverage", ToobitExchange.RateLimiter.Toobit, 1, true);
             var result = await _baseClient.SendAsync<ToobitLeverageInfo[]>(request, parameters, ct).ConfigureAwait(false);
-            return result.As<ToobitLeverageInfo>(result.Data?.First());
+            if (!result.Success)
+                return HttpResult.Fail<ToobitLeverageInfo>(result);
+
+            return HttpResult.Ok(result, result.Data.First());
         }
 
         #endregion
@@ -69,10 +72,10 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Get Balances
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitFuturesBalance[]>> GetBalancesAsync(CancellationToken ct = default)
+        public async Task<HttpResult<ToobitFuturesBalance[]>> GetBalancesAsync(CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "/api/v1/futures/balance", ToobitExchange.RateLimiter.Toobit, 1, true);
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/balance", ToobitExchange.RateLimiter.Toobit, 1, true);
             var result = await _baseClient.SendAsync<ToobitFuturesBalance[]>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
@@ -82,13 +85,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Set Position Margin
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitPositionMargin>> SetPositionMarginAsync(string symbol, PositionSide positionSide, decimal quantity, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitPositionMargin>> SetPositionMarginAsync(string symbol, PositionSide positionSide, decimal quantity, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
             parameters.Add("symbol", symbol);
-            parameters.AddEnum("side", positionSide);
+            parameters.Add("side", positionSide);
             parameters.Add("amount", quantity);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "/api/v1/futures/positionMargin", ToobitExchange.RateLimiter.Toobit, 1, true);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "/api/v1/futures/positionMargin", ToobitExchange.RateLimiter.Toobit, 1, true);
             var result = await _baseClient.SendAsync<ToobitPositionMargin>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
@@ -98,17 +101,17 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Get Transaction History
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitFuturesTransaction[]>> GetTransactionHistoryAsync(string? asset = null, FlowType? flowType = null, long? fromId = null, long? endId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitFuturesTransaction[]>> GetTransactionHistoryAsync(string? asset = null, FlowType? flowType = null, long? fromId = null, long? endId = null, DateTime? startTime = null, DateTime? endTime = null, int? limit = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
-            parameters.AddOptional("symbol", asset);
-            parameters.AddOptionalEnum("flowType", flowType);
-            parameters.AddOptional("fromId", fromId);
-            parameters.AddOptional("endId", endId);
-            parameters.AddOptionalMilliseconds("startTime", startTime);
-            parameters.AddOptionalMilliseconds("endTime", endTime);
-            parameters.AddOptional("limit", limit);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "/api/v1/futures/balanceFlow", ToobitExchange.RateLimiter.Toobit, 1, true);
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
+            parameters.Add("symbol", asset);
+            parameters.Add("flowType", flowType);
+            parameters.Add("fromId", fromId);
+            parameters.Add("endId", endId);
+            parameters.Add("startTime", startTime);
+            parameters.Add("endTime", endTime);
+            parameters.Add("limit", limit);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/balanceFlow", ToobitExchange.RateLimiter.Toobit, 1, true);
             var result = await _baseClient.SendAsync<ToobitFuturesTransaction[]>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
@@ -118,11 +121,11 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Get Fees
 
         /// <inheritdoc />
-        public async Task<WebCallResult<ToobitFeeRates>> GetFeesAsync(string symbol, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitFeeRates>> GetFeesAsync(string symbol, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
             parameters.Add("symbol", symbol);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "/api/v1/futures/commissionRate", ToobitExchange.RateLimiter.Toobit, 5, true);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/commissionRate", ToobitExchange.RateLimiter.Toobit, 5, true);
             var result = await _baseClient.SendAsync<ToobitFeeRates>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
@@ -131,11 +134,14 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         #region Create a ListenKey 
         /// <inheritdoc />
-        public async Task<WebCallResult<string>> StartUserStreamAsync(CancellationToken ct = default)
+        public async Task<HttpResult<string>> StartUserStreamAsync(CancellationToken ct = default)
         {
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "api/v1/userDataStream", ToobitExchange.RateLimiter.Toobit, 1, true);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "api/v1/userDataStream", ToobitExchange.RateLimiter.Toobit, 1, true);
             var result = await _baseClient.SendAsync<ToobitListenKey>(request, null, ct).ConfigureAwait(false);
-            return result.As(result.Data?.ListenKey!);
+            if (!result.Success)
+                return HttpResult.Fail<string>(result);
+
+            return HttpResult.Ok(result, result.Data.ListenKey!);
         }
 
         #endregion
@@ -143,16 +149,16 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Ping/Keep-alive a ListenKey
 
         /// <inheritdoc />
-        public async Task<WebCallResult> KeepAliveUserStreamAsync(string listenKey, CancellationToken ct = default)
+        public async Task<HttpResult> KeepAliveUserStreamAsync(string listenKey, CancellationToken ct = default)
         {
             listenKey.ValidateNotNull(nameof(listenKey));
 
-            var parameters = new ParameterCollection
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings)
             {
                 { "listenKey", listenKey }
             };
 
-            var request = _definitions.GetOrCreate(HttpMethod.Put, "api/v1/userDataStream", ToobitExchange.RateLimiter.Toobit, 1, true);
+            var request = _definitions.GetOrCreate(HttpMethod.Put, _baseClient.BaseAddress, "api/v1/userDataStream", ToobitExchange.RateLimiter.Toobit, 1, true);
             return await _baseClient.SendAsync(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -160,16 +166,16 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         #region Invalidate a ListenKey
         /// <inheritdoc />
-        public async Task<WebCallResult> StopUserStreamAsync(string listenKey, CancellationToken ct = default)
+        public async Task<HttpResult> StopUserStreamAsync(string listenKey, CancellationToken ct = default)
         {
             listenKey.ValidateNotNull(nameof(listenKey));
 
-            var parameters = new ParameterCollection
+            var parameters = new Parameters(ToobitExchange._parameterSerializationSettings)
             {
                 { "listenKey", listenKey }
             };
 
-            var request = _definitions.GetOrCreate(HttpMethod.Delete, "api/v1/userDataStream", ToobitExchange.RateLimiter.Toobit, 1, true, parameterPosition: HttpMethodParameterPosition.InUri);
+            var request = _definitions.GetOrCreate(HttpMethod.Delete, _baseClient.BaseAddress, "api/v1/userDataStream", ToobitExchange.RateLimiter.Toobit, 1, true, parameterPosition: HttpMethodParameterPosition.InUri);
             return await _baseClient.SendAsync(request, parameters, ct).ConfigureAwait(false);
         }
 

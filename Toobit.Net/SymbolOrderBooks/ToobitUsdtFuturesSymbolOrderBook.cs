@@ -66,13 +66,13 @@ namespace Toobit.Net.SymbolOrderBooks
         {
             var subResult = await _socketClient.SpotApi.SubscribeToOrderBookUpdatesAsync(Symbol, HandleUpdate).ConfigureAwait(false);
 
-            if (!subResult)
-                return new CallResult<UpdateSubscription>(subResult.Error!);
+            if (!subResult.Success)
+                return CallResult<UpdateSubscription>.Fail(subResult.Error!);
 
             if (ct.IsCancellationRequested)
             {
                 await subResult.Data.CloseAsync().ConfigureAwait(false);
-                return subResult.AsError<UpdateSubscription>(new CancellationRequestedError());
+                return CallResult<UpdateSubscription>.Fail(new CancellationRequestedError());
             }
 
             Status = OrderBookStatus.Syncing;
@@ -80,15 +80,15 @@ namespace Toobit.Net.SymbolOrderBooks
             // Wait up to 1s until the first update has been received
             await WaitUntilFirstUpdateBufferedAsync(TimeSpan.FromMilliseconds(250), TimeSpan.FromMilliseconds(500), ct).ConfigureAwait(false);
             var bookResult = await _restClient.SpotApi.ExchangeData.GetOrderBookAsync(Symbol, Levels ?? 5000).ConfigureAwait(false);
-            if (!bookResult)
+            if (!bookResult.Success)
             {
                 _logger.Log(Microsoft.Extensions.Logging.LogLevel.Debug, $"{Api} order book {Symbol} failed to retrieve initial order book");
                 await _socketClient.UnsubscribeAsync(subResult.Data).ConfigureAwait(false);
-                return new CallResult<UpdateSubscription>(bookResult.Error!);
+                return CallResult.Fail<UpdateSubscription>(bookResult.Error!);
             }
 
             SetSnapshot(bookResult.Data.Timestamp.Ticks, bookResult.Data.Bids, bookResult.Data.Asks);
-            return new CallResult<UpdateSubscription>(subResult.Data);
+            return CallResult.Ok<UpdateSubscription>(subResult.Data);
         }
 
         private void HandleUpdate(DataEvent<ToobitOrderBookUpdate> data)
@@ -102,16 +102,16 @@ namespace Toobit.Net.SymbolOrderBooks
         }
 
         /// <inheritdoc />
-        protected override async Task<CallResult<bool>> DoResyncAsync(CancellationToken ct)
+        protected override async Task<CallResult> DoResyncAsync(CancellationToken ct)
         {
             // Wait up to 1s until the first update has been received
             await WaitUntilFirstUpdateBufferedAsync(TimeSpan.FromMilliseconds(250), TimeSpan.FromMilliseconds(500), ct).ConfigureAwait(false);
             var bookResult = await _restClient.SpotApi.ExchangeData.GetOrderBookAsync(Symbol, Levels ?? 5000).ConfigureAwait(false);
-            if (!bookResult)
-                return new CallResult<bool>(bookResult.Error!);
+            if (!bookResult.Success)
+                return CallResult.Fail(bookResult.Error!);
 
             SetSnapshot(bookResult.Data.Timestamp.Ticks, bookResult.Data.Bids, bookResult.Data.Asks);
-            return new CallResult<bool>(true);
+            return CallResult.Ok();
         }
 
         /// <inheritdoc />

@@ -48,8 +48,8 @@ namespace Toobit.Net.Clients
         {
             Initialize(options.Value);
                         
-            UsdtFuturesApi = AddApiClient(new ToobitRestClientUsdtFuturesApi(_logger, httpClient, options.Value));
-            SpotApi = AddApiClient(new ToobitRestClientSpotApi(_logger, httpClient, options.Value));
+            UsdtFuturesApi = AddApiClient(new ToobitRestClientUsdtFuturesApi(loggerFactory, httpClient, options.Value));
+            SpotApi = AddApiClient(new ToobitRestClientSpotApi(loggerFactory, httpClient, options.Value));
         }
 
         #endregion
