@@ -84,6 +84,11 @@ namespace Toobit.Net.Objects.Models
         /// </summary>
         [JsonPropertyName("txIdUrl")]
         public string? TransactionIdUrl { get; set; }
+        /// <summary>
+        /// ["<c>chainType</c>"] Network type
+        /// </summary>
+        [JsonPropertyName("chainType")]
+        public string NetworkType { get; set; }
     }
 
 
