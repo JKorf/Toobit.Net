@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Toobit.Net.Objects.Models
 {
     /// <summary>
-    /// 
+    /// Deposit address
     /// </summary>
     public record ToobitDepositAddress
     {
@@ -12,6 +12,11 @@ namespace Toobit.Net.Objects.Models
         /// </summary>
         [JsonPropertyName("canDeposit")]
         public bool CanDeposit { get; set; }
+        /// <summary>
+        /// ["<c>needAddressTag</c>"] Address needs tag
+        /// </summary>
+        [JsonPropertyName("needAddressTag")]
+        public bool NeedAddressTag { get; set; }
         /// <summary>
         /// ["<c>address</c>"] Address
         /// </summary>
@@ -28,20 +33,25 @@ namespace Toobit.Net.Objects.Models
         [JsonPropertyName("minQuantity")]
         public decimal MinQuantity { get; set; }
         /// <summary>
-        /// ["<c>requiredConfirmTimes </c>"] Required confirmation times 
+        /// ["<c>requiredConfirmTimes</c>"] Required confirmation times 
         /// </summary>
-        [JsonPropertyName("requiredConfirmTimes ")]
+        [JsonPropertyName("requiredConfirmTimes")]
         public int RequiredConfirmationTimes { get; set; }
         /// <summary>
-        /// ["<c>canWithdrawConfirmNum </c>"] Number of confirmations before withdrawal is allowed
+        /// ["<c>canWithdrawConfirmTimes</c>"] Number of confirmations before withdrawal is allowed
         /// </summary>
-        [JsonPropertyName("canWithdrawConfirmNum ")]
+        [JsonPropertyName("canWithdrawConfirmTimes")]
         public decimal CanWithdrawConfirmNumber { get; set; }
         /// <summary>
         /// ["<c>coinType</c>"] Asset type
         /// </summary>
         [JsonPropertyName("coinType")]
         public string AssetType { get; set; } = string.Empty;
+        /// <summary>
+        /// ["<c>chainType</c>"] Network type
+        /// </summary>
+        [JsonPropertyName("chainType")]
+        public string NetworkType { get; set; } = string.Empty;
     }
 
 
