@@ -6,7 +6,7 @@ true
         "address":"0x815bF1c3cc0f49b8FC66B21A7e48fCb476051209",
         "addressExt":"address tag",
         "minQuantity":"100",
-        "requiredConfirmTimes ":1,
-        "canWithdrawConfirmNum ":12,
+        "requiredConfirmTimes":1,
+        "canWithdrawConfirmTimes":12,
         "coinType":"ERC20_TOKEN"
     }
