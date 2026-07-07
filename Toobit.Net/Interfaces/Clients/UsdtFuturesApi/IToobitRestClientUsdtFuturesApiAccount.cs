@@ -16,7 +16,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Change the margin type for a symbol
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#change-margin-type-trade" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#change-margin-type-trade" /><br />
         /// Endpoint:<br />
         /// POST /api/v1/futures/marginType
         /// </para>
@@ -30,7 +30,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Change the initial leverage for a symbol
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#change-initial-leverage-trade" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#change-initial-leverage-trade" /><br />
         /// Endpoint:<br />
         /// POST /api/v1/futures/leverage
         /// </para>
@@ -44,7 +44,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get leverage info
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#get-the-leverage-multiple-and-position-mode-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#get-the-leverage-multiple-and-position-mode-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/futures/accountLeverage
         /// </para>
@@ -57,7 +57,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get futures balances
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#futures-account-balance-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#futures-account-balance-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/futures/balance
         /// </para>
@@ -69,7 +69,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Adjust the position margin
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#modify-isolated-position-margin-trade" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#modify-isolated-position-margin-trade" /><br />
         /// Endpoint:<br />
         /// POST /api/v1/futures/positionMargin
         /// </para>
@@ -84,7 +84,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get transaction history
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#get-futures-account-transaction-history-list-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#get-futures-account-transaction-history-list-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/futures/balanceFlow
         /// </para>
@@ -103,7 +103,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get fee rates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#user-commission-rate-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#user-commission-rate-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/futures/commissionRate
         /// </para>
@@ -117,7 +117,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <para>Note that the listenkey is shared between the Spot and UsdtFutures API</para>
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-account.html#user-data-streams" /><br />
         /// Endpoint:<br />
         /// POST /api/v1/userDataStream
         /// </para>
@@ -129,7 +129,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Sends a keep alive for the current user stream listen key to keep the stream from closing. Stream auto closes after 60 minutes if no keep alive is send. 30 minute interval for keep alive is recommended.
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-account.html#user-data-streams" /><br />
         /// Endpoint:<br />
         /// PUT /api/v1/userDataStream
         /// </para>
@@ -142,7 +142,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Stops the current user stream
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-account.html#user-data-streams" /><br />
         /// Endpoint:<br />
         /// DELETE /api/v1/userDataStream
         /// </para>

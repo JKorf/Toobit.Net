@@ -16,7 +16,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get server time
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#test-connectivity" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-market-data#test-connectivity" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/time
         /// </para>
@@ -29,7 +29,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get exchange info
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#exchange-information" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-market-data#exchange-information" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/exchangeInfo
         /// </para>
@@ -41,7 +41,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get the current order book
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#order-book" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-market-data#order-book" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/depth
         /// </para>
@@ -55,7 +55,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get the most recent trades for a symbol
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#recent-trades-list" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-market-data#recent-trades-list" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/trades
         /// </para>
@@ -69,7 +69,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get klines
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#kline-candlestick-data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-market-data#kline-candlestick-data" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/klines
         /// </para>
@@ -86,7 +86,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get mark price klines
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-market-data#kline-candlestick-data" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/markPrice/klines
         /// </para>
@@ -103,7 +103,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get index price klines
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-market-data#kline-candlestick-data" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/index/klines
         /// </para>
@@ -120,7 +120,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get 24h price info
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#24hr-ticker-price-change-statistics" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-market-data#_24hr-ticker-price-change-statistics" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/contract/ticker/24hr
         /// </para>
@@ -134,7 +134,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get price info
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-price-ticker" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-market-data#symbol-price-ticker" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/ticker/price
         /// </para>
@@ -147,7 +147,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get best book prices info
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-order-book-ticker" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-market-data#symbol-order-book-ticker" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/ticker/bookTicker
         /// </para>
@@ -160,7 +160,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get index prices
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-index-price" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-market-data#symbol-index-price" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/index
         /// </para>
@@ -173,7 +173,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get mark price
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#mark-price" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-market-data#mark-price" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/markPrice
         /// </para>
@@ -186,7 +186,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get funding rate
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#funding-rate" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-market-data#funding-rate" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/futures/fundingRate
         /// </para>
@@ -199,7 +199,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get funding rate history for a symbol
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#get-funding-rate-history" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-market-data#get-funding-rate-history" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/futures/historyFundingRate
         /// </para>

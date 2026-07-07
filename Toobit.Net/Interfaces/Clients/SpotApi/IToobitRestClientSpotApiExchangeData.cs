@@ -16,7 +16,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get server time
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#test-connectivity" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-market-data#test-connectivity" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/time
         /// </para>
@@ -29,7 +29,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get exchange info
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#exchange-information" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-market-data#exchange-information" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/exchangeInfo
         /// </para>
@@ -41,7 +41,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get the current order book
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#order-book" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-market-data#order-book" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/depth
         /// </para>
@@ -55,7 +55,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get the most recent trades for a symbol
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#recent-trades-list" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-market-data#recent-trades-list" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/trades
         /// </para>
@@ -69,7 +69,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get klines
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-market-data#kline-candlestick-data" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/klines
         /// </para>
@@ -86,7 +86,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get 24h price info
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#24hr-ticker-price-change-statistics" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-market-data#24hr-ticker-price-change-statistics" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/ticker/24hr
         /// </para>
@@ -99,7 +99,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get price info
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#symbol-price-ticker" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-market-data#symbol-price-ticker" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/ticker/price
         /// </para>
@@ -112,7 +112,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get best book prices info
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#symbol-order-book-ticker" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-market-data#symbol-order-book-ticker" /><br />
         /// Endpoint:<br />
         /// GET /quote/v1/ticker/bookTicker
         /// </para>

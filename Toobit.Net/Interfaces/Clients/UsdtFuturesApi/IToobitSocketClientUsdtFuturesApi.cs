@@ -20,7 +20,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Subscribe to live trade updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#latest-contract-price-stream" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-market-data#latest-contract-price-stream" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: trade)
         /// </para>
@@ -35,7 +35,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Subscribe to live trade updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#latest-contract-price-stream" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-market-data#latest-contract-price-stream" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: trade)
         /// </para>
@@ -48,7 +48,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
 
         ///// <summary>
         ///// Subscribe to live mark price updates
-        ///// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#mark-price-stream" /></para>
+        ///// <para><a href="https://api-docs.toobit.com/api/usdt-m-websocket-market-data#mark-price-stream" /></para>
         ///// </summary>
         ///// <param name="symbol">Symbol to subscribe</param>
         ///// <param name="onMessage">The event handler for the received data</param>
@@ -58,7 +58,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
 
         ///// <summary>
         ///// Subscribe to live mark price updates
-        ///// <para><a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#mark-price-stream" /></para>
+        ///// <para><a href="https://api-docs.toobit.com/api/usdt-m-websocket-market-data#mark-price-stream" /></para>
         ///// </summary>
         ///// <param name="symbols">Symbol to subscribe</param>
         ///// <param name="onMessage">The event handler for the received data</param>
@@ -70,7 +70,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Subscribe to live kline/candlestick updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#kline-candlestick-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-market-data#kline-candlestick-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: kline)
         /// </para>
@@ -85,7 +85,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Subscribe to live kline/candlestick updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#kline-candlestick-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-market-data#kline-candlestick-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: kline)
         /// </para>
@@ -101,7 +101,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Subscribe to live price ticker updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#partial-book-depth-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-market-data#partial-book-depth-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: depth)
         /// </para>
@@ -115,7 +115,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Subscribe to live price ticker updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#partial-book-depth-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-market-data#partial-book-depth-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: depth)
         /// </para>
@@ -130,7 +130,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Subscribe to live price ticker updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#diff-book-depth-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-market-data#diff-book-depth-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: diffDepth)
         /// </para>
@@ -144,7 +144,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Subscribe to live price ticker updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#diff-book-depth-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-market-data#diff-book-depth-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: diffDepth)
         /// </para>
@@ -159,7 +159,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Subscribe to live price ticker updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#individual-symbol-ticker-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-market-data#individual-symbol-ticker-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: realtimes)
         /// </para>
@@ -173,7 +173,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Subscribe to live price ticker updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#individual-symbol-ticker-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-market-data#individual-symbol-ticker-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: realtimes)
         /// </para>
@@ -187,7 +187,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Subscribe to live index price updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-index-price-2" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-market-data#symbol-index-price-2" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: index)
         /// </para>
@@ -201,7 +201,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Subscribe to live index price updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#symbol-index-price-2" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-market-data#symbol-index-price-2" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: index)
         /// </para>
@@ -216,7 +216,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Subscribe to user data updates. Listen key is automatically obtained by the client and will be renewed as needed
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#user-data-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-account.html#user-data-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /api/v1/ws/{listenKey}
         /// </para>
@@ -238,7 +238,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Subscribe to user data updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#user-data-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-websocket-account.html#user-data-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /api/v1/ws/{listenKey}
         /// </para>

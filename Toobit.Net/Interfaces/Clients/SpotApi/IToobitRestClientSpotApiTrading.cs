@@ -17,7 +17,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Place a test order, only validates the request, doesn't place the order
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#test-new-order-trade" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-account-and-trading#test-new-order-trade" /><br />
         /// Endpoint:<br />
         /// POST /api/v1/spot/orderTest
         /// </para>
@@ -36,7 +36,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Place a new order
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#new-order-trade" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-account-and-trading#new-order-trade" /><br />
         /// Endpoint:<br />
         /// POST /api/v1/spot/order
         /// </para>
@@ -55,7 +55,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Place multiple orders. Orders have to be for the same symbol.
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#place-multiple-orders-trade" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-account-and-trading#place-multiple-orders-trade" /><br />
         /// Endpoint:<br />
         /// POST /api/v1/spot/batchOrders
         /// </para>
@@ -68,7 +68,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Cancel an open order
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#cancel-order-trade" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-account-and-trading#cancel-order-trade" /><br />
         /// Endpoint:<br />
         /// DELETE /api/v1/spot/order
         /// </para>
@@ -82,7 +82,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Cancel all orders matching the parameters
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#cancel-all-open-orders-trade" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-account-and-trading#cancel-all-open-orders-trade" /><br />
         /// Endpoint:<br />
         /// DELETE /api/v1/spot/openOrders
         /// </para>
@@ -96,7 +96,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Cancel multiple orders by id. If successful no result is returned in the data, if unsuccessful an error is returned in the data
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#cancel-multiple-orders-trade" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-account-and-trading#cancel-multiple-orders-trade" /><br />
         /// Endpoint:<br />
         /// DELETE /api/v1/spot/cancelOrderByIds
         /// </para>
@@ -109,7 +109,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get order info
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#query-order-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-account-and-trading#query-order-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/spot/order
         /// </para>
@@ -123,7 +123,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get open orders
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#current-open-orders-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-account-and-trading#current-open-orders-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/spot/openOrders
         /// </para>
@@ -138,7 +138,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get orders
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#all-orders-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-account-and-trading#all-orders-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/spot/tradeOrders
         /// </para>
@@ -155,7 +155,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get user trades
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#account-trade-list-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-account-and-trading#account-trade-list-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/account/trades
         /// </para>

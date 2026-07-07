@@ -20,7 +20,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Subscribe to live trade updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#trade-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-websocket-market-data#trade-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: trade)
         /// </para>
@@ -35,7 +35,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Subscribe to live trade updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#trade-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-websocket-market-data#trade-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: trade)
         /// </para>
@@ -50,7 +50,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Subscribe to live price ticker updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#individual-symbol-ticker-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-websocket-market-data#individual-symbol-ticker-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: realtimes)
         /// </para>
@@ -65,7 +65,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Subscribe to live price ticker updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#individual-symbol-ticker-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-websocket-market-data#individual-symbol-ticker-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: realtimes)
         /// </para>
@@ -80,7 +80,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Subscribe to live kline/candlestick updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-websocket-market-data#kline-candlestick-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: kline)
         /// </para>
@@ -96,7 +96,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Subscribe to live kline/candlestick updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#kline-candlestick-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-websocket-market-data#kline-candlestick-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: kline)
         /// </para>
@@ -112,7 +112,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Subscribe to live price ticker updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#partial-book-depth-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-websocket-market-data#partial-book-depth-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: depth)
         /// </para>
@@ -127,7 +127,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Subscribe to live price ticker updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#partial-book-depth-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-websocket-market-data#partial-book-depth-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: depth)
         /// </para>
@@ -142,7 +142,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Subscribe to live price ticker updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#diff-depth-stream" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-websocket-market-data#diff-depth-stream" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: diffDepth)
         /// </para>
@@ -157,7 +157,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Subscribe to live price ticker updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#diff-depth-stream" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-websocket-market-data#diff-depth-stream" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /quote/ws/v1 (topic: diffDepth)
         /// </para>
@@ -172,7 +172,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Subscribe to user data updates. Listen key is automatically obtained by the client and will be renewed as needed
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#user-data-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-websocket-account.html#user-data-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /api/v1/ws/{listenKey}
         /// </para>
@@ -192,7 +192,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Subscribe to user data updates
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#user-data-streams" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-websocket-account.html#user-data-streams" /><br />
         /// Endpoint:<br />
         /// SUBSCRIBE /api/v1/ws/{listenKey}
         /// </para>

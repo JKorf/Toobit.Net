@@ -16,7 +16,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get account balances
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#account-information-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-account-and-trading#account-information-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/account
         /// </para>
@@ -28,7 +28,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Withdraw funds
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#withdraw-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-wallet.html#withdraw-user_data" /><br />
         /// Endpoint:<br />
         /// POST /api/v1/account/withdraw
         /// </para>
@@ -49,7 +49,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get withdrawal history
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#withdrawal-records-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-wallet.html#withdrawal-records-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/account/withdrawOrders
         /// </para>
@@ -67,7 +67,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get deposit address
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#deposit-address-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-wallet.html#deposit-address-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/account/deposit/address
         /// </para>
@@ -81,7 +81,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get deposit history
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#deposit-history-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-wallet.html#deposit-history-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/account/depositOrders
         /// </para>
@@ -98,7 +98,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Transfer asset. Can be between account types or between parent and sub account. If transferring between Spot and Futures for the current account the fromUid and toUid should be set to the current account id which can be retrieved with GetBalances
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#account-transfer" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-account-and-trading#account-transfer" /><br />
         /// Endpoint:<br />
         /// POST /api/v1/subAccount/transfer
         /// </para>
@@ -116,7 +116,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get transaction history
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#get-account-transaction-history-list-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-account-and-trading#get-account-transaction-history-list-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/account/balanceFlow
         /// </para>
@@ -135,7 +135,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Get sub account list
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#query-sub-account-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-account-and-trading#query-sub-account-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/account/checkApiKey
         /// </para>
@@ -148,7 +148,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <para>Note that the listenkey is shared between the Spot and UsdtFutures API</para>
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-websocket-account.html#listen-key-spot" /><br />
         /// Endpoint:<br />
         /// POST /api/v1/userDataStream
         /// </para>
@@ -160,7 +160,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Sends a keep alive for the current user stream listen key to keep the stream from closing. Stream auto closes after 60 minutes if no keep alive is send. 30 minute interval for keep alive is recommended.
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-websocket-account.html#listen-key-spot" /><br />
         /// Endpoint:<br />
         /// PUT /api/v1/userDataStream
         /// </para>
@@ -173,7 +173,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// Stops the current user stream
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/spot/v1/en/#listen-key-spot" /><br />
+        /// <a href="https://api-docs.toobit.com/api/spot-websocket-account.html#listen-key-spot" /><br />
         /// Endpoint:<br />
         /// DELETE /api/v1/userDataStream
         /// </para>

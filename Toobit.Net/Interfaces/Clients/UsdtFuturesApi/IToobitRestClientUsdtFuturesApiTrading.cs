@@ -17,7 +17,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Place a new order
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#new-order-trade" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#new-order-trade" /><br />
         /// Endpoint:<br />
         /// POST /api/v1/futures/order
         /// </para>
@@ -46,7 +46,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Place multiple new orders
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#place-multiple-orders-trade" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#place-multiple-orders-trade" /><br />
         /// Endpoint:<br />
         /// POST /api/v1/futures/batchOrders
         /// </para>
@@ -59,7 +59,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get order info
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#query-order-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#query-order-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/futures/order
         /// </para>
@@ -74,7 +74,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Cancel an order
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#cancel-order-trade" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#cancel-order-trade" /><br />
         /// Endpoint:<br />
         /// DELETE /api/v1/futures/order
         /// </para>
@@ -89,7 +89,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Cancel all orders matching the parameters
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#cancel-orders-trade" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#cancel-orders-trade" /><br />
         /// Endpoint:<br />
         /// DELETE /api/v1/futures/batchOrders
         /// </para>
@@ -103,7 +103,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Cancel multiple orders by id. If successful no result is returned in the data, if unsuccessful an error is returned in the data
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#cancel-orders-trade" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#cancel-orders-trade" /><br />
         /// Endpoint:<br />
         /// DELETE /api/v1/futures/cancelOrderByIds
         /// </para>
@@ -116,7 +116,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get open orders
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#query-current-open-order-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#query-current-open-order-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/futures/openOrders
         /// </para>
@@ -132,7 +132,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get positions
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#query-position-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#query-position-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/futures/positions
         /// </para>
@@ -146,7 +146,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Set take profit / stop loss
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#set-trading-stop" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#set-trading-stop" /><br />
         /// Endpoint:<br />
         /// POST /api/v1/futures/position/trading-stop
         /// </para>
@@ -164,7 +164,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get order history
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#query-history-orders-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#query-history-orders-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/futures/historyOrders
         /// </para>
@@ -182,7 +182,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// Get user trades
         /// <para>
         /// Docs:<br />
-        /// <a href="https://toobit-docs.github.io/apidocs/usdt_swap/v1/en/#account-trade-list-user_data" /><br />
+        /// <a href="https://api-docs.toobit.com/api/usdt-m-account-and-trading#account-trade-list-user_data" /><br />
         /// Endpoint:<br />
         /// GET /api/v1/futures/userTrades
         /// </para>
