@@ -200,10 +200,55 @@ namespace Toobit.Net.Objects.Models
         [JsonPropertyName("minTradePrecision")]
         public decimal? MinTradePrecision { get; set; }
         /// <summary>
+        /// ["<c>marginPrecision</c>"] Margin precision
+        /// </summary>
+        [JsonPropertyName("marginPrecision")]
+        public decimal? MarginPrecision { get; set; }
+        /// <summary>
         /// ["<c>riskLimits</c>"] Risk limits
         /// </summary>
         [JsonPropertyName("riskLimits")]
         public ToobitRiskLimit[] RiskLimits { get; set; } = [];
+        /// <summary>
+        /// ["<c>closingStartTime</c>"] Close start time
+        /// </summary>
+        [JsonPropertyName("closingStartTime")]
+        public DateTime? ClosingStartTime { get; set; }
+        /// <summary>
+        /// ["<c>closingEndTime</c>"] Close end time
+        /// </summary>
+        [JsonPropertyName("closingEndTime")]
+        public DateTime? ClosingEndTime { get; set; }
+        /// <summary>
+        /// ["<c>allowedOpenTime</c>"] Allowed open time
+        /// </summary>
+        [JsonPropertyName("allowedOpenTime")]
+        public DateTime? AllowedOpenTime { get; set; }
+        /// <summary>
+        /// ["<c>allowedCloseTime</c>"] Allowed close time
+        /// </summary>
+        [JsonPropertyName("allowedCloseTime")]
+        public DateTime? AllowedCloseTime { get; set; }
+        /// <summary>
+        /// ["<c>launchTime</c>"] Launch time
+        /// </summary>
+        [JsonPropertyName("launchTime")]
+        public DateTime? LaunchTime { get; set; }
+        /// <summary>
+        /// ["<c>isRwa</c>"] Is RWA
+        /// </summary>
+        [JsonPropertyName("isRwa")]
+        public bool IsRwa { get; set; }
+        /// <summary>
+        /// ["<c>rwaType</c>"] RWA type
+        /// </summary>
+        [JsonPropertyName("rwaType")]
+        public RwaType? RwaType { get; set; }
+        /// <summary>
+        /// ["<c>categories</c>"] Categories
+        /// </summary>
+        [JsonPropertyName("categories")]
+        public string[] Categories { get; set; } = [];
     }
 
     /// <summary>
@@ -222,15 +267,25 @@ namespace Toobit.Net.Objects.Models
         [JsonPropertyName("quantity")]
         public decimal Quantity { get; set; }
         /// <summary>
+        /// ["<c>value</c>"] Value
+        /// </summary>
+        [JsonPropertyName("value")]
+        public decimal? Value { get; set; }
+        /// <summary>
         /// ["<c>initialMargin</c>"] Initial margin
         /// </summary>
         [JsonPropertyName("initialMargin")]
         public decimal InitialMargin { get; set; }
         /// <summary>
-        /// ["<c>mainMargin</c>"] Maintenance margin
+        /// ["<c>maintMargin</c>"] Maintenance margin
         /// </summary>
-        [JsonPropertyName("mainMargin")]
+        [JsonPropertyName("maintMargin")]
         public decimal MaintenanceMargin { get; set; }
+        /// <summary>
+        /// ["<c>maxLeverage</c>"] Max leverage
+        /// </summary>
+        [JsonPropertyName("maxLeverage")]
+        public decimal MaxLeverage { get; set; }
         /// <summary>
         /// ["<c>isWhite</c>"] Is white
         /// </summary>
@@ -259,9 +314,9 @@ namespace Toobit.Net.Objects.Models
         [JsonPropertyName("coinName")]
         public string AssetName { get; set; } = string.Empty;
         /// <summary>
-        /// ["<c>coinFullName (tokenFullName)</c>"] Full asset name
+        /// ["<c>coinFullName</c>"] Asset full name
         /// </summary>
-        [JsonPropertyName("coinFullName (tokenFullName)")]
+        [JsonPropertyName("coinFullName")]
         public string FullName { get; set; } = string.Empty;
         /// <summary>
         /// ["<c>allowWithdraw</c>"] Allow withdraw
@@ -273,6 +328,11 @@ namespace Toobit.Net.Objects.Models
         /// </summary>
         [JsonPropertyName("allowDeposit")]
         public bool AllowDeposit { get; set; }
+        /// <summary>
+        /// ["<c>isVirtual</c>"] Is virtual
+        /// </summary>
+        [JsonPropertyName("isVirtual")]
+        public bool IsVirtual { get; set; }
         /// <summary>
         /// ["<c>chainTypes</c>"] Networks
         /// </summary>

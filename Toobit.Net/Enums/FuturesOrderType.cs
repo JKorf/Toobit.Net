@@ -16,9 +16,9 @@ namespace Toobit.Net.Enums
         [Map("LIMIT")]
         Limit,
         /// <summary>
-        /// ["<c>Market</c>"] Limit order
+        /// ["<c>Market</c>"] Market order
         /// </summary>
-        [Map("Market")]
+        [Map("Market", "MARKET")]
         Market,
         /// <summary>
         /// ["<c>STOP</c>"] Stop order
