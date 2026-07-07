@@ -88,7 +88,7 @@ namespace Toobit.Net.Objects.Models
         /// ["<c>chainType</c>"] Network type
         /// </summary>
         [JsonPropertyName("chainType")]
-        public string NetworkType { get; set; }
+        public string NetworkType { get; set; } = string.Empty;
     }
 
 
