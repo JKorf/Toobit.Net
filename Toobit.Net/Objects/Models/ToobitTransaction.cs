@@ -63,6 +63,16 @@ namespace Toobit.Net.Objects.Models
         /// </summary>
         [JsonPropertyName("created")]
         public DateTime CreateTime { get; set; }
+        /// <summary>
+        /// ["<c>symbol</c>"] Symbol
+        /// </summary>
+        [JsonPropertyName("symbol")]
+        public string? Symbol { get; set; }
+        /// <summary>
+        /// ["<c>symbolId</c>"] Symbol id
+        /// </summary>
+        [JsonPropertyName("symbolId")]
+        public string? SymbolId { get; set; }
     }
 
 
