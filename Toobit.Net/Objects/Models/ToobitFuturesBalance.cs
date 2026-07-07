@@ -12,6 +12,11 @@ namespace Toobit.Net.Objects.Models
         /// </summary>
         [JsonPropertyName("asset")]
         public string Asset { get; set; } = string.Empty;
+        [JsonInclude, JsonPropertyName("coin")]
+        internal string Coin
+        {
+            set => Asset = value;
+        }
         /// <summary>
         /// ["<c>balance</c>"] Total balance
         /// </summary>
@@ -37,6 +42,11 @@ namespace Toobit.Net.Objects.Models
         /// </summary>
         [JsonPropertyName("crossUnRealizedPnl")]
         public decimal CrossUnrealizedPnl { get; set; }
+        /// <summary>
+        /// ["<c>coupon</c>"] Coupon balance
+        /// </summary>
+        [JsonPropertyName("coupon")]
+        public decimal Coupon { get; set; }
     }
 
 
