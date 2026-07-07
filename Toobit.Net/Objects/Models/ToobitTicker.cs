@@ -57,7 +57,10 @@ namespace Toobit.Net.Objects.Models
         /// </summary>
         [JsonPropertyName("pcp")]
         public decimal PriceChangePercentage { get; set; }
+        /// <summary>
+        /// ["<c>op</c>"] Unknown value
+        /// </summary>
+        [JsonPropertyName("op")]
+        public decimal Op { get; set; }
     }
-
-
 }
