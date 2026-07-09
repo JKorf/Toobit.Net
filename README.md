@@ -191,6 +191,16 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
+* Version 4.1.0 - 09 Jul 2026
+    * Updated CryptoExchange.Net to v12.1.0
+    * Added Symbol and SymbolId to ToobitTransaction model
+    * Added NeedAddressTag, NetworkType to ToobitDepositAddress. Fixed RequiredConfirmationTimes and CanWithdrawConfirmNumber deserialization
+    * Added NetworkType to ToobitDeposit model
+    * Updated Market FuturesOrderType mapping
+    * Updated ToobitExchangeInfo with missing properties
+    * Updated documentation links
+    * Fixed ToobitFuturesBalance Asset deserialization, added Coupon
+
 * Version 4.0.0 - 29 Jun 2026
     * Result types:
       * (Web)CallResult types are replaced by HttpResult, WebSocketResult and QueryResult with the same logic
