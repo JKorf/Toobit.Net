@@ -40,7 +40,7 @@ namespace Toobit.Net.UnitTests
                 opts.ApiCredentials = new ToobitCredentials("123", "456");
             });
             var tester = new SocketSubscriptionValidator<ToobitSocketClient>(client, "Subscriptions/Spot", "wss://stream.toobit.com");
-            await tester.ValidateAsync<ToobitTradeUpdate[]>((client, handler) => client.SpotApi.SubscribeToTradeUpdatesAsync("ETHUSDT", handler), "Trades", ignoreProperties: ["v"], nestedJsonProperty: "data");
+            await tester.ValidateAsync<ToobitTradeUpdate[]>((client, handler) => client.SpotApi.SubscribeToTradeUpdatesAsync("ETHUSDT", handler), "Trades", nestedJsonProperty: "data");
             await tester.ValidateAsync<ToobitKlineUpdate>((client, handler) => client.SpotApi.SubscribeToKlineUpdatesAsync("ETHUSDT", Enums.KlineInterval.OneDay, handler), "Klines", ignoreProperties: ["sn"], nestedJsonProperty: "data");
             await tester.ValidateAsync<ToobitTickerUpdate>((client, handler) => client.SpotApi.SubscribeToTickerUpdatesAsync("ETHUSDT", handler), "Tickers", nestedJsonProperty: "data");
             await tester.ValidateAsync<ToobitOrderBookUpdate>((client, handler) => client.SpotApi.SubscribeToPartialOrderBookUpdatesAsync("ETHUSDT", handler), "PartialBook", nestedJsonProperty: "data");

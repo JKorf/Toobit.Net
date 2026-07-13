@@ -9,6 +9,11 @@ namespace Toobit.Net.Objects.Models
     public record ToobitTradeUpdate
     {
         /// <summary>
+        /// ["<c>v</c>"] Globally increasing trade ID
+        /// </summary>
+        [JsonPropertyName("v")]
+        public long TradeId { get; set; }
+        /// <summary>
         /// ["<c>p</c>"] Price
         /// </summary>
         [JsonPropertyName("p")]
