@@ -27,15 +27,15 @@ namespace Toobit.Net
             var receiveWindow = ((ToobitRestOptions)apiClient.ClientOptions).ReceiveWindow.TotalMilliseconds;
 
             request.QueryParameters ??= new Parameters(ToobitExchange._parameterSerializationSettings);
-            request.QueryParameters.Add("timestamp", timestamp);
-            request.QueryParameters.Add("recvWindow", receiveWindow);
+            request.QueryParameters["timestamp"] = timestamp;
+            request.QueryParameters["recvWindow"] = receiveWindow;
 
             var queryString = request.GetQueryString();
             var body = request.BodyFormat == RequestBodyFormat.FormData ? (request.BodyParameters?.ToFormData() ?? string.Empty) : "";
             var signString = $"{queryString}{body}";
             var signature = SignHMACSHA256(signString).ToLowerInvariant();
 
-            request.QueryParameters.Add("signature", signature);
+            request.QueryParameters["signature"] = signature;
             request.SetQueryString($"{queryString}{(!string.IsNullOrEmpty(queryString) ? "&" : "")}signature={signature}");
             if (request.BodyFormat == RequestBodyFormat.FormData)
                 request.SetBodyContent(body);
