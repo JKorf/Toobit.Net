@@ -23,6 +23,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         public void ResetDefaultExchangeParameters() => ExchangeParameters.ResetStaticParameters();
         public SharedClientInfo Discover() => SharedUtils.GetClientInfo(ToobitExchange.Metadata, this);
 
+        private static readonly HashSet<string> _fiatCurrencies = ["USD", "EUR"];
+
         #region Klines client
 
         GetKlinesOptions IKlineRestClient.GetKlinesOptions { get; } = new GetKlinesOptions(_exchangeName, false, true, true, 1000, false);
@@ -154,6 +156,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         #region Futures Symbol client
 
+        SharedSymbolCatalog? IFuturesSymbolRestClient.FuturesSymbolCatalog => ExchangeSymbolCache.GetSymbolCatalog(_topicId, EnvironmentName, null);
         GetFuturesSymbolsOptions IFuturesSymbolRestClient.GetFuturesSymbolsOptions { get; } = new GetFuturesSymbolsOptions(_exchangeName, false);
         async Task<HttpResult<SharedFuturesSymbol[]>> IFuturesSymbolRestClient.GetFuturesSymbolsAsync(GetSymbolsRequest request, CancellationToken ct)
         {
@@ -165,24 +168,65 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             if (!result.Success)
                 return HttpResult.Fail<SharedFuturesSymbol[]>(result);
 
-            var data = result.Data.ContractSymbols.Where(x => x.Status == SymbolStatus.Trading);
-            var resultData = HttpResult.Ok(result, data.Select(s =>
-            new SharedFuturesSymbol(TradingMode.PerpetualLinear,
-            s.BaseAsset,
-            s.QuoteAsset,
-            s.Symbol,
-            s.Status == SymbolStatus.Trading)
+            var resultData =
+                 result.Data.ContractSymbols.Select(x => ParseSymbol(x))
+                .ToArray();
+
+            ExchangeSymbolCache.UpdateSymbolInfo(_topicId, EnvironmentName, null, resultData);
+            return HttpResult.Ok(result, SharedUtils.ApplySymbolFilter(resultData, request));
+        }
+
+        private SharedFuturesSymbol ParseSymbol(ToobitFuturesSymbol s)
+        {
+            var result = new SharedFuturesSymbol(TradingMode.PerpetualLinear,
+                s.Underlying,
+                s.QuoteAsset,
+                s.Symbol,
+                s.Status == SymbolStatus.Trading)
             {
                 MinTradeQuantity = s.LotSizeFilter?.MinQuantity / s.ContractMultiplier,
                 MaxTradeQuantity = s.LotSizeFilter?.MaxQuantity / s.ContractMultiplier,
                 QuantityStep = s.LotSizeFilter?.StepSize / s.ContractMultiplier,
                 PriceStep = s.PriceFilter?.TickSize,
                 MinNotionalValue = s.MinNotionalFilter?.MinNotional,
-                ContractSize = s.ContractMultiplier
-            }).ToArray());
+                ContractSize = s.ContractMultiplier,
+                QuoteAssetType = SharedAssetType.Crypto,
+                QuoteAssetSubType = SharedAssetSubType.StableCoin
+            };
 
-            ExchangeSymbolCache.UpdateSymbolInfo(_topicId, EnvironmentName, null, resultData.Data!);
-            return resultData;
+            if (s.SymbolName.Contains("XAG"))
+            {
+            }
+
+            if (!s.IsRwa)
+            {
+                if (s.Categories.Contains("TradFi"))
+                {
+                    result.BaseAssetType = SharedAssetType.TradFi;
+                    result.BaseAssetSubType = SharedAssetSubType.Commodity;
+                }
+                else
+                {
+                    result.BaseAssetType = SharedAssetType.Crypto;
+                }
+            }
+            else
+            {
+                if (_fiatCurrencies.Contains(result.BaseAsset))
+                {
+                    result.BaseAssetType = SharedAssetType.Fiat;
+                }
+                else
+                {
+                    result.BaseAssetType = SharedAssetType.TradFi;
+                    if (LibraryHelpers.IsCommodity(result.BaseAsset))
+                        result.BaseAssetSubType = SharedAssetSubType.Commodity;
+                    else
+                        result.BaseAssetSubType = SharedAssetSubType.Equity;
+                }
+            }
+
+            return result;
         }
 
         async Task<ExchangeCallResult<SharedSymbol[]>> IFuturesSymbolRestClient.GetFuturesSymbolsForBaseAssetAsync(string baseAsset)
