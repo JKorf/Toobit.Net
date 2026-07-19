@@ -179,7 +179,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         private SharedFuturesSymbol ParseSymbol(ToobitFuturesSymbol s)
         {
             var result = new SharedFuturesSymbol(TradingMode.PerpetualLinear,
-                s.Underlying,
+                s.Underlying ?? s.BaseAsset,
                 s.QuoteAsset,
                 s.Symbol,
                 s.Status == SymbolStatus.Trading)
@@ -190,13 +190,10 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 PriceStep = s.PriceFilter?.TickSize,
                 MinNotionalValue = s.MinNotionalFilter?.MinNotional,
                 ContractSize = s.ContractMultiplier,
+                DisplayName = s.SymbolName,
                 QuoteAssetType = SharedAssetType.Crypto,
                 QuoteAssetSubType = SharedAssetSubType.StableCoin
             };
-
-            if (s.SymbolName.Contains("XAG"))
-            {
-            }
 
             if (!s.IsRwa)
             {

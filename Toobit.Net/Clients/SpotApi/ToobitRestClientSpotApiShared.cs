@@ -99,21 +99,33 @@ namespace Toobit.Net.Clients.SpotApi
                 MinNotionalValue = s.MinNotionalFilter?.MinNotional,
                 QuantityStep = s.LotSizeFilter?.StepSize,
                 PriceStep = s.PriceFilter?.TickSize,
+                DisplayName = s.SymbolName,
                 QuoteAssetType = SharedAssetType.Crypto,
                 QuoteAssetSubType = SharedAssetSubType.StableCoin
             };
+
+            if (s.BaseAsset.Contains("GOOGL"))
+            {
+            }
 
             if (LibraryHelpers.IsStableCoin(s.BaseAsset))
             {
                 result.BaseAssetType = SharedAssetType.Crypto;
                 result.BaseAssetSubType = SharedAssetSubType.StableCoin;
             }
+            else if (LibraryHelpers.IsEquity(s.BaseAsset)
+                || (s.BaseAsset.EndsWith("X") && LibraryHelpers.IsEquity(s.BaseAsset.Substring(0, s.BaseAsset.Length - 1)))
+                || (s.BaseAsset.EndsWith("B") && LibraryHelpers.IsEquity(s.BaseAsset.Substring(0, s.BaseAsset.Length - 1))))
+            {
+                result.BaseAssetType = SharedAssetType.TradFi;
+                result.BaseAssetSubType = SharedAssetSubType.Equity;
+            }
             else if (LibraryHelpers.IsCommodity(s.BaseAsset))
             {
                 result.BaseAssetType = SharedAssetType.TradFi;
                 result.BaseAssetSubType = SharedAssetSubType.Commodity;
             }
-            else if (LibraryHelpers.IsCryptoCurrency(s.BaseAsset))
+            else
             {
                 result.BaseAssetType = SharedAssetType.Crypto;
             }
