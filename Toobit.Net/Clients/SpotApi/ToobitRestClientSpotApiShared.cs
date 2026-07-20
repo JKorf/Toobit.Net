@@ -104,18 +104,12 @@ namespace Toobit.Net.Clients.SpotApi
                 QuoteAssetSubType = SharedAssetSubType.StableCoin
             };
 
-            if (s.BaseAsset.Contains("GOOGL"))
-            {
-            }
-
             if (LibraryHelpers.IsStableCoin(s.BaseAsset))
             {
                 result.BaseAssetType = SharedAssetType.Crypto;
                 result.BaseAssetSubType = SharedAssetSubType.StableCoin;
             }
-            else if (LibraryHelpers.IsEquity(s.BaseAsset)
-                || (s.BaseAsset.EndsWith("X") && LibraryHelpers.IsEquity(s.BaseAsset.Substring(0, s.BaseAsset.Length - 1)))
-                || (s.BaseAsset.EndsWith("B") && LibraryHelpers.IsEquity(s.BaseAsset.Substring(0, s.BaseAsset.Length - 1))))
+            else if (LibraryHelpers.IsEquity(s.BaseAsset, ["X", "B"], []))
             {
                 result.BaseAssetType = SharedAssetType.TradFi;
                 result.BaseAssetSubType = SharedAssetSubType.Equity;
