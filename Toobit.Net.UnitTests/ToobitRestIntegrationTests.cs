@@ -69,7 +69,9 @@ namespace Toobit.Net.UnitTests
             await RunAndCheckResult(warnings, client => client.SpotApi.ExchangeData.GetOrderBookAsync("ETHUSDT", 1, default), false);
             await RunAndCheckResult(warnings, client => client.SpotApi.ExchangeData.GetRecentTradesAsync("ETHUSDT", default, default), false);
             await RunAndCheckResult(warnings, client => client.SpotApi.ExchangeData.GetKlinesAsync("ETHUSDT", Enums.KlineInterval.OneDay, default, default, default, default), false);
-            await RunAndCheckResult(warnings, client => client.SpotApi.ExchangeData.GetTickersAsync(default, default), false);
+            await RunAndCheckResult(warnings, client => client.SpotApi.ExchangeData.GetTickersAsync(default, default), false, ignoreProperties: [
+                "si" // Same value as s
+                ]);
             await RunAndCheckResult(warnings, client => client.SpotApi.ExchangeData.GetPricesAsync(default, default), false, ignoreProperties: [
                 "si" // Same value as s
                 ]);
@@ -117,7 +119,9 @@ namespace Toobit.Net.UnitTests
             await RunAndCheckResult(warnings, client => client.UsdtFuturesApi.ExchangeData.GetOrderBookAsync("ETH-SWAP-USDT", 1, default), false);
             await RunAndCheckResult(warnings, client => client.UsdtFuturesApi.ExchangeData.GetRecentTradesAsync("ETH-SWAP-USDT", default, default), false);
             await RunAndCheckResult(warnings, client => client.UsdtFuturesApi.ExchangeData.GetKlinesAsync("ETH-SWAP-USDT", Enums.KlineInterval.OneDay, default, default, default, default), false);
-            await RunAndCheckResult(warnings, client => client.UsdtFuturesApi.ExchangeData.GetTickersAsync(default, default, default), false);
+            await RunAndCheckResult(warnings, client => client.UsdtFuturesApi.ExchangeData.GetTickersAsync(default, default, default), false, ignoreProperties: [
+                "si" // Same value as s
+                ]);
             await RunAndCheckResult(warnings, client => client.UsdtFuturesApi.ExchangeData.GetPricesAsync(default, default), false, ignoreProperties: [
                 "si" // Same value as s
                 ]);
