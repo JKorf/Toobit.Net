@@ -4,8 +4,8 @@
 
 Toobit.Net is a strongly typed .NET client library for the Toobit REST and WebSocket APIs. It is part of the CryptoExchange.Net ecosystem and uses the same result, shared API, logging, rate limiting, dependency injection, and socket patterns as the other JKorf exchange libraries.
 
-Current package version in this repository: 4.1.0.
-CryptoExchange.Net dependency: 11.1.0.
+Current package version in this repository: 4.2.0.
+CryptoExchange.Net dependency: 12.2.0.
 Target frameworks: netstandard2.0, netstandard2.1, net8.0, net9.0, net10.0.
 Native AOT: supported on compatible .NET targets.
 
@@ -720,6 +720,24 @@ Shared clients expose `Discover()` for runtime metadata about implemented shared
 var info = spotRestShared.Discover();
 Console.WriteLine(string.Join(", ", info.Features.Where(x => x.Supported).Select(x => x.EndpointName)));
 ```
+
+Shared Spot and futures symbol clients expose catalogs and enriched symbol metadata:
+
+```csharp
+var symbols = await spotRestShared.GetSpotSymbolsAsync(new GetSymbolsRequest(
+    baseAssetType: SharedAssetType.TradFi));
+if (!symbols.Success)
+{
+    Console.WriteLine(symbols.Error);
+    return;
+}
+
+var spotCatalog = spotRestShared.SpotSymbolCatalog;
+foreach (var symbolInfo in symbols.Data)
+    Console.WriteLine($"{symbolInfo.DisplayName}: active={symbolInfo.Active}, baseType={symbolInfo.BaseAssetType}");
+```
+
+`SpotSymbolCatalog` and `FuturesSymbolCatalog` are available only after calling the corresponding `GetSpotSymbolsAsync` or `GetFuturesSymbolsAsync` method. `GetSymbolsRequest` can filter on `BaseAssetType`, `BaseAssetSubType`, `QuoteAssetType`, and `QuoteAssetSubType`. Symbol discovery returns both active and inactive symbols; check `Active` before trading. Spot symbols classify stablecoins, equities, and commodities when recognized. USDT futures symbols use the contract's underlying asset when available and classify crypto, fiat, equity, and commodity instruments. Quote assets are identified as crypto stablecoins. The returned `SharedSpotSymbol` / `SharedFuturesSymbol` objects expose `DisplayName` and the same base/quote asset classification properties.
 
 Shared REST methods return `HttpResult<T>` or `HttpResult`. Shared symbol/cache helper methods can return `ExchangeCallResult<T>`. Shared WebSocket subscriptions return `WebSocketResult<UpdateSubscription>` with an `UpdateSubscription` in `.Data`. For shared interface variables, unsubscribe through the concrete socket client:
 

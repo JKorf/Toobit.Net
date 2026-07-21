@@ -92,6 +92,8 @@ var ticker = await shared.GetSpotTickerAsync(
     new GetTickerRequest(new SharedSymbol(TradingMode.Spot, "BTC", "USDT")));
 ```
 
+Shared Spot and futures symbol clients expose `SpotSymbolCatalog` / `FuturesSymbolCatalog` after the corresponding symbol call. `GetSymbolsRequest` supports base/quote asset type and subtype filters; results include inactive entries through `Active`, display names, and asset classification metadata.
+
 ## Avoid
 
 - Raw `HttpClient` Toobit calls

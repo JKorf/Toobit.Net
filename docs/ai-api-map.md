@@ -134,6 +134,11 @@ Use SharedApis for exchange-agnostic code across Toobit and other CryptoExchange
 | Shared spot socket client | `new ToobitSocketClient().SpotApi.SharedClient` |
 | Shared USDT futures socket client | `new ToobitSocketClient().UsdtFuturesApi.SharedClient` |
 | Discover shared capabilities | `client.SpotApi.SharedClient.Discover()` |
+| Shared Spot symbol catalog | `client.SpotApi.SharedClient.SpotSymbolCatalog` |
+| Shared futures symbol catalog | `client.UsdtFuturesApi.SharedClient.FuturesSymbolCatalog` |
+| Get enriched shared Spot symbols | `ISpotSymbolRestClient.GetSpotSymbolsAsync(new GetSymbolsRequest())` |
+| Get enriched shared futures symbols | `IFuturesSymbolRestClient.GetFuturesSymbolsAsync(new GetSymbolsRequest())` |
+| Filter shared symbols by asset class | `new GetSymbolsRequest(baseAssetType: SharedAssetType.TradFi, baseAssetSubType: SharedAssetSubType.Equity)` |
 | Shared spot ticker REST | `ISpotTickerRestClient.GetSpotTickerAsync(new GetTickerRequest(symbol))` |
 | Shared spot order REST | `ISpotOrderRestClient.PlaceSpotOrderAsync(...)` |
 | Shared futures order REST | `IFuturesOrderRestClient.PlaceFuturesOrderAsync(...)` |
@@ -142,6 +147,8 @@ Use SharedApis for exchange-agnostic code across Toobit and other CryptoExchange
 | Shared order book socket | `IOrderBookSocketClient.SubscribeToOrderBookUpdatesAsync(...)` |
 
 Shared REST methods return `HttpResult<T>` or `HttpResult`. Shared socket subscriptions return `WebSocketResult<UpdateSubscription>`. Shared symbol/cache helper methods can return `ExchangeCallResult<T>`.
+
+Shared symbol discovery returns active and inactive symbols, so check `Active` before trading. Results include `DisplayName` and base/quote `AssetType` / `AssetSubType` metadata; futures symbols use the underlying asset when Toobit provides it. A catalog is available only after its corresponding `Get*SymbolsAsync` call.
 
 For shared socket subscriptions, keep the concrete socket client and unsubscribe with `await socketClient.UnsubscribeAsync(subscription.Data)`.
 

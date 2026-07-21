@@ -157,7 +157,7 @@ var ticker = await shared.GetSpotTickerAsync(new GetTickerRequest(symbol));
 if (!ticker.Success) { Console.WriteLine(ticker.Error); return; }
 ```
 
-Toobit exposes shared REST clients for Spot and USDT futures and shared socket clients for Spot and USDT futures. Call `shared.Discover()` to inspect supported shared interfaces, request options, and subscription options at runtime.
+Toobit exposes shared REST clients for Spot and USDT futures and shared socket clients for Spot and USDT futures. Call `shared.Discover()` to inspect supported shared interfaces, request options, and subscription options at runtime. Shared Spot and futures symbol clients expose `SpotSymbolCatalog` / `FuturesSymbolCatalog` after the corresponding symbol call; `GetSymbolsRequest` supports base/quote asset type filters, and results include inactive symbols through their `Active` flag plus display names and asset type metadata.
 
 ## Dependency Injection
 
