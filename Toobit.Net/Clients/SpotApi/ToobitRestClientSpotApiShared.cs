@@ -62,7 +62,15 @@ namespace Toobit.Net.Clients.SpotApi
 
             return HttpResult.Ok(result, ExchangeHelpers.ApplyFilter(result.Data, x => x.OpenTime, request.StartTime, request.EndTime, direction)
                     .Select(x => 
-                        new SharedKline(request.Symbol, symbol, x.OpenTime, x.ClosePrice, x.HighPrice, x.LowPrice, x.OpenPrice, x.Volume))
+                        new SharedKline(
+                            request.Symbol,
+                            symbol, 
+                            x.OpenTime,
+                            x.ClosePrice, 
+                            x.HighPrice,
+                            x.LowPrice,
+                            x.OpenPrice,
+                            new SharedOrderQuantity(x.Volume)))
                     .ToArray(), nextPageRequest);
         }
 
@@ -181,9 +189,16 @@ namespace Toobit.Net.Clients.SpotApi
                 return HttpResult.Fail<SharedSpotTicker>(result);
 
             var ticker = result.Data.Single();
-            return HttpResult.Ok(result, new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol), ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, ticker.PriceChangePercentage * 100)
+            return HttpResult.Ok(result, 
+                new SharedSpotTicker(
+                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol),
+                    ticker.Symbol,
+                    ticker.LastPrice, 
+                    ticker.HighPrice,
+                    ticker.LowPrice, 
+                    new SharedOrderQuantity(ticker.Volume, ticker.QuoteVolume), 
+                    ticker.PriceChangePercentage * 100)
             {
-                QuoteVolume = ticker.QuoteVolume
             });
         }
 
@@ -199,9 +214,15 @@ namespace Toobit.Net.Clients.SpotApi
                 return HttpResult.Fail<SharedSpotTicker[]>(result);
 
             return HttpResult.Ok(result, result.Data.Select(x =>
-                new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.PriceChangePercentage * 100)
+                new SharedSpotTicker(
+                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol),
+                    x.Symbol,
+                    x.LastPrice, 
+                    x.HighPrice, 
+                    x.LowPrice, 
+                    new SharedOrderQuantity(x.Volume, x.QuoteVolume), 
+                    x.PriceChangePercentage * 100)
                 {
-                    QuoteVolume = x.QuoteVolume
                 }).ToArray());
         }
 
@@ -252,7 +273,7 @@ namespace Toobit.Net.Clients.SpotApi
 
             // Return
             return HttpResult.Ok(result, result.Data.Select(x =>
-                new SharedTrade(request.Symbol, symbol, x.Quantity, x.Price, x.Timestamp)
+                new SharedTrade(request.Symbol, symbol, new SharedOrderQuantity(x.Quantity), x.Price, x.Timestamp)
                 {
                     Side = x.IsBuyerMaker ? SharedOrderSide.Sell : SharedOrderSide.Buy,
                 }).ToArray());

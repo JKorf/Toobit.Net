@@ -36,9 +36,16 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)).ToArray() : [request.Symbol!.GetSymbol(FormatSymbol)];
-            var result = await SubscribeToTickerUpdatesAsync(symbols, update => handler(update.ToType(new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Data.Symbol), update.Data.Symbol, update.Data.LastPrice, update.Data.HighPrice, update.Data.LowPrice, update.Data.Volume, update.Data.OpenPrice == null ? null : (Math.Round((update.Data.LastPrice ?? 0) / update.Data.OpenPrice.Value * 100 - 100, 3)))
+            var result = await SubscribeToTickerUpdatesAsync(symbols, update => handler(update.ToType(
+                new SharedSpotTicker(
+                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Data.Symbol),
+                    update.Data.Symbol, 
+                    update.Data.LastPrice,
+                    update.Data.HighPrice, 
+                    update.Data.LowPrice, 
+                    new SharedOrderQuantity(null, update.Data.QuoteVolume, update.Data.Volume), 
+                    update.Data.OpenPrice == null ? null : (Math.Round((update.Data.LastPrice ?? 0) / update.Data.OpenPrice.Value * 100 - 100, 3)))
             {
-                QuoteVolume = update.Data.QuoteVolume
             })), ct: ct).ConfigureAwait(false);
 
             return result;
@@ -60,7 +67,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)).ToArray() : [request.Symbol!.GetSymbol(FormatSymbol)];
             var result = await SubscribeToTradeUpdatesAsync(symbols, update => handler(update.ToType(update.Data.Select(x => 
-            new SharedTrade(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Symbol), update.Symbol!, x.Quantity, x.Price, x.Timestamp)
+            new SharedTrade(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Symbol), update.Symbol!, new SharedOrderQuantity(contractQuantity: x.Quantity), x.Price, x.Timestamp)
             {
                 Side = x.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
             }).ToArray())), ct: ct).ConfigureAwait(false);
@@ -102,7 +109,15 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)).ToArray() : [request.Symbol!.GetSymbol(FormatSymbol)];
             var result = await SubscribeToKlineUpdatesAsync(symbols, interval, update => handler(update.ToType(
-                new SharedKline(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Data.Symbol), update.Data.Symbol, update.Data.OpenTime, update.Data.ClosePrice, update.Data.HighPrice, update.Data.LowPrice, update.Data.OpenPrice, update.Data.Volume))), ct).ConfigureAwait(false);
+                new SharedKline(
+                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Data.Symbol),
+                    update.Data.Symbol, 
+                    update.Data.OpenTime, 
+                    update.Data.ClosePrice, 
+                    update.Data.HighPrice,
+                    update.Data.LowPrice,
+                    update.Data.OpenPrice,
+                    new SharedOrderQuantity(contractQuantity: update.Data.Volume)))), ct).ConfigureAwait(false);
 
             return result;
         }

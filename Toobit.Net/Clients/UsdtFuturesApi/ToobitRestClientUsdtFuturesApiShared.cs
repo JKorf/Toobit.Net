@@ -1,13 +1,14 @@
+using CryptoExchange.Net;
+using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.SharedApis;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Threading;
-using Toobit.Net.Interfaces.Clients.UsdtFuturesApi;
-using CryptoExchange.Net.Objects;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Timers;
 using Toobit.Net.Enums;
-using CryptoExchange.Net;
+using Toobit.Net.Interfaces.Clients.UsdtFuturesApi;
 using Toobit.Net.Objects.Models;
 
 namespace Toobit.Net.Clients.UsdtFuturesApi
@@ -62,7 +63,15 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
             return HttpResult.Ok(result, ExchangeHelpers.ApplyFilter(result.Data, x => x.OpenTime, request.StartTime, request.EndTime, direction)
                     .Select(x => 
-                        new SharedKline(request.Symbol, symbol, x.OpenTime, x.ClosePrice, x.HighPrice, x.LowPrice, x.OpenPrice, x.Volume))
+                        new SharedKline(
+                            request.Symbol,
+                            symbol, 
+                            x.OpenTime, 
+                            x.ClosePrice, 
+                            x.HighPrice, 
+                            x.LowPrice, 
+                            x.OpenPrice,
+                            new SharedOrderQuantity(contractQuantity: x.Volume)))
                     .ToArray(), nextPageRequest);
         }
 
@@ -291,7 +300,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             var funding = resultFunding.Result.Data.Single();
 
             return HttpResult.Ok(resultTicker.Result, new SharedFuturesTicker(
-                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol), ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, ticker.PriceChangePercentage * 100)
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol), 
+                ticker.Symbol, 
+                ticker.LastPrice, 
+                ticker.HighPrice, 
+                ticker.LowPrice,
+                new SharedOrderQuantity(null, ticker.QuoteVolume, ticker.Volume), 
+                ticker.PriceChangePercentage * 100)
             {
                 MarkPrice = resultMarkPrice.Result.Data.Price,
                 FundingRate = funding.FundingRate,
@@ -317,7 +332,14 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return HttpResult.Ok(resultTickers.Result, resultTickers.Result.Data.Select(x =>
             {
                 var funding = resultFunding.Result.Data.SingleOrDefault(p => p.Symbol == x.Symbol);
-                return new SharedFuturesTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.PriceChangePercentage * 100)
+                return new SharedFuturesTicker(
+                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol),
+                    x.Symbol,
+                    x.LastPrice,
+                    x.HighPrice,
+                    x.LowPrice,
+                    new SharedOrderQuantity(null, x.QuoteVolume, x.Volume),
+                    x.PriceChangePercentage * 100)
                 {
                     FundingRate = funding?.FundingRate,
                     NextFundingTime = funding?.NextFundingTime == default ? null : funding?.NextFundingTime
@@ -370,7 +392,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 return HttpResult.Fail<SharedTrade[]>(result);
 
             return HttpResult.Ok(result, result.Data.Select(x => 
-                new SharedTrade(request.Symbol, symbol, x.Quantity, x.Price, x.Timestamp)
+                new SharedTrade(request.Symbol, symbol, new SharedOrderQuantity(contractQuantity: x.Quantity), x.Price, x.Timestamp)
                 {
                     Side = x.IsBuyerMaker ? SharedOrderSide.Sell : SharedOrderSide.Buy,
                 }).ToArray());

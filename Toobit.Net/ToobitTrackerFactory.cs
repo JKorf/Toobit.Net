@@ -85,15 +85,18 @@ namespace Toobit.Net
 
             IRecentTradeRestClient? sharedRestClient;
             ITradeSocketClient sharedSocketClient;
+            TradeQuantityType tradeQuantityType;
             if (symbol.TradingMode == TradingMode.Spot)
             {
                 sharedRestClient = restClient.SpotApi.SharedClient;
                 sharedSocketClient = socketClient.SpotApi.SharedClient;
+                tradeQuantityType = TradeQuantityType.BaseAsset;
             }
             else
             {
                 sharedRestClient = restClient.UsdtFuturesApi.SharedClient;
                 sharedSocketClient = socketClient.UsdtFuturesApi.SharedClient;
+                tradeQuantityType = TradeQuantityType.Contracts;
             }
 
             return new TradeTracker(
@@ -104,6 +107,7 @@ namespace Toobit.Net
                 symbol,
                 limit,
                 period,
+                tradeQuantityType,
                 exchangeParameters
                 );
         }
