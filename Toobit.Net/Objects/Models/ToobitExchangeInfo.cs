@@ -6,7 +6,7 @@ using Toobit.Net.Enums;
 namespace Toobit.Net.Objects.Models
 {
     /// <summary>
-    /// 
+    /// Exchange info
     /// </summary>
     public record ToobitExchangeInfo
     {

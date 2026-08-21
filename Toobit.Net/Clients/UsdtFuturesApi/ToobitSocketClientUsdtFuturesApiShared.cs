@@ -135,7 +135,9 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)).ToArray() : [request.Symbol!.GetSymbol(FormatSymbol)];
-            var result = await SubscribeToPartialOrderBookUpdatesAsync(symbols, update => handler(update.ToType(new SharedOrderBook(update.Data.Asks, update.Data.Bids))), ct).ConfigureAwait(false);
+            var result = await SubscribeToPartialOrderBookUpdatesAsync(symbols, update => handler(
+                update.ToType(
+                    new SharedOrderBook(SharedQuantityType.Contracts, update.Data.Asks, update.Data.Bids))), ct).ConfigureAwait(false);
 
             return result;
         }
@@ -169,11 +171,20 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                         FeeAsset = x.FeeAsset,
                         TimeInForce = x.TimeInForce == Enums.TimeInForce.ImmediateOrCancel ? SharedTimeInForce.ImmediateOrCancel : x.TimeInForce == Enums.TimeInForce.FillOrKill ? SharedTimeInForce.FillOrKill : SharedTimeInForce.GoodTillCanceled,
                         IsCloseOrder = x.IsCloseOrder,
-                        LastTrade = x.LastFillQuantity > 0 ? new SharedUserTrade(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, x.OrderId.ToString(), x.LastTradeId?.ToString()!, x.OrderSide == Enums.OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell, x.LastFillQuantity ?? 0, x.LastFillPrice ?? 0, x.UpdateTime)
-                        {
-                            ClientOrderId = x.ClientOrderId,
-                            Role = x.IsMaker ? SharedRole.Maker : SharedRole.Taker
-                        } : null
+                        LastTrade = x.LastFillQuantity > 0 ? 
+                            new SharedUserTrade(
+                                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), 
+                                x.Symbol,
+                                x.OrderId.ToString(),
+                                x.LastTradeId?.ToString()!,
+                                x.OrderSide == Enums.OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
+                                new SharedOrderQuantity(contractQuantity: x.LastFillQuantity),
+                                x.LastFillPrice ?? 0,
+                                x.UpdateTime)
+                            {
+                                ClientOrderId = x.ClientOrderId,
+                                Role = x.IsMaker ? SharedRole.Maker : SharedRole.Taker
+                            } : null
                     }
                 ).ToArray())),
                 ct: ct).ConfigureAwait(false);
@@ -204,7 +215,12 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
             var result = await SubscribeToUserDataUpdatesAsync(
-                onPositionMessage: update => handler(update.ToType(update.Data.Select(x => new SharedPosition(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, x.PositionQuantity, x.EventTime)
+                onPositionMessage: update => handler(update.ToType(update.Data.Select(x =>
+                new SharedPosition(
+                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol),
+                    x.Symbol,
+                    new SharedOrderQuantity(contractQuantity: x.PositionQuantity),
+                    x.EventTime)
                 {
                     AverageOpenPrice = x.AveragePrice,
                     PositionMode = SharedPositionMode.HedgeMode,
@@ -244,7 +260,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                             x.OrderId.ToString(),
                             x.TradeId,
                             x.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
-                            x.Quantity,
+                            new SharedOrderQuantity(contractQuantity: x.Quantity),
                             x.Price,
                             x.Timestamp)
                         {

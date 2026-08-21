@@ -131,7 +131,9 @@ namespace Toobit.Net.Clients.SpotApi
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)).ToArray() : [request.Symbol!.GetSymbol(FormatSymbol)];
-            var result = await SubscribeToPartialOrderBookUpdatesAsync(symbols, update => handler(update.ToType(new SharedOrderBook(update.Data.Asks, update.Data.Bids))), ct).ConfigureAwait(false);
+            var result = await SubscribeToPartialOrderBookUpdatesAsync(symbols, update => handler(
+                update.ToType(
+                    new SharedOrderBook(SharedQuantityType.BaseAsset, update.Data.Asks, update.Data.Bids))), ct).ConfigureAwait(false);
 
             return result;
         }
@@ -183,11 +185,20 @@ namespace Toobit.Net.Clients.SpotApi
                         Fee = x.Fee,
                         FeeAsset = x.FeeAsset,
                         TimeInForce = x.TimeInForce == Enums.TimeInForce.ImmediateOrCancel ? SharedTimeInForce.ImmediateOrCancel : x.TimeInForce == Enums.TimeInForce.FillOrKill ? SharedTimeInForce.FillOrKill : SharedTimeInForce.GoodTillCanceled,
-                        LastTrade = x.LastFillQuantity > 0 ? new SharedUserTrade(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, x.OrderId.ToString(), x.LastTradeId!.ToString()!, x.OrderSide == Enums.OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell, x.LastFillQuantity.Value, x.LastFillPrice!.Value, x.EventTime)
-                        {
-                            ClientOrderId = x.ClientOrderId,
-                            Role = x.IsMaker ? SharedRole.Maker : SharedRole.Taker
-                        } : null
+                        LastTrade = x.LastFillQuantity > 0 ? 
+                            new SharedUserTrade(
+                                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol),
+                                x.Symbol,
+                                x.OrderId.ToString(), 
+                                x.LastTradeId!.ToString()!,
+                                x.OrderSide == Enums.OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell, 
+                                new SharedOrderQuantity(x.LastFillQuantity.Value),
+                                x.LastFillPrice!.Value,
+                                x.EventTime)
+                            {
+                                ClientOrderId = x.ClientOrderId,
+                                Role = x.IsMaker ? SharedRole.Maker : SharedRole.Taker
+                            } : null
                     }
                 ).ToArray())),
                 ct: ct).ConfigureAwait(false);
@@ -243,7 +254,7 @@ namespace Toobit.Net.Clients.SpotApi
                             x.OrderId.ToString(),
                             x.TradeId,
                             x.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
-                            x.Quantity,
+                            new SharedOrderQuantity(x.Quantity),
                             x.Price,
                             x.Timestamp)
                         {

@@ -246,9 +246,9 @@ namespace Toobit.Net.Clients.SpotApi
                 ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol),
                 ticker.Symbol,
                 ticker.BestAskPrice ?? 0,
-                ticker.BestAskQuantity ?? 0,
+                new SharedOrderQuantity(ticker.BestAskQuantity),
                 ticker.BestBidPrice ?? 0,
-                ticker.BestBidQuantity ?? 0));
+                new SharedOrderQuantity(ticker.BestBidQuantity)));
         }
 
         #endregion
@@ -295,7 +295,7 @@ namespace Toobit.Net.Clients.SpotApi
             if (!result.Success)
                 return HttpResult.Fail<SharedOrderBook>(result);
 
-            return HttpResult.Ok(result, new SharedOrderBook(result.Data.Asks, result.Data.Bids));
+            return HttpResult.Ok(result, new SharedOrderBook(SharedQuantityType.BaseAsset, result.Data.Asks, result.Data.Bids));
         }
 
         #endregion
@@ -494,7 +494,7 @@ namespace Toobit.Net.Clients.SpotApi
                 x.OrderId.ToString(),
                 x.Id.ToString(),
                 x.IsBuyer ? SharedOrderSide.Buy : SharedOrderSide.Sell,
-                x.Quantity,
+                new SharedOrderQuantity(x.Quantity),
                 x.Price,
                 x.Timestamp)
             {
@@ -541,7 +541,7 @@ namespace Toobit.Net.Clients.SpotApi
                         x.OrderId.ToString(),
                         x.Id.ToString(),
                         x.IsBuyer ? SharedOrderSide.Buy : SharedOrderSide.Sell,
-                        x.Quantity,
+                        new SharedOrderQuantity(x.Quantity),
                         x.Price,
                         x.Timestamp)
                     {
