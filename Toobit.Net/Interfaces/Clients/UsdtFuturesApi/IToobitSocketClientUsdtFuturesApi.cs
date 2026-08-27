@@ -259,8 +259,15 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
             CancellationToken ct = default);
 
         /// <summary>
-        /// Get the shared socket requests client. This interface is shared with other exchanges to allow for a common implementation for different exchanges.
+        /// Get the shared socket requests client. For new implementations prefer <see cref="SharedApi"/>
         /// </summary>
         public IToobitSocketClientUsdtFuturesApiShared SharedClient { get; }
+
+        /// <summary>
+        /// Gets the aggregate Shared API interface. Shared APIs provide a common,
+        /// exchange-independent contract for accessing functionality across different
+        /// exchange client libraries.
+        /// </summary>
+        public IToobitSocketClientUsdtFuturesSharedApi SharedApi { get; }
     }
 }

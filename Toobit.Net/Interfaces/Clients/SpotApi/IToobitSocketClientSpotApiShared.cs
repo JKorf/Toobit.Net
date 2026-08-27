@@ -15,4 +15,20 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         IUserTradeSocketClient
     {
     }
+
+    /// <summary>
+    /// Shared API interface. Shared APIs provide a common,
+    /// exchange-independent contract for accessing functionality across different
+    /// exchange client libraries.
+    /// </summary>
+    public interface IToobitSocketClientSpotSharedApi :
+        ISubscribeTickerOperation,
+        ISubscribeTradesOperation,
+        ISubscribeKlinesOperation,
+        ISubscribeOrderBookOperation,
+        ISubscribeBalancesOperation,
+        ISubscribeSpotOrdersOperation,
+        ISubscribeUserTradesOperation
+    {
+    }
 }

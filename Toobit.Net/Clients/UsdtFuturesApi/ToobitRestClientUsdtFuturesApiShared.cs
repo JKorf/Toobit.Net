@@ -13,27 +13,69 @@ using Toobit.Net.Objects.Models;
 
 namespace Toobit.Net.Clients.UsdtFuturesApi
 {
-    internal partial class ToobitRestClientUsdtFuturesApi : IToobitRestClientUsdtFuturesApiShared
+    internal class ToobitRestClientUsdtFuturesSharedApi :
+        SharedApiBase,
+        IToobitRestClientUsdtFuturesSharedApi,
+        IToobitRestClientUsdtFuturesApiShared
     {
+        private readonly ToobitRestClientUsdtFuturesApi _api;
+
         private const string _topicId = "ToobitUsdtFutures";
         private const string _exchangeName = "Toobit";
-
-        public TradingMode[] SupportedTradingModes => new[] { TradingMode.PerpetualLinear };
-
-        public void SetDefaultExchangeParameter(string key, object value) => ExchangeParameters.SetStaticParameter(Exchange, key, value);
-        public void ResetDefaultExchangeParameters() => ExchangeParameters.ResetStaticParameters();
-        public SharedClientInfo Discover() => SharedUtils.GetClientInfo(ToobitExchange.Metadata, this);
+        public override SharedClientInfo Discover() => SharedUtils.GetClientInfo(ToobitExchange.Metadata, this);
 
         private static readonly HashSet<string> _fiatCurrencies = ["USD", "EUR"];
 
+        public ToobitRestClientUsdtFuturesSharedApi(ToobitRestClientUsdtFuturesApi api)
+            : base(
+                  api.Exchange,
+                  [TradingMode.PerpetualLinear],
+                  () => api.Authenticated,
+                  api.FormatSymbol)
+        {
+            _api = api;
+
+            SetCapabilities(
+                GetKlinesOptions,
+                GetMarkPriceKlinesOptions,
+                GetIndexPriceKlinesOptions,
+                GetFuturesSymbolsOptions,
+                GetFuturesTickerOptions,
+                GetAllFuturesTickersOptions,
+                GetBookTickerOptions,
+                GetRecentTradesOptions,
+                PlaceFuturesOrderOptions,
+                GetFuturesOrderOptions,
+                GetOpenFuturesOrdersOptions,
+                GetClosedFuturesOrdersOptions,
+                GetFuturesOrderTradesOptions,
+                GetFuturesUserTradeHistoryOptions,
+                CancelFuturesOrderOptions,
+                GetPositionsOptions,
+                ClosePositionOptions,
+                GetFuturesOrderByClientOrderIdOptions,
+                CancelFuturesOrderByClientOrderIdOptions,
+                GetLeverageOptions,
+                SetLeverageOptions,
+                GetOrderBookOptions,
+                GetFundingRateHistoryOptions,
+                GetBalancesOptions,
+                GetFeeOptions,
+                PlaceFuturesTriggerOrderOptions,
+                GetFuturesTriggerOrderOptions,
+                CancelFuturesTriggerOrderOptions
+                );
+
+        }
+
         #region Klines client
 
-        GetKlinesOptions IKlineRestClient.GetKlinesOptions { get; } = new GetKlinesOptions(_exchangeName, false, true, true, 1000, false);
+        public GetKlinesOptions GetKlinesOptions { get; } = new GetKlinesOptions(_exchangeName, false, true, true, 1000, false);
 
-        async Task<HttpResult<SharedKline[]>> IKlineRestClient.GetKlinesAsync(GetKlinesRequest request, PageRequest? pageRequest, CancellationToken ct)
+        public async Task<HttpResult<SharedKline[]>> GetKlinesAsync(GetKlinesRequest request, PageRequest? pageRequest, CancellationToken ct)
         {
             var interval = (Enums.KlineInterval)request.Interval;
-            var validationError = SharedClient.GetKlinesOptions.ValidateRequest(request, this);
+            var validationError = GetKlinesOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedKline[]>(Exchange, validationError);
 
@@ -42,7 +84,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             var pageParams = Pagination.GetPaginationParameters(direction, limit, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest, false);
 
             var symbol = request.Symbol!.GetSymbol(FormatSymbol);
-            var result = await ExchangeData.GetKlinesAsync(
+            var result = await _api.ExchangeData.GetKlinesAsync(
                 symbol,
                 interval,
                 pageParams.StartTime,
@@ -79,12 +121,12 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         #region Mark Klines client
 
-        GetMarkPriceKlinesOptions IMarkPriceKlineRestClient.GetMarkPriceKlinesOptions { get; } = new GetMarkPriceKlinesOptions(_exchangeName, false, true, true, 1000, false);
+        public GetMarkPriceKlinesOptions GetMarkPriceKlinesOptions { get; } = new GetMarkPriceKlinesOptions(_exchangeName, false, true, true, 1000, false);
 
-        async Task<HttpResult<SharedFuturesKline[]>> IMarkPriceKlineRestClient.GetMarkPriceKlinesAsync(GetKlinesRequest request, PageRequest? pageRequest, CancellationToken ct)
+        public async Task<HttpResult<SharedFuturesKline[]>> GetMarkPriceKlinesAsync(GetKlinesRequest request, PageRequest? pageRequest, CancellationToken ct)
         {
             var interval = (Enums.KlineInterval)request.Interval;
-            var validationError = SharedClient.GetMarkPriceKlinesOptions.ValidateRequest(request, this);
+            var validationError = GetMarkPriceKlinesOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedFuturesKline[]>(Exchange, validationError);
 
@@ -93,7 +135,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             var pageParams = Pagination.GetPaginationParameters(direction, limit, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest, false);
 
             var symbol = request.Symbol!.GetSymbol(FormatSymbol);
-            var result = await ExchangeData.GetMarkPriceKlinesAsync(
+            var result = await _api.ExchangeData.GetMarkPriceKlinesAsync(
                 symbol,
                 interval,
                 pageParams.StartTime,
@@ -122,12 +164,12 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         #region Index Klines client
 
-        GetIndexPriceKlinesOptions IIndexPriceKlineRestClient.GetIndexPriceKlinesOptions { get; } = new GetIndexPriceKlinesOptions(_exchangeName, false, true, true, 1000, false);
+        public GetIndexPriceKlinesOptions GetIndexPriceKlinesOptions { get; } = new GetIndexPriceKlinesOptions(_exchangeName, false, true, true, 1000, false);
 
-        async Task<HttpResult<SharedFuturesKline[]>> IIndexPriceKlineRestClient.GetIndexPriceKlinesAsync(GetKlinesRequest request, PageRequest? pageRequest, CancellationToken ct)
+        public async Task<HttpResult<SharedFuturesKline[]>> GetIndexPriceKlinesAsync(GetKlinesRequest request, PageRequest? pageRequest, CancellationToken ct)
         {
             var interval = (Enums.KlineInterval)request.Interval;
-            var validationError = SharedClient.GetIndexPriceKlinesOptions.ValidateRequest(request, this);
+            var validationError = GetIndexPriceKlinesOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedFuturesKline[]>(Exchange, validationError);
 
@@ -136,7 +178,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             var pageParams = Pagination.GetPaginationParameters(direction, limit, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest, false);
 
             var symbol = request.Symbol!.GetSymbol(FormatSymbol);
-            var result = await ExchangeData.GetMarkPriceKlinesAsync(
+            var result = await _api.ExchangeData.GetMarkPriceKlinesAsync(
                 symbol,
                 interval,
                 pageParams.StartTime,
@@ -165,15 +207,15 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         #region Futures Symbol client
 
-        SharedSymbolCatalog? IFuturesSymbolRestClient.FuturesSymbolCatalog => ExchangeSymbolCache.GetSymbolCatalog(_exchangeName, _topicId, EnvironmentName, null);
-        GetFuturesSymbolsOptions IFuturesSymbolRestClient.GetFuturesSymbolsOptions { get; } = new GetFuturesSymbolsOptions(_exchangeName, false);
-        async Task<HttpResult<SharedFuturesSymbol[]>> IFuturesSymbolRestClient.GetFuturesSymbolsAsync(GetSymbolsRequest request, CancellationToken ct)
+        public SharedSymbolCatalog? FuturesSymbolCatalog => ExchangeSymbolCache.GetSymbolCatalog(_exchangeName, _topicId, _api.EnvironmentName, null);
+        public GetFuturesSymbolsOptions GetFuturesSymbolsOptions { get; } = new GetFuturesSymbolsOptions(_exchangeName, false);
+        public async Task<HttpResult<SharedFuturesSymbol[]>> GetFuturesSymbolsAsync(GetSymbolsRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.GetFuturesSymbolsOptions.ValidateRequest(request, this);
+            var validationError = GetFuturesSymbolsOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedFuturesSymbol[]>(Exchange, validationError);
 
-            var result = await ExchangeData.GetExchangeInfoAsync(ct).ConfigureAwait(false);
+            var result = await _api.ExchangeData.GetExchangeInfoAsync(ct).ConfigureAwait(false);
             if (!result.Success)
                 return HttpResult.Fail<SharedFuturesSymbol[]>(result);
 
@@ -181,7 +223,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                  result.Data.ContractSymbols.Select(x => ParseSymbol(x))
                 .ToArray();
 
-            ExchangeSymbolCache.UpdateSymbolInfo(_topicId, EnvironmentName, null, resultData);
+            ExchangeSymbolCache.UpdateSymbolInfo(_topicId, _api.EnvironmentName, null, resultData);
             return HttpResult.Ok(result, SharedUtils.ApplySymbolFilter(resultData, request));
         }
 
@@ -235,58 +277,58 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return result;
         }
 
-        async Task<ExchangeCallResult<SharedSymbol[]>> IFuturesSymbolRestClient.GetFuturesSymbolsForBaseAssetAsync(string baseAsset)
+        public async Task<ExchangeCallResult<SharedSymbol[]>> GetFuturesSymbolsForBaseAssetAsync(string baseAsset)
         {
-            if (!ExchangeSymbolCache.HasCached(_topicId, EnvironmentName, null))
+            if (!ExchangeSymbolCache.HasCached(_topicId, _api.EnvironmentName, null))
             {
-                var symbols = await ((IFuturesSymbolRestClient)this).GetFuturesSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
+                var symbols = await GetFuturesSymbolsAsync(new GetSymbolsRequest(), default).ConfigureAwait(false);
                 if (!symbols.Success)
                     return ExchangeCallResult<SharedSymbol[]>.Fail(Exchange, symbols.Error!);
             }
 
-            return ExchangeCallResult<SharedSymbol[]>.Ok(Exchange, ExchangeSymbolCache.GetSymbolsForBaseAsset(_topicId, EnvironmentName, null, baseAsset));
+            return ExchangeCallResult<SharedSymbol[]>.Ok(Exchange, ExchangeSymbolCache.GetSymbolsForBaseAsset(_topicId, _api.EnvironmentName, null, baseAsset));
         }
 
-        async Task<ExchangeCallResult<bool>> IFuturesSymbolRestClient.SupportsFuturesSymbolAsync(SharedSymbol symbol)
+        public async Task<ExchangeCallResult<bool>> SupportsFuturesSymbolAsync(SharedSymbol symbol)
         {
             if (symbol.TradingMode == TradingMode.Spot)
                 throw new ArgumentException(nameof(symbol), "Spot symbols not allowed");
 
-            if (!ExchangeSymbolCache.HasCached(_topicId, EnvironmentName, null))
+            if (!ExchangeSymbolCache.HasCached(_topicId, _api.EnvironmentName, null))
             {
-                var symbols = await ((IFuturesSymbolRestClient)this).GetFuturesSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
+                var symbols = await GetFuturesSymbolsAsync(new GetSymbolsRequest(), default).ConfigureAwait(false);
                 if (!symbols.Success)
                     return ExchangeCallResult<bool>.Fail(Exchange, symbols.Error!);
             }
 
-            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, EnvironmentName, null, symbol));
+            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, _api.EnvironmentName, null, symbol));
         }
 
-        async Task<ExchangeCallResult<bool>> IFuturesSymbolRestClient.SupportsFuturesSymbolAsync(string symbolName)
+        public async Task<ExchangeCallResult<bool>> SupportsFuturesSymbolAsync(string symbolName)
         {
-            if (!ExchangeSymbolCache.HasCached(_topicId, EnvironmentName, null))
+            if (!ExchangeSymbolCache.HasCached(_topicId, _api.EnvironmentName, null))
             {
-                var symbols = await ((IFuturesSymbolRestClient)this).GetFuturesSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
+                var symbols = await GetFuturesSymbolsAsync(new GetSymbolsRequest(), default).ConfigureAwait(false);
                 if (!symbols.Success)
                     return ExchangeCallResult<bool>.Fail(Exchange, symbols.Error!);
             }
 
-            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, EnvironmentName, null, symbolName));
+            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, _api.EnvironmentName, null, symbolName));
         }
         #endregion
 
         #region Ticker client
 
-        GetFuturesTickerOptions IFuturesTickerRestClient.GetFuturesTickerOptions { get; } = new GetFuturesTickerOptions(_exchangeName);
-        async Task<HttpResult<SharedFuturesTicker>> IFuturesTickerRestClient.GetFuturesTickerAsync(GetTickerRequest request, CancellationToken ct)
+        public GetFuturesTickerOptions GetFuturesTickerOptions { get; } = new GetFuturesTickerOptions(_exchangeName);
+        public async Task<HttpResult<SharedFuturesTicker>> GetFuturesTickerAsync(GetTickerRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.GetFuturesTickerOptions.ValidateRequest(request, this);
+            var validationError = GetFuturesTickerOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedFuturesTicker>(Exchange, validationError);
 
-            var resultTicker = ExchangeData.GetTickersAsync(request.Symbol!.GetSymbol(FormatSymbol), ct: ct);
-            var resultMarkPrice = ExchangeData.GetMarkPriceAsync(request.Symbol.GetSymbol(FormatSymbol), ct);
-            var resultFunding = ExchangeData.GetFundingRateAsync(request.Symbol.GetSymbol(FormatSymbol), ct);
+            var resultTicker = _api.ExchangeData.GetTickersAsync(request.Symbol!.GetSymbol(FormatSymbol), ct: ct);
+            var resultMarkPrice = _api.ExchangeData.GetMarkPriceAsync(request.Symbol.GetSymbol(FormatSymbol), ct);
+            var resultFunding = _api.ExchangeData.GetFundingRateAsync(request.Symbol.GetSymbol(FormatSymbol), ct);
             await Task.WhenAll(resultTicker, resultMarkPrice).ConfigureAwait(false);
 
             if (!resultTicker.Result.Success)
@@ -300,7 +342,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             var funding = resultFunding.Result.Data.Single();
 
             return HttpResult.Ok(resultTicker.Result, new SharedFuturesTicker(
-                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol), 
+                ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, ticker.Symbol), 
                 ticker.Symbol, 
                 ticker.LastPrice, 
                 ticker.HighPrice, 
@@ -314,15 +356,19 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             });
         }
 
-        GetFuturesTickersOptions IFuturesTickerRestClient.GetFuturesTickersOptions { get; } = new GetFuturesTickersOptions(_exchangeName);
-        async Task<HttpResult<SharedFuturesTicker[]>> IFuturesTickerRestClient.GetFuturesTickersAsync(GetTickersRequest request, CancellationToken ct)
+        Task<HttpResult<SharedFuturesTicker[]>> IFuturesTickerRestClient.GetFuturesTickersAsync(GetTickersRequest request, CancellationToken ct)
+            => GetAllFuturesTickersAsync(request, ct);
+        GetAllFuturesTickersOptions IFuturesTickerRestClient.GetFuturesTickersOptions => GetAllFuturesTickersOptions;
+
+        public GetAllFuturesTickersOptions GetAllFuturesTickersOptions { get; } = new GetAllFuturesTickersOptions(_exchangeName);
+        public async Task<HttpResult<SharedFuturesTicker[]>> GetAllFuturesTickersAsync(GetTickersRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.GetFuturesTickersOptions.ValidateRequest(request, this);
+            var validationError = GetAllFuturesTickersOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedFuturesTicker[]>(Exchange, validationError);
 
-            var resultTickers = ExchangeData.GetTickersAsync(ct: ct);
-            var resultFunding = ExchangeData.GetFundingRateAsync(ct: ct);
+            var resultTickers = _api.ExchangeData.GetTickersAsync(ct: ct);
+            var resultFunding = _api.ExchangeData.GetFundingRateAsync(ct: ct);
             await Task.WhenAll(resultTickers, resultFunding).ConfigureAwait(false);
             if (!resultTickers.Result.Success)
                 return HttpResult.Fail<SharedFuturesTicker[]>(resultTickers.Result);
@@ -333,7 +379,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             {
                 var funding = resultFunding.Result.Data.SingleOrDefault(p => p.Symbol == x.Symbol);
                 return new SharedFuturesTicker(
-                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol),
+                    ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, x.Symbol),
                     x.Symbol,
                     x.LastPrice,
                     x.HighPrice,
@@ -351,20 +397,20 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         #region Book Ticker client
 
-        GetBookTickerOptions IBookTickerRestClient.GetBookTickerOptions { get; } = new GetBookTickerOptions(_exchangeName, false);
-        async Task<HttpResult<SharedBookTicker>> IBookTickerRestClient.GetBookTickerAsync(GetBookTickerRequest request, CancellationToken ct)
+        public GetBookTickerOptions GetBookTickerOptions { get; } = new GetBookTickerOptions(_exchangeName, false);
+        public async Task<HttpResult<SharedBookTicker>> GetBookTickerAsync(GetBookTickerRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.GetBookTickerOptions.ValidateRequest(request, this);
+            var validationError = GetBookTickerOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedBookTicker>(Exchange, validationError);
 
-            var resultTicker = await ExchangeData.GetBookTickersAsync(request.Symbol!.GetSymbol(FormatSymbol), ct: ct).ConfigureAwait(false);
+            var resultTicker = await _api.ExchangeData.GetBookTickersAsync(request.Symbol!.GetSymbol(FormatSymbol), ct: ct).ConfigureAwait(false);
             if (!resultTicker.Success)
                 return HttpResult.Fail<SharedBookTicker>(resultTicker);
 
             var ticker = resultTicker.Data.Single();
             return HttpResult.Ok(resultTicker, new SharedBookTicker(
-                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol),
+                ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, ticker.Symbol),
                 ticker.Symbol,
                 ticker.BestAskPrice ?? 0,
                 new SharedOrderQuantity(contractQuantity: ticker.BestAskQuantity),
@@ -376,15 +422,15 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         #region Recent Trade client
 
-        GetRecentTradesOptions IRecentTradeRestClient.GetRecentTradesOptions { get; } = new GetRecentTradesOptions(_exchangeName, 60, false);
-        async Task<HttpResult<SharedTrade[]>> IRecentTradeRestClient.GetRecentTradesAsync(GetRecentTradesRequest request, CancellationToken ct)
+        public GetRecentTradesOptions GetRecentTradesOptions { get; } = new GetRecentTradesOptions(_exchangeName, 60, false);
+        public async Task<HttpResult<SharedTrade[]>> GetRecentTradesAsync(GetRecentTradesRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.GetRecentTradesOptions.ValidateRequest(request, this);
+            var validationError = GetRecentTradesOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedTrade[]>(Exchange, validationError);
 
             var symbol = request.Symbol!.GetSymbol(FormatSymbol);
-            var result = await ExchangeData.GetRecentTradesAsync(
+            var result = await _api.ExchangeData.GetRecentTradesAsync(
                 symbol,
                 limit: request.Limit,
                 ct: ct).ConfigureAwait(false);
@@ -402,33 +448,32 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         #region Futures Order Client
 
-        SharedFeeDeductionType IFuturesOrderRestClient.FuturesFeeDeductionType => SharedFeeDeductionType.AddToCost;
-        SharedFeeAssetType IFuturesOrderRestClient.FuturesFeeAssetType => SharedFeeAssetType.QuoteAsset;
+        public SharedFeeDeductionType FuturesFeeDeductionType => SharedFeeDeductionType.AddToCost;
+        public SharedFeeAssetType FuturesFeeAssetType => SharedFeeAssetType.QuoteAsset;
 
-        SharedOrderType[] IFuturesOrderRestClient.FuturesSupportedOrderTypes { get; } = new[] { SharedOrderType.Limit, SharedOrderType.Market };
-        SharedTimeInForce[] IFuturesOrderRestClient.FuturesSupportedTimeInForce { get; } = new[] { SharedTimeInForce.GoodTillCanceled, SharedTimeInForce.ImmediateOrCancel, SharedTimeInForce.FillOrKill };
-        SharedQuantitySupport IFuturesOrderRestClient.FuturesSupportedOrderQuantity { get; } = new SharedQuantitySupport(
+        public SharedOrderType[] FuturesSupportedOrderTypes { get; } = new[] { SharedOrderType.Limit, SharedOrderType.Market };
+        public SharedTimeInForce[] FuturesSupportedTimeInForce { get; } = new[] { SharedTimeInForce.GoodTillCanceled, SharedTimeInForce.ImmediateOrCancel, SharedTimeInForce.FillOrKill };
+        public SharedQuantitySupport FuturesSupportedOrderQuantity { get; } = new SharedQuantitySupport(
                 SharedQuantityType.Contracts,
                 SharedQuantityType.Contracts,
                 SharedQuantityType.Contracts,
                 SharedQuantityType.Contracts);
 
-        string IFuturesOrderRestClient.GenerateClientOrderId() => ExchangeHelpers.RandomString(20);
+        public string GenerateClientOrderId() => ExchangeHelpers.RandomString(20);
 
-        PlaceFuturesOrderOptions IFuturesOrderRestClient.PlaceFuturesOrderOptions { get; } = new PlaceFuturesOrderOptions(_exchangeName, true)
+        public PlaceFuturesOrderOptions PlaceFuturesOrderOptions { get; } = new PlaceFuturesOrderOptions(_exchangeName, true)
         {
-            RequiredOptionalParameters = new List<ParameterDescription>
-            {
-                new ParameterDescription(nameof(PlaceFuturesOrderRequest.PositionSide), typeof(SharedPositionSide), "Long or short position", SharedPositionSide.Long)
-            }
+            RequiredRequestParameters = [
+                RequestParameter<PlaceFuturesOrderRequest>.Required(x => x.PositionSide, "Long or short position", SharedPositionSide.Long),
+                ]
         };
-        async Task<HttpResult<SharedId>> IFuturesOrderRestClient.PlaceFuturesOrderAsync(PlaceFuturesOrderRequest request, CancellationToken ct)
+        public async Task<HttpResult<SharedId>> PlaceFuturesOrderAsync(PlaceFuturesOrderRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.PlaceFuturesOrderOptions.ValidateRequest(request, this);
+            var validationError = PlaceFuturesOrderOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedId>(Exchange, validationError);
 
-            var result = await Trading.PlaceOrderAsync(
+            var result = await _api.Trading.PlaceOrderAsync(
                 request.Symbol!.GetSymbol(FormatSymbol),
                 GetOrderSide(request),
                 orderType: FuturesNewOrderType.Limit,
@@ -455,22 +500,22 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return request.Side == SharedOrderSide.Buy ? FuturesOrderSide.BuyClose : FuturesOrderSide.SellOpen;
         }
 
-        GetFuturesOrderOptions IFuturesOrderRestClient.GetFuturesOrderOptions { get; } = new GetFuturesOrderOptions(_exchangeName, true);
-        async Task<HttpResult<SharedFuturesOrder>> IFuturesOrderRestClient.GetFuturesOrderAsync(GetOrderRequest request, CancellationToken ct)
+        public GetFuturesOrderOptions GetFuturesOrderOptions { get; } = new GetFuturesOrderOptions(_exchangeName, true);
+        public async Task<HttpResult<SharedFuturesOrder>> GetFuturesOrderAsync(GetOrderRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.GetFuturesOrderOptions.ValidateRequest(request, this);
+            var validationError = GetFuturesOrderOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedFuturesOrder>(Exchange, validationError);
 
             if (!long.TryParse(request.OrderId, out var orderId))
                 return HttpResult.Fail<SharedFuturesOrder>(Exchange, ArgumentError.Invalid(nameof(GetOrderRequest.OrderId), "Invalid order id"));
 
-            var order = await Trading.GetOrderAsync(orderId, ct: ct).ConfigureAwait(false);
+            var order = await _api.Trading.GetOrderAsync(orderId, ct: ct).ConfigureAwait(false);
             if (!order.Success)
                 return HttpResult.Fail<SharedFuturesOrder>(order);
 
             return HttpResult.Ok(order, new SharedFuturesOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, order.Data.Symbol), order.Data.Symbol,
+                ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, order.Data.Symbol), order.Data.Symbol,
                 order.Data.OrderId.ToString(),
                 ParseOrderType(order.Data.OrderType, order.Data.PriceType ?? PriceType.Input),
                 (order.Data.OrderSide == FuturesOrderSide.BuyClose || order.Data.OrderSide == FuturesOrderSide.BuyClose) ? SharedOrderSide.Buy : SharedOrderSide.Sell,
@@ -489,20 +534,20 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             });
         }
 
-        GetOpenFuturesOrdersOptions IFuturesOrderRestClient.GetOpenFuturesOrdersOptions { get; } = new GetOpenFuturesOrdersOptions(_exchangeName, true);
-        async Task<HttpResult<SharedFuturesOrder[]>> IFuturesOrderRestClient.GetOpenFuturesOrdersAsync(GetOpenOrdersRequest request, CancellationToken ct)
+        public GetOpenFuturesOrdersOptions GetOpenFuturesOrdersOptions { get; } = new GetOpenFuturesOrdersOptions(_exchangeName, true);
+        public async Task<HttpResult<SharedFuturesOrder[]>> GetOpenFuturesOrdersAsync(GetOpenOrdersRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.GetOpenFuturesOrdersOptions.ValidateRequest(request, this);
+            var validationError = GetOpenFuturesOrdersOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedFuturesOrder[]>(Exchange, validationError);
 
             var symbol = request.Symbol?.GetSymbol(FormatSymbol);
-            var orders = await Trading.GetOpenOrdersAsync(symbol, ct: ct).ConfigureAwait(false);
+            var orders = await _api.Trading.GetOpenOrdersAsync(symbol, ct: ct).ConfigureAwait(false);
             if (!orders.Success)
                 return HttpResult.Fail<SharedFuturesOrder[]>(orders);
 
             return HttpResult.Ok(orders, orders.Data.Select(x => new SharedFuturesOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol,
+                ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, x.Symbol), x.Symbol,
                 x.OrderId.ToString(),
                 ParseOrderType(x.OrderType, x.PriceType ?? PriceType.Input),
                 (x.OrderSide == FuturesOrderSide.BuyClose || x.OrderSide == FuturesOrderSide.BuyClose) ? SharedOrderSide.Buy : SharedOrderSide.Sell,
@@ -521,10 +566,10 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             }).ToArray());
         }
 
-        GetFuturesClosedOrdersOptions IFuturesOrderRestClient.GetClosedFuturesOrdersOptions { get; } = new GetFuturesClosedOrdersOptions(_exchangeName, false, true, true, 1000);
-        async Task<HttpResult<SharedFuturesOrder[]>> IFuturesOrderRestClient.GetClosedFuturesOrdersAsync(GetClosedOrdersRequest request, PageRequest? pageRequest, CancellationToken ct)
+        public GetFuturesClosedOrdersOptions GetClosedFuturesOrdersOptions { get; } = new GetFuturesClosedOrdersOptions(_exchangeName, false, true, true, 1000);
+        public async Task<HttpResult<SharedFuturesOrder[]>> GetClosedFuturesOrdersAsync(GetClosedOrdersRequest request, PageRequest? pageRequest, CancellationToken ct)
         {
-            var validationError = SharedClient.GetClosedFuturesOrdersOptions.ValidateRequest(request, this);
+            var validationError = GetClosedFuturesOrdersOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedFuturesOrder[]>(Exchange, validationError);
 
@@ -533,7 +578,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             var pageParams = Pagination.GetPaginationParameters(direction, limit, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest, false);
 
             // Get data
-            var result = await Trading.GetOrderHistoryAsync(request.Symbol!.GetSymbol(FormatSymbol),
+            var result = await _api.Trading.GetOrderHistoryAsync(request.Symbol!.GetSymbol(FormatSymbol),
                 startTime: pageParams.StartTime,
                 endTime: pageParams.EndTime,
                 limit: pageParams.Limit,
@@ -552,7 +597,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return HttpResult.Ok(result, ExchangeHelpers.ApplyFilter(result.Data, x => x.CreateTime, request.StartTime, request.EndTime, direction)
                 .Select(x => 
                     new SharedFuturesOrder(
-                        ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol,
+                        ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, x.Symbol), x.Symbol,
                         x.OrderId.ToString(),
                         ParseOrderType(x.OrderType, x.PriceType ?? PriceType.Input),
                         (x.OrderSide == FuturesOrderSide.BuyClose || x.OrderSide == FuturesOrderSide.BuyClose) ? SharedOrderSide.Buy : SharedOrderSide.Sell,
@@ -571,13 +616,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                     }).ToArray(), nextPageRequest);
         }
 
-        GetFuturesOrderTradesOptions IFuturesOrderRestClient.GetFuturesOrderTradesOptions { get; } = new GetFuturesOrderTradesOptions(_exchangeName, true)
+        public GetFuturesOrderTradesOptions GetFuturesOrderTradesOptions { get; } = new GetFuturesOrderTradesOptions(_exchangeName, true)
         {
             RequestNotes = "The API does not support filtering trades based on order id. Because of this filtering is done client side with the most recent trades. This might mean trades are not returned if there are a lot more recent trades."
         };
-        async Task<HttpResult<SharedUserTrade[]>> IFuturesOrderRestClient.GetFuturesOrderTradesAsync(GetOrderTradesRequest request, CancellationToken ct)
+        public async Task<HttpResult<SharedUserTrade[]>> GetFuturesOrderTradesAsync(GetOrderTradesRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.GetFuturesOrderTradesOptions.ValidateRequest(request, this);
+            var validationError = GetFuturesOrderTradesOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedUserTrade[]>(Exchange, validationError);
 
@@ -585,12 +630,12 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 return HttpResult.Fail<SharedUserTrade[]>(Exchange, ArgumentError.Invalid(nameof(GetOrderTradesRequest.OrderId), "Invalid order id"));
 
             var symbol = request.Symbol!.GetSymbol(FormatSymbol);
-            var orders = await Trading.GetUserTradesAsync(symbol, fromId: orderId, ct: ct).ConfigureAwait(false);
+            var orders = await _api.Trading.GetUserTradesAsync(symbol, fromId: orderId, ct: ct).ConfigureAwait(false);
             if (!orders.Success)
                 return HttpResult.Fail<SharedUserTrade[]>(orders);
 
             return HttpResult.Ok(orders, orders.Data.Select(x => new SharedUserTrade(
-                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol,
+                ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, x.Symbol), x.Symbol,
                 x.OrderId.ToString(),
                 x.Id.ToString(),
                 (x.OrderSide == FuturesOrderSide.BuyClose || x.OrderSide == FuturesOrderSide.BuyOpen) ? SharedOrderSide.Buy : SharedOrderSide.Sell,
@@ -604,10 +649,14 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             }).ToArray());
         }
 
-        GetFuturesUserTradesOptions IFuturesOrderRestClient.GetFuturesUserTradesOptions { get; } = new GetFuturesUserTradesOptions(_exchangeName, false, true, true, 1000);
-        async Task<HttpResult<SharedUserTrade[]>> IFuturesOrderRestClient.GetFuturesUserTradesAsync(GetUserTradesRequest request, PageRequest? pageRequest, CancellationToken ct)
+        Task<HttpResult<SharedUserTrade[]>> IFuturesOrderRestClient.GetFuturesUserTradesAsync(GetUserTradesRequest request, PageRequest? pageRequest, CancellationToken ct)
+            => GetFuturesUserTradeHistoryAsync(request, pageRequest, ct);
+        GetFuturesUserTradeHistoryOptions IFuturesOrderRestClient.GetFuturesUserTradesOptions => GetFuturesUserTradeHistoryOptions;
+
+        public GetFuturesUserTradeHistoryOptions GetFuturesUserTradeHistoryOptions { get; } = new GetFuturesUserTradeHistoryOptions(_exchangeName, false, true, true, 1000);
+        public async Task<HttpResult<SharedUserTrade[]>> GetFuturesUserTradeHistoryAsync(GetUserTradesRequest request, PageRequest? pageRequest, CancellationToken ct)
         {
-            var validationError = SharedClient.GetFuturesUserTradesOptions.ValidateRequest(request, this);
+            var validationError = GetFuturesUserTradeHistoryOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedUserTrade[]>(Exchange, validationError);
 
@@ -616,7 +665,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             var pageParams = Pagination.GetPaginationParameters(direction, limit, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest, false);
 
             // Get data
-            var result = await Trading.GetUserTradesAsync(request.Symbol!.GetSymbol(FormatSymbol),
+            var result = await _api.Trading.GetUserTradesAsync(request.Symbol!.GetSymbol(FormatSymbol),
                 startTime: pageParams.StartTime,
                 endTime: pageParams.EndTime,
                 limit: pageParams.Limit,
@@ -637,7 +686,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return HttpResult.Ok(result, ExchangeHelpers.ApplyFilter(result.Data, x => x.Timestamp, request.StartTime, request.EndTime, direction)
                 .Select(x => 
                     new SharedUserTrade(
-                        ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol,
+                        ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, x.Symbol), x.Symbol,
                         x.OrderId.ToString(),
                         x.Id.ToString(),
                         (x.OrderSide == FuturesOrderSide.BuyClose || x.OrderSide == FuturesOrderSide.BuyOpen) ? SharedOrderSide.Buy : SharedOrderSide.Sell,
@@ -651,38 +700,38 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                     }).ToArray(), nextPageRequest);
         }
 
-        CancelFuturesOrderOptions IFuturesOrderRestClient.CancelFuturesOrderOptions { get; } = new CancelFuturesOrderOptions(_exchangeName, true);
-        async Task<HttpResult<SharedId>> IFuturesOrderRestClient.CancelFuturesOrderAsync(CancelOrderRequest request, CancellationToken ct)
+        public CancelFuturesOrderOptions CancelFuturesOrderOptions { get; } = new CancelFuturesOrderOptions(_exchangeName, true);
+        public async Task<HttpResult<SharedId>> CancelFuturesOrderAsync(CancelOrderRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.CancelFuturesOrderOptions.ValidateRequest(request, this);
+            var validationError = CancelFuturesOrderOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedId>(Exchange, validationError);
 
             if (!long.TryParse(request.OrderId, out var orderId))
                 return HttpResult.Fail<SharedId>(Exchange, ArgumentError.Invalid(nameof(CancelOrderRequest.OrderId), "Invalid order id"));
 
-            var order = await Trading.CancelOrderAsync(orderId, ct: ct).ConfigureAwait(false);
+            var order = await _api.Trading.CancelOrderAsync(orderId, ct: ct).ConfigureAwait(false);
             if (!order.Success)
                 return HttpResult.Fail<SharedId>(order);
 
             return HttpResult.Ok(order, new SharedId(order.Data.OrderId.ToString()));
         }
 
-        GetPositionsOptions IFuturesOrderRestClient.GetPositionsOptions { get; } = new GetPositionsOptions(_exchangeName, true);
-        async Task<HttpResult<SharedPosition[]>> IFuturesOrderRestClient.GetPositionsAsync(GetPositionsRequest request, CancellationToken ct)
+        public GetPositionsOptions GetPositionsOptions { get; } = new GetPositionsOptions(_exchangeName, true);
+        public async Task<HttpResult<SharedPosition[]>> GetPositionsAsync(GetPositionsRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.GetPositionsOptions.ValidateRequest(request, this);
+            var validationError = GetPositionsOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedPosition[]>(Exchange, validationError);
 
-            var result = await Trading.GetPositionsAsync(symbol: request.Symbol?.GetSymbol(FormatSymbol), ct: ct).ConfigureAwait(false);
+            var result = await _api.Trading.GetPositionsAsync(symbol: request.Symbol?.GetSymbol(FormatSymbol), ct: ct).ConfigureAwait(false);
             if (!result.Success)
                 return HttpResult.Fail<SharedPosition[]>(result);
 
             var resultTypes = request.Symbol == null && request.TradingMode == null ? SupportedTradingModes : request.Symbol != null ? new[] { request.Symbol.TradingMode } : new[] { request.TradingMode!.Value };
             return HttpResult.Ok(result, result.Data.Select(x => 
                 new SharedPosition(
-                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol),
+                    ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, x.Symbol),
                     x.Symbol,
                     new SharedOrderQuantity(contractQuantity: Math.Abs(x.Position)),
                     DateTime.UtcNow)
@@ -696,22 +745,21 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 }).ToArray());
         }
 
-        ClosePositionOptions IFuturesOrderRestClient.ClosePositionOptions { get; } = new ClosePositionOptions(_exchangeName, true)
+        public ClosePositionOptions ClosePositionOptions { get; } = new ClosePositionOptions(_exchangeName, true)
         {
-            RequiredOptionalParameters = new List<ParameterDescription>
-            {
-                new ParameterDescription(nameof(ClosePositionRequest.PositionSide), typeof(SharedPositionSide), "The position side to close", SharedPositionSide.Long),
-                new ParameterDescription(nameof(ClosePositionRequest.Quantity), typeof(decimal), "Quantity of the position is required", 0.1m)
-            }
+            RequiredRequestParameters = [
+                RequestParameter<ClosePositionRequest>.Required(x => x.PositionSide, "The position side to close", SharedPositionSide.Long),
+                RequestParameter<ClosePositionRequest>.Required(x => x.Quantity, "Quantity of the position is required", 0.1m)
+                ]
         };
-        async Task<HttpResult<SharedId>> IFuturesOrderRestClient.ClosePositionAsync(ClosePositionRequest request, CancellationToken ct)
+        public async Task<HttpResult<SharedId>> ClosePositionAsync(ClosePositionRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.ClosePositionOptions.ValidateRequest(request, this);
+            var validationError = ClosePositionOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedId>(Exchange, validationError);
 
             var symbol = request.Symbol!.GetSymbol(FormatSymbol);
-            var result = await Trading.PlaceOrderAsync(
+            var result = await _api.Trading.PlaceOrderAsync(
                 symbol,
                 request.PositionSide == SharedPositionSide.Long ? FuturesOrderSide.SellClose : FuturesOrderSide.BuyClose,
                 FuturesNewOrderType.Limit,
@@ -770,19 +818,19 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         #region Futures Client Id Order Client
 
-        GetFuturesOrderByClientOrderIdOptions IFuturesOrderClientIdRestClient.GetFuturesOrderByClientOrderIdOptions { get; } = new GetFuturesOrderByClientOrderIdOptions(_exchangeName, true);
-        async Task<HttpResult<SharedFuturesOrder>> IFuturesOrderClientIdRestClient.GetFuturesOrderByClientOrderIdAsync(GetOrderRequest request, CancellationToken ct)
+        public GetFuturesOrderByClientOrderIdOptions GetFuturesOrderByClientOrderIdOptions { get; } = new GetFuturesOrderByClientOrderIdOptions(_exchangeName, true);
+        public async Task<HttpResult<SharedFuturesOrder>> GetFuturesOrderByClientOrderIdAsync(GetOrderRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.GetFuturesOrderOptions.ValidateRequest(request, this);
+            var validationError = GetFuturesOrderOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedFuturesOrder>(Exchange, validationError);
 
-            var order = await Trading.GetOrderAsync(clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
+            var order = await _api.Trading.GetOrderAsync(clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
             if (!order.Success)
                 return HttpResult.Fail<SharedFuturesOrder>(order);
 
             return HttpResult.Ok(order, new SharedFuturesOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, order.Data.Symbol), order.Data.Symbol,
+                ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, order.Data.Symbol), order.Data.Symbol,
                 order.Data.OrderId.ToString(),
                 ParseOrderType(order.Data.OrderType, order.Data.PriceType ?? PriceType.Input),
                 (order.Data.OrderSide == FuturesOrderSide.BuyClose || order.Data.OrderSide == FuturesOrderSide.BuyClose) ? SharedOrderSide.Buy : SharedOrderSide.Sell,
@@ -801,14 +849,14 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             });
         }
 
-        CancelFuturesOrderByClientOrderIdOptions IFuturesOrderClientIdRestClient.CancelFuturesOrderByClientOrderIdOptions { get; } = new CancelFuturesOrderByClientOrderIdOptions(_exchangeName, true);
-        async Task<HttpResult<SharedId>> IFuturesOrderClientIdRestClient.CancelFuturesOrderByClientOrderIdAsync(CancelOrderRequest request, CancellationToken ct)
+        public CancelFuturesOrderByClientOrderIdOptions CancelFuturesOrderByClientOrderIdOptions { get; } = new CancelFuturesOrderByClientOrderIdOptions(_exchangeName, true);
+        public async Task<HttpResult<SharedId>> CancelFuturesOrderByClientOrderIdAsync(CancelOrderRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.CancelFuturesOrderOptions.ValidateRequest(request, this);
+            var validationError = CancelFuturesOrderOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedId>(Exchange, validationError);
 
-            var order = await Trading.CancelOrderAsync(clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
+            var order = await _api.Trading.CancelOrderAsync(clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
             if (!order.Success)
                 return HttpResult.Fail<SharedId>(order);
 
@@ -817,30 +865,30 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #endregion
 
         #region Leverage client
-        SharedLeverageSettingMode ILeverageRestClient.LeverageSettingType => SharedLeverageSettingMode.PerSymbol;
+        public SharedLeverageSettingMode LeverageSettingType => SharedLeverageSettingMode.PerSymbol;
 
-        GetLeverageOptions ILeverageRestClient.GetLeverageOptions { get; } = new GetLeverageOptions(_exchangeName, true);
-        async Task<HttpResult<SharedLeverage>> ILeverageRestClient.GetLeverageAsync(GetLeverageRequest request, CancellationToken ct)
+        public GetLeverageOptions GetLeverageOptions { get; } = new GetLeverageOptions(_exchangeName, true);
+        public async Task<HttpResult<SharedLeverage>> GetLeverageAsync(GetLeverageRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.GetLeverageOptions.ValidateRequest(request, this);
+            var validationError = GetLeverageOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedLeverage>(Exchange, validationError);
 
-            var result = await Account.GetLeverageInfoAsync(symbol: request.Symbol!.GetSymbol(FormatSymbol), ct: ct).ConfigureAwait(false);
+            var result = await _api.Account.GetLeverageInfoAsync(symbol: request.Symbol!.GetSymbol(FormatSymbol), ct: ct).ConfigureAwait(false);
             if (!result.Success)
                 return HttpResult.Fail<SharedLeverage>(result);
 
             return HttpResult.Ok(result, new SharedLeverage(result.Data.Leverage));
         }
 
-        SetLeverageOptions ILeverageRestClient.SetLeverageOptions { get; } = new SetLeverageOptions(_exchangeName);
-        async Task<HttpResult<SharedLeverage>> ILeverageRestClient.SetLeverageAsync(SetLeverageRequest request, CancellationToken ct)
+        public SetLeverageOptions SetLeverageOptions { get; } = new SetLeverageOptions(_exchangeName);
+        public async Task<HttpResult<SharedLeverage>> SetLeverageAsync(SetLeverageRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.SetLeverageOptions.ValidateRequest(request, this);
+            var validationError = SetLeverageOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedLeverage>(Exchange, validationError);
 
-            var result = await Account.SetLeverageAsync(symbol: request.Symbol!.GetSymbol(FormatSymbol), (int)request.Leverage, ct: ct).ConfigureAwait(false);
+            var result = await _api.Account.SetLeverageAsync(symbol: request.Symbol!.GetSymbol(FormatSymbol), (int)request.Leverage, ct: ct).ConfigureAwait(false);
             if (!result.Success)
                 return HttpResult.Fail<SharedLeverage>(result);
 
@@ -849,31 +897,31 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #endregion
 
         #region Order Book client
-        GetOrderBookOptions IOrderBookRestClient.GetOrderBookOptions { get; } = new GetOrderBookOptions(_exchangeName, new[] { 5, 10, 20, 50, 100, 500, 1000 }, false);
-        async Task<HttpResult<SharedOrderBook>> IOrderBookRestClient.GetOrderBookAsync(GetOrderBookRequest request, CancellationToken ct)
+        public GetOrderBookOptions GetOrderBookOptions { get; } = new GetOrderBookOptions(_exchangeName, new[] { 5, 10, 20, 50, 100, 500, 1000 }, false);
+        public async Task<HttpResult<SharedOrderBook>> GetOrderBookAsync(GetOrderBookRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.GetOrderBookOptions.ValidateRequest(request, this);
+            var validationError = GetOrderBookOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedOrderBook>(Exchange, validationError);
 
-            var result = await ExchangeData.GetOrderBookAsync(
+            var result = await _api.ExchangeData.GetOrderBookAsync(
                 request.Symbol!.GetSymbol(FormatSymbol),
                 limit: request.Limit,
                 ct: ct).ConfigureAwait(false);
             if (!result.Success)
                 return HttpResult.Fail<SharedOrderBook>(result);
 
-            return HttpResult.Ok(result, new SharedOrderBook(SharedQuantityType.Contracts, result.Data.Asks, result.Data.Bids));
+            return HttpResult.Ok(result, new SharedOrderBook(SharedQuantityType.Contracts, null, result.Data.Asks, result.Data.Bids));
         }
 
         #endregion
 
         #region Funding Rate client
-        GetFundingRateHistoryOptions IFundingRateRestClient.GetFundingRateHistoryOptions { get; } = new GetFundingRateHistoryOptions(_exchangeName, false, true, false, 1000, false);
+        public GetFundingRateHistoryOptions GetFundingRateHistoryOptions { get; } = new GetFundingRateHistoryOptions(_exchangeName, false, true, false, 1000, false);
 
-        async Task<HttpResult<SharedFundingRate[]>> IFundingRateRestClient.GetFundingRateHistoryAsync(GetFundingRateHistoryRequest request, PageRequest? pageRequest, CancellationToken ct)
+        public async Task<HttpResult<SharedFundingRate[]>> GetFundingRateHistoryAsync(GetFundingRateHistoryRequest request, PageRequest? pageRequest, CancellationToken ct)
         {
-            var validationError = SharedClient.GetFundingRateHistoryOptions.ValidateRequest(request, this);
+            var validationError = GetFundingRateHistoryOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedFundingRate[]>(Exchange, validationError);
 
@@ -882,7 +930,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             var pageParams = Pagination.GetPaginationParameters(direction, limit, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest, false);
 
             // Get data
-            var result = await ExchangeData.GetFundingRateHistoryAsync(
+            var result = await _api.ExchangeData.GetFundingRateHistoryAsync(
                 request.Symbol!.GetSymbol(FormatSymbol),
                 fromId: pageParams.FromId == null ? null : long.Parse(pageParams.FromId),
                 limit: pageParams.Limit,
@@ -906,15 +954,15 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #endregion
 
         #region Balance Client
-        GetBalancesOptions IBalanceRestClient.GetBalancesOptions { get; } = new GetBalancesOptions(_exchangeName, AccountTypeFilter.Futures);
+        public GetBalancesOptions GetBalancesOptions { get; } = new GetBalancesOptions(_exchangeName, AccountTypeFilter.Futures);
 
-        async Task<HttpResult<SharedBalance[]>> IBalanceRestClient.GetBalancesAsync(GetBalancesRequest request, CancellationToken ct)
+        public async Task<HttpResult<SharedBalance[]>> GetBalancesAsync(GetBalancesRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.GetBalancesOptions.ValidateRequest(request, this);
+            var validationError = GetBalancesOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedBalance[]>(Exchange, validationError);
 
-            var result = await Account.GetBalancesAsync(ct: ct).ConfigureAwait(false);
+            var result = await _api.Account.GetBalancesAsync(ct: ct).ConfigureAwait(false);
             if (!result.Success)
                 return HttpResult.Fail<SharedBalance[]>(result);
 
@@ -925,16 +973,16 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #endregion
 
         #region Fee Client
-        GetFeeOptions IFeeRestClient.GetFeeOptions { get; } = new GetFeeOptions(_exchangeName, true);
+        public GetFeeOptions GetFeeOptions { get; } = new GetFeeOptions(_exchangeName, true);
 
-        async Task<HttpResult<SharedFee>> IFeeRestClient.GetFeesAsync(GetFeeRequest request, CancellationToken ct)
+        public async Task<HttpResult<SharedFee>> GetFeesAsync(GetFeeRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.GetFeeOptions.ValidateRequest(request, this);
+            var validationError = GetFeeOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedFee>(Exchange, validationError);
 
             // Get data
-            var result = await Account.GetFeesAsync(
+            var result = await _api.Account.GetFeesAsync(
                 request.Symbol!.GetSymbol(FormatSymbol),
                 ct: ct).ConfigureAwait(false);
             if (!result.Success)
@@ -946,15 +994,15 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #endregion
 
         #region Trigger Order Client
-        PlaceFuturesTriggerOrderOptions IFuturesTriggerOrderRestClient.PlaceFuturesTriggerOrderOptions { get; } = new PlaceFuturesTriggerOrderOptions(_exchangeName, false);
-        async Task<HttpResult<SharedId>> IFuturesTriggerOrderRestClient.PlaceFuturesTriggerOrderAsync(PlaceFuturesTriggerOrderRequest request, CancellationToken ct)
+        public PlaceFuturesTriggerOrderOptions PlaceFuturesTriggerOrderOptions { get; } = new PlaceFuturesTriggerOrderOptions(_exchangeName, false);
+        public async Task<HttpResult<SharedId>> PlaceFuturesTriggerOrderAsync(PlaceFuturesTriggerOrderRequest request, CancellationToken ct)
         {
             var side = GetTriggerOrderSide(request);
-            var validationError = SharedClient.PlaceFuturesTriggerOrderOptions.ValidateRequest(request, this);
+            var validationError = PlaceFuturesTriggerOrderOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedId>(Exchange, validationError);
 
-            var result = await Trading.PlaceOrderAsync(
+            var result = await _api.Trading.PlaceOrderAsync(
                 request.Symbol!.GetSymbol(FormatSymbol),
                 side,
                 FuturesNewOrderType.Stop,
@@ -971,17 +1019,17 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return HttpResult.Ok(result, new SharedId(result.Data.OrderId.ToString()));
         }
 
-        GetFuturesTriggerOrderOptions IFuturesTriggerOrderRestClient.GetFuturesTriggerOrderOptions { get; } = new GetFuturesTriggerOrderOptions(_exchangeName, true);
-        async Task<HttpResult<SharedFuturesTriggerOrder>> IFuturesTriggerOrderRestClient.GetFuturesTriggerOrderAsync(GetOrderRequest request, CancellationToken ct)
+        public GetFuturesTriggerOrderOptions GetFuturesTriggerOrderOptions { get; } = new GetFuturesTriggerOrderOptions(_exchangeName, true);
+        public async Task<HttpResult<SharedFuturesTriggerOrder>> GetFuturesTriggerOrderAsync(GetOrderRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.GetFuturesTriggerOrderOptions.ValidateRequest(request, this);
+            var validationError = GetFuturesTriggerOrderOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedFuturesTriggerOrder>(Exchange, validationError);
 
             if (!long.TryParse(request.OrderId, out var id))
                 throw new ArgumentException($"Invalid order id");
 
-            var order = await Trading.GetOrderAsync(
+            var order = await _api.Trading.GetOrderAsync(
                 id,
                 orderType: FuturesOrderType.Stop,
                 ct: ct).ConfigureAwait(false);
@@ -990,7 +1038,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
             // Return
             return HttpResult.Ok(order, new SharedFuturesTriggerOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, order.Data.Symbol),
+                ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, order.Data.Symbol),
                 order.Data.Symbol,
                 order.Data.OrderId.ToString(),
                 order.Data.PriceType == PriceType.Market ? SharedOrderType.Market : SharedOrderType.Limit,
@@ -1031,17 +1079,17 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return SharedTriggerOrderStatus.Unknown;
         }
 
-        CancelFuturesTriggerOrderOptions IFuturesTriggerOrderRestClient.CancelFuturesTriggerOrderOptions { get; } = new CancelFuturesTriggerOrderOptions(_exchangeName, true);
-        async Task<HttpResult<SharedId>> IFuturesTriggerOrderRestClient.CancelFuturesTriggerOrderAsync(CancelOrderRequest request, CancellationToken ct)
+        public CancelFuturesTriggerOrderOptions CancelFuturesTriggerOrderOptions { get; } = new CancelFuturesTriggerOrderOptions(_exchangeName, true);
+        public async Task<HttpResult<SharedId>> CancelFuturesTriggerOrderAsync(CancelOrderRequest request, CancellationToken ct)
         {
-            var validationError = SharedClient.CancelFuturesTriggerOrderOptions.ValidateRequest(request, this);
+            var validationError = CancelFuturesTriggerOrderOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedId>(Exchange, validationError);
 
             if (!long.TryParse(request.OrderId, out var orderId))
                 return HttpResult.Fail<SharedId>(Exchange, ArgumentError.Invalid(nameof(CancelOrderRequest.OrderId), "Invalid order id"));
 
-            var order = await Trading.CancelOrderAsync(orderId, orderType: FuturesOrderType.Stop, ct: ct).ConfigureAwait(false);
+            var order = await _api.Trading.CancelOrderAsync(orderId, orderType: FuturesOrderType.Stop, ct: ct).ConfigureAwait(false);
             if (!order.Success)
                 return HttpResult.Fail<SharedId>(order);
 

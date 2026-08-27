@@ -19,12 +19,17 @@ namespace Toobit.Net
             string? userIdentifier,
             SpotUserDataTrackerConfig? config) : base(
                 logger,
-                restClient.SpotApi.SharedClient,
-                restClient.SpotApi.SharedClient,
-                socketClient.SpotApi.SharedClient,
-                restClient.SpotApi.SharedClient,
-                socketClient.SpotApi.SharedClient,
-                socketClient.SpotApi.SharedClient,
+                restClient.SpotApi.SharedApi,
+
+                restClient.SpotApi.SharedApi,
+                socketClient.SpotApi.SharedApi,
+
+                restClient.SpotApi.SharedApi,
+                restClient.SpotApi.SharedApi,
+                socketClient.SpotApi.SharedApi,
+
+                restClient.SpotApi.SharedApi,
+                socketClient.SpotApi.SharedApi,
                 userIdentifier,
                 config ?? new SpotUserDataTrackerConfig())
         {
@@ -46,13 +51,20 @@ namespace Toobit.Net
             IToobitSocketClient socketClient,
             string? userIdentifier,
             FuturesUserDataTrackerConfig? config) : base(logger,
-                restClient.UsdtFuturesApi.SharedClient,
-                restClient.UsdtFuturesApi.SharedClient,
-                socketClient.UsdtFuturesApi.SharedClient,
-                restClient.UsdtFuturesApi.SharedClient,
-                socketClient.UsdtFuturesApi.SharedClient,
-                socketClient.UsdtFuturesApi.SharedClient,
-                socketClient.UsdtFuturesApi.SharedClient,
+                restClient.UsdtFuturesApi.SharedApi,
+
+                restClient.UsdtFuturesApi.SharedApi,
+                socketClient.UsdtFuturesApi.SharedApi,
+
+                restClient.UsdtFuturesApi.SharedApi,
+                restClient.UsdtFuturesApi.SharedApi,
+                socketClient.UsdtFuturesApi.SharedApi,
+
+                restClient.UsdtFuturesApi.SharedApi,
+                socketClient.UsdtFuturesApi.SharedApi,
+
+                restClient.UsdtFuturesApi.SharedApi,
+                socketClient.UsdtFuturesApi.SharedApi,
                 userIdentifier,
                 config ?? new FuturesUserDataTrackerConfig())
         {

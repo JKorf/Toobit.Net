@@ -1,44 +1,69 @@
+using CryptoExchange.Net;
+using CryptoExchange.Net.Objects;
+using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.SharedApis;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Threading;
-using Toobit.Net.Interfaces.Clients.UsdtFuturesApi;
-using CryptoExchange.Net.Objects.Sockets;
-using CryptoExchange.Net;
 using System.Linq;
-using CryptoExchange.Net.Objects;
+using System.Threading;
+using System.Threading.Tasks;
+using Toobit.Net.Clients.SpotApi;
 using Toobit.Net.Enums;
+using Toobit.Net.Interfaces.Clients.UsdtFuturesApi;
 
 namespace Toobit.Net.Clients.UsdtFuturesApi
 {
-    internal partial class ToobitSocketClientUsdtFuturesApi : IToobitSocketClientUsdtFuturesApiShared
+    internal class ToobitSocketClientUsdtFuturesSharedApi :
+        SharedApiBase,
+        IToobitSocketClientUsdtFuturesSharedApi,
+        IToobitSocketClientUsdtFuturesApiShared
     {
+        private readonly ToobitSocketClientUsdtFuturesApi _api;
+
         private const string _topicId = "ToobitUsdtFutures";
         private const string _exchangeName = "Toobit";
 
-        public TradingMode[] SupportedTradingModes => new[] { TradingMode.PerpetualLinear };
+        public override SharedClientInfo Discover() => SharedUtils.GetClientInfo(ToobitExchange.Metadata, this);
 
-        public void SetDefaultExchangeParameter(string key, object value) => ExchangeParameters.SetStaticParameter(Exchange, key, value);
-        public void ResetDefaultExchangeParameters() => ExchangeParameters.ResetStaticParameters();
-        public SharedClientInfo Discover() => SharedUtils.GetClientInfo(ToobitExchange.Metadata, this);
+        public ToobitSocketClientUsdtFuturesSharedApi(ToobitSocketClientUsdtFuturesApi api)
+            : base(
+                  api.Exchange,
+                  [TradingMode.PerpetualLinear],
+                  () => api.Authenticated,
+                  api.FormatSymbol)
+        {
+            _api = api;
+
+            SetCapabilities(
+                SubscribeTickerOptions,
+                SubscribeTradeOptions,
+                SubscribeBalanceOptions,
+                SubscribeKlineOptions,
+                SubscribeOrderBookOptions,
+                SubscribeFuturesOrderOptions,
+                SubscribePositionOptions,
+                SubscribeUserTradeOptions
+                );
+        }
 
         #region Ticker client
+        async Task<WebSocketResult<UpdateSubscription>> ISubscribeTickerOperation.SubscribeToTickerUpdatesAsync(SubscribeTickerRequest request, Action<DataEvent<SharedTicker>> handler, CancellationToken ct)
+            => await SubscribeToTickerUpdatesAsync(request, x => handler(x.ToType<SharedTicker>(x.Data)), ct).ConfigureAwait(false);
 
-        SubscribeTickerOptions ITickerSocketClient.SubscribeTickerOptions { get; } = new SubscribeTickerOptions(_exchangeName)
+        public SubscribeTickerOptions SubscribeTickerOptions { get; } = new SubscribeTickerOptions(_exchangeName)
         {
             SupportsMultipleSymbols = true
         };
-        async Task<WebSocketResult<UpdateSubscription>> ITickerSocketClient.SubscribeToTickerUpdatesAsync(SubscribeTickerRequest request, Action<DataEvent<SharedSpotTicker>> handler, CancellationToken ct)
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(SubscribeTickerRequest request, Action<DataEvent<SharedSpotTicker>> handler, CancellationToken ct)
         {
-            var validationError = SharedClient.SubscribeTickerOptions.ValidateRequest(request, this);
+            var validationError = SubscribeTickerOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)).ToArray() : [request.Symbol!.GetSymbol(FormatSymbol)];
-            var result = await SubscribeToTickerUpdatesAsync(symbols, update => handler(update.ToType(
+            var result = await _api.SubscribeToTickerUpdatesAsync(symbols, update => handler(update.ToType(
                 new SharedSpotTicker(
-                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Data.Symbol),
+                    ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, update.Data.Symbol),
                     update.Data.Symbol, 
                     update.Data.LastPrice,
                     update.Data.HighPrice, 
@@ -55,19 +80,19 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         #region Trade client
 
-        SubscribeTradeOptions ITradeSocketClient.SubscribeTradeOptions { get; } = new SubscribeTradeOptions(_exchangeName, false)
+        public SubscribeTradeOptions SubscribeTradeOptions { get; } = new SubscribeTradeOptions(_exchangeName, false)
         {
             SupportsMultipleSymbols = true
         };
-        async Task<WebSocketResult<UpdateSubscription>> ITradeSocketClient.SubscribeToTradeUpdatesAsync(SubscribeTradeRequest request, Action<DataEvent<SharedTrade[]>> handler, CancellationToken ct)
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(SubscribeTradeRequest request, Action<DataEvent<SharedTrade[]>> handler, CancellationToken ct)
         {
-            var validationError = SharedClient.SubscribeTradeOptions.ValidateRequest(request, this);
+            var validationError = SubscribeTradeOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)).ToArray() : [request.Symbol!.GetSymbol(FormatSymbol)];
-            var result = await SubscribeToTradeUpdatesAsync(symbols, update => handler(update.ToType(update.Data.Select(x => 
-            new SharedTrade(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Symbol), update.Symbol!, new SharedOrderQuantity(contractQuantity: x.Quantity), x.Price, x.Timestamp)
+            var result = await _api.SubscribeToTradeUpdatesAsync(symbols, update => handler(update.ToType(update.Data.Select(x => 
+            new SharedTrade(ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, update.Symbol), update.Symbol!, new SharedOrderQuantity(contractQuantity: x.Quantity), x.Price, x.Timestamp)
             {
                 Side = x.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
             }).ToArray())), ct: ct).ConfigureAwait(false);
@@ -78,14 +103,14 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #endregion
 
         #region Balance client
-        SubscribeBalanceOptions IBalanceSocketClient.SubscribeBalanceOptions { get; } = new SubscribeBalanceOptions(_exchangeName, false);
-        async Task<WebSocketResult<UpdateSubscription>> IBalanceSocketClient.SubscribeToBalanceUpdatesAsync(SubscribeBalancesRequest request, Action<DataEvent<SharedBalance[]>> handler, CancellationToken ct)
+        public SubscribeBalanceOptions SubscribeBalanceOptions { get; } = new SubscribeBalanceOptions(_exchangeName, false);
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(SubscribeBalancesRequest request, Action<DataEvent<SharedBalance[]>> handler, CancellationToken ct)
         {
-            var validationError = SharedClient.SubscribeBalanceOptions.ValidateRequest(request, this);
+            var validationError = SubscribeBalanceOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
-            var result = await SubscribeToUserDataUpdatesAsync(
+            var result = await _api.SubscribeToUserDataUpdatesAsync(
                 onAccountMessage: update => handler(update.ToType(update.Data.Balances.Select(x => 
                     new SharedBalance(SupportedTradingModes, x.Asset, x.Free, x.Free + x.Locked)).ToArray())),
                 ct: ct).ConfigureAwait(false);
@@ -96,21 +121,21 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #endregion
 
         #region Kline client
-        SubscribeKlineOptions IKlineSocketClient.SubscribeKlineOptions { get; } = new SubscribeKlineOptions(_exchangeName, false)
+        public SubscribeKlineOptions SubscribeKlineOptions { get; } = new SubscribeKlineOptions(_exchangeName, false)
         {
             SupportsMultipleSymbols = true
         };
-        async Task<WebSocketResult<UpdateSubscription>> IKlineSocketClient.SubscribeToKlineUpdatesAsync(SubscribeKlineRequest request, Action<DataEvent<SharedKline>> handler, CancellationToken ct)
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(SubscribeKlineRequest request, Action<DataEvent<SharedKline>> handler, CancellationToken ct)
         {
             var interval = (Enums.KlineInterval)request.Interval;
-            var validationError = SharedClient.SubscribeKlineOptions.ValidateRequest(request, this);
+            var validationError = SubscribeKlineOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)).ToArray() : [request.Symbol!.GetSymbol(FormatSymbol)];
-            var result = await SubscribeToKlineUpdatesAsync(symbols, interval, update => handler(update.ToType(
+            var result = await _api.SubscribeToKlineUpdatesAsync(symbols, interval, update => handler(update.ToType(
                 new SharedKline(
-                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Data.Symbol),
+                    ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, update.Data.Symbol),
                     update.Data.Symbol, 
                     update.Data.OpenTime, 
                     update.Data.ClosePrice, 
@@ -124,20 +149,20 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #endregion
 
         #region Order Book client
-        SubscribeOrderBookOptions IOrderBookSocketClient.SubscribeOrderBookOptions { get; } = new SubscribeOrderBookOptions(_exchangeName, false, new[] { 5, 10, 20 })
+        public SubscribeOrderBookOptions SubscribeOrderBookOptions { get; } = new SubscribeOrderBookOptions(_exchangeName, false, new[] { 5, 10, 20 })
         {
             SupportsMultipleSymbols = true
         };
-        async Task<WebSocketResult<UpdateSubscription>> IOrderBookSocketClient.SubscribeToOrderBookUpdatesAsync(SubscribeOrderBookRequest request, Action<DataEvent<SharedOrderBook>> handler, CancellationToken ct)
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(SubscribeOrderBookRequest request, Action<DataEvent<SharedOrderBook>> handler, CancellationToken ct)
         {
-            var validationError = SharedClient.SubscribeOrderBookOptions.ValidateRequest(request, this);
+            var validationError = SubscribeOrderBookOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)).ToArray() : [request.Symbol!.GetSymbol(FormatSymbol)];
-            var result = await SubscribeToPartialOrderBookUpdatesAsync(symbols, update => handler(
+            var result = await _api.SubscribeToPartialOrderBookUpdatesAsync(symbols, update => handler(
                 update.ToType(
-                    new SharedOrderBook(SharedQuantityType.Contracts, update.Data.Asks, update.Data.Bids))), ct).ConfigureAwait(false);
+                    new SharedOrderBook(SharedQuantityType.Contracts, null, update.Data.Asks, update.Data.Bids))), ct).ConfigureAwait(false);
 
             return result;
         }
@@ -145,17 +170,20 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         #region Futures Order client
 
-        SubscribeFuturesOrderOptions IFuturesOrderSocketClient.SubscribeFuturesOrderOptions { get; } = new SubscribeFuturesOrderOptions(_exchangeName, false);
         async Task<WebSocketResult<UpdateSubscription>> IFuturesOrderSocketClient.SubscribeToFuturesOrderUpdatesAsync(SubscribeFuturesOrderRequest request, Action<DataEvent<SharedFuturesOrder[]>> handler, CancellationToken ct)
+            => await SubscribeToFuturesOrderUpdatesAsync(request, x => handler(x.ToType<SharedFuturesOrder[]>(x.Data)), ct).ConfigureAwait(false);
+
+        public SubscribeFuturesOrderOptions SubscribeFuturesOrderOptions { get; } = new SubscribeFuturesOrderOptions(_exchangeName, false);
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToFuturesOrderUpdatesAsync(SubscribeFuturesOrderRequest request, Action<DataEvent<SharedFuturesOrderUpdate[]>> handler, CancellationToken ct)
         {
-            var validationError = SharedClient.SubscribeFuturesOrderOptions.ValidateRequest(request, this);
+            var validationError = SubscribeFuturesOrderOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
-            var result = await SubscribeToUserDataUpdatesAsync(
+            var result = await _api.SubscribeToUserDataUpdatesAsync(
                 onOrderMessage: update => handler(update.ToType(update.Data.Select(x =>
-                    new SharedFuturesOrder(
-                        ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol,
+                    new SharedFuturesOrderUpdate(
+                        ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, x.Symbol), x.Symbol,
                         x.OrderId.ToString(),
                         (x.PriceType == Enums.PriceType.Market || x.OrderType == Enums.FuturesUpdateOrderType.Market) ? SharedOrderType.Market : x.OrderType != Enums.FuturesUpdateOrderType.Limit ? SharedOrderType.Other : SharedOrderType.Limit,
                         x.OrderSide == Enums.OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
@@ -167,13 +195,15 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                         OrderQuantity = new SharedOrderQuantity(contractQuantity: x.Quantity),
                         QuantityFilled = new SharedOrderQuantity(contractQuantity : x.QuantityFilled),
                         UpdateTime = x.UpdateTime,
+#pragma warning disable CS0618 // Type or member is obsolete
                         Fee = x.Fee,
                         FeeAsset = x.FeeAsset,
+#pragma warning restore CS0618 // Type or member is obsolete
                         TimeInForce = x.TimeInForce == Enums.TimeInForce.ImmediateOrCancel ? SharedTimeInForce.ImmediateOrCancel : x.TimeInForce == Enums.TimeInForce.FillOrKill ? SharedTimeInForce.FillOrKill : SharedTimeInForce.GoodTillCanceled,
                         IsCloseOrder = x.IsCloseOrder,
                         LastTrade = x.LastFillQuantity > 0 ? 
                             new SharedUserTrade(
-                                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), 
+                                ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, x.Symbol), 
                                 x.Symbol,
                                 x.OrderId.ToString(),
                                 x.LastTradeId?.ToString()!,
@@ -207,17 +237,17 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #endregion
 
         #region Position client
-        SubscribePositionOptions IPositionSocketClient.SubscribePositionOptions { get; } = new SubscribePositionOptions(_exchangeName, true);
-        async Task<WebSocketResult<UpdateSubscription>> IPositionSocketClient.SubscribeToPositionUpdatesAsync(SubscribePositionRequest request, Action<DataEvent<SharedPosition[]>> handler, CancellationToken ct)
+        public SubscribePositionOptions SubscribePositionOptions { get; } = new SubscribePositionOptions(_exchangeName, true);
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToPositionUpdatesAsync(SubscribePositionRequest request, Action<DataEvent<SharedPosition[]>> handler, CancellationToken ct)
         {
-            var validationError = SharedClient.SubscribePositionOptions.ValidateRequest(request, this);
+            var validationError = SubscribePositionOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
-            var result = await SubscribeToUserDataUpdatesAsync(
+            var result = await _api.SubscribeToUserDataUpdatesAsync(
                 onPositionMessage: update => handler(update.ToType(update.Data.Select(x =>
                 new SharedPosition(
-                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol),
+                    ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, x.Symbol),
                     x.Symbol,
                     new SharedOrderQuantity(contractQuantity: x.PositionQuantity),
                     x.EventTime)
@@ -238,14 +268,14 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         #region User Trade client
 
-        SubscribeUserTradeOptions IUserTradeSocketClient.SubscribeUserTradeOptions { get; } = new SubscribeUserTradeOptions(_exchangeName, true);
-        async Task<WebSocketResult<UpdateSubscription>> IUserTradeSocketClient.SubscribeToUserTradeUpdatesAsync(SubscribeUserTradeRequest request, Action<DataEvent<SharedUserTrade[]>> handler, CancellationToken ct)
+        public SubscribeUserTradeOptions SubscribeUserTradeOptions { get; } = new SubscribeUserTradeOptions(_exchangeName, true);
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToUserTradeUpdatesAsync(SubscribeUserTradeRequest request, Action<DataEvent<SharedUserTrade[]>> handler, CancellationToken ct)
         {
-            var validationError = SharedClient.SubscribeUserTradeOptions.ValidateRequest(request, this);
+            var validationError = SubscribeUserTradeOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
-            var result = await SubscribeToUserDataUpdatesAsync(
+            var result = await _api.SubscribeToUserDataUpdatesAsync(
                 onUserTradeMessage: update =>
                 {
                     // Filter for spot updates
@@ -255,7 +285,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
                     handler(update.ToType(data.Select(x =>
                         new SharedUserTrade(
-                            ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol),
+                            ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, x.Symbol),
                             x.Symbol,
                             x.OrderId.ToString(),
                             x.TradeId,

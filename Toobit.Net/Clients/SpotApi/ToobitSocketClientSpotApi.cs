@@ -37,6 +37,8 @@ namespace Toobit.Net.Clients.SpotApi
     internal partial class ToobitSocketClientSpotApi : SocketApiClient<ToobitEnvironment, ToobitAuthenticationProvider, ToobitCredentials>, IToobitSocketClientSpotApi
     {
         #region fields
+        private readonly ToobitSocketClientSpotSharedApi _sharedApi;
+
         private readonly TimeSpan _waitForErrorTimeout;
 
         protected override ErrorMapping ErrorMapping => ToobitErrors.Errors;
@@ -73,6 +75,8 @@ namespace Toobit.Net.Clients.SpotApi
         {
             _loggerFactory = loggerFactory;
             _waitForErrorTimeout = options.SubscribeMaxWaitForError;
+
+            _sharedApi = new ToobitSocketClientSpotSharedApi(this);
 
             RegisterPeriodicQuery("Ping",
                 TimeSpan.FromSeconds(30),
@@ -287,7 +291,9 @@ namespace Toobit.Net.Clients.SpotApi
         }
 
         /// <inheritdoc />
-        public IToobitSocketClientSpotApiShared SharedClient => this;
+        public IToobitSocketClientSpotApiShared SharedClient => _sharedApi;
+        /// <inheritdoc />
+        public IToobitSocketClientSpotSharedApi SharedApi => _sharedApi;
 
         /// <inheritdoc />
         public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverDate = null)

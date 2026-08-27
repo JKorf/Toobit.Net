@@ -22,6 +22,7 @@ using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Toobit.Net.Clients.MessageHandlers;
+using Toobit.Net.Clients.SpotApi;
 using Toobit.Net.Enums;
 using Toobit.Net.Interfaces.Clients.UsdtFuturesApi;
 using Toobit.Net.Objects.Models;
@@ -37,6 +38,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
     internal partial class ToobitSocketClientUsdtFuturesApi : SocketApiClient<ToobitEnvironment, ToobitAuthenticationProvider, ToobitCredentials>, IToobitSocketClientUsdtFuturesApi
     {
         #region fields
+        private readonly ToobitSocketClientUsdtFuturesSharedApi _sharedApi;
+
         private readonly TimeSpan _waitForErrorTimeout;
         private readonly ILoggerFactory? _loggerFactory;
         private ToobitRestClient? _tokenClient;
@@ -71,6 +74,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         {
             _loggerFactory = loggerFactory;
             _waitForErrorTimeout = options.SubscribeMaxWaitForError;
+
+            _sharedApi = new ToobitSocketClientUsdtFuturesSharedApi(this);
 
             RegisterPeriodicQuery("Ping",
                 TimeSpan.FromSeconds(30),
@@ -108,7 +113,9 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             => new ToobitAuthenticationProvider(credentials);
 
         /// <inheritdoc />
-        public IToobitSocketClientUsdtFuturesApiShared SharedClient => this;
+        public IToobitSocketClientUsdtFuturesApiShared SharedClient => _sharedApi;
+        /// <inheritdoc />
+        public IToobitSocketClientUsdtFuturesSharedApi SharedApi => _sharedApi;
 
         /// <inheritdoc />
         public Task<WebSocketResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<ToobitTradeUpdate[]>> onMessage, CancellationToken ct = default)

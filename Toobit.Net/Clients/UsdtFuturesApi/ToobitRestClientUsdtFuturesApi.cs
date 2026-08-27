@@ -14,6 +14,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Toobit.Net.Clients.MessageHandlers;
+using Toobit.Net.Clients.SpotApi;
 using Toobit.Net.Interfaces.Clients.UsdtFuturesApi;
 using Toobit.Net.Objects.Options;
 
@@ -23,6 +24,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
     internal partial class ToobitRestClientUsdtFuturesApi : RestApiClient<ToobitEnvironment, ToobitAuthenticationProvider, ToobitCredentials>, IToobitRestClientUsdtFuturesApi
     {
         #region fields 
+        private readonly ToobitRestClientUsdtFuturesSharedApi _sharedApi;
+
         protected override ErrorMapping ErrorMapping => ToobitErrors.Errors;
         protected override IRestMessageHandler MessageHandler { get; } = new ToobitRestMessageHandler(ToobitErrors.Errors);
 
@@ -49,6 +52,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             Account = new ToobitRestClientUsdtFuturesApiAccount(this);
             ExchangeData = new ToobitRestClientUsdtFuturesApiExchangeData(_logger, this);
             Trading = new ToobitRestClientUsdtFuturesApiTrading(_logger, this);
+
+            _sharedApi = new ToobitRestClientUsdtFuturesSharedApi(this);
         }
         #endregion
 
@@ -84,7 +89,9 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             => ToobitExchange.FormatSymbol(baseAsset, quoteAsset, tradingMode, deliverDate);
 
         /// <inheritdoc />
-        public IToobitRestClientUsdtFuturesApiShared SharedClient => this;
+        public IToobitRestClientUsdtFuturesApiShared SharedClient => _sharedApi;
+        /// <inheritdoc />
+        public IToobitRestClientUsdtFuturesSharedApi SharedApi => _sharedApi;
 
     }
 }
