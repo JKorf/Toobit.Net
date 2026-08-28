@@ -53,7 +53,7 @@ namespace Toobit.Net.Clients.SpotApi
                 GetSpotOrderByClientOrderIdOptions,
                 CancelSpotOrderByClientOrderIdOptions,
                 GetAssetOptions,
-                GetAssetsOptions,
+                GetAllAssetsOptions,
                 GetDepositAddressesOptions,
                 GetDepositHistoryOptions,
                 GetWithdrawalHistoryOptions,
@@ -707,11 +707,11 @@ namespace Toobit.Net.Clients.SpotApi
         #endregion
 
         #region Asset client
-        public GetAssetsOptions GetAssetsOptions { get; } = new GetAssetsOptions(_exchangeName, false);
+        public GetAllAssetsOptions GetAllAssetsOptions { get; } = new GetAllAssetsOptions(_exchangeName, false);
 
-        public async Task<HttpResult<SharedAsset[]>> GetAssetsAsync(GetAssetsRequest request, CancellationToken ct)
+        public async Task<HttpResult<SharedAsset[]>> GetAllAssetsAsync(GetAssetsRequest request, CancellationToken ct)
         {
-            var validationError = GetAssetsOptions.ValidateRequest(request, this);
+            var validationError = GetAllAssetsOptions.ValidateRequest(request, this);
             if (validationError != null)
                 return HttpResult.Fail<SharedAsset[]>(Exchange, validationError);
 
