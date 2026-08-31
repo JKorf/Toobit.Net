@@ -235,7 +235,7 @@ namespace Toobit.Net.UnitTests
 
             var client = GetSpotRestClient();
             var result1 = await client.GetAssetAsync(new GetAssetRequest("ETH"));
-            var result2 = await client.GetAllAssetsAsync(new GetAssetsRequest());
+            var result2 = await client.GetAssetsAsync(new GetAssetsRequest());
             CheckResults([
                 ("SpotAsset", result1),
                 ("SpotAssets", result2)
