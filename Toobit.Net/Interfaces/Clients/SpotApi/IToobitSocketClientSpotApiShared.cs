@@ -22,13 +22,13 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
     /// exchange client libraries.
     /// </summary>
     public interface IToobitSocketClientSpotSharedApi :
-        ISubscribeTickerOperation,
-        ISubscribeTradesOperation,
-        ISubscribeKlinesOperation,
-        ISubscribeOrderBookOperation,
-        ISubscribeBalancesOperation,
-        ISubscribeSpotOrdersOperation,
-        ISubscribeUserTradesOperation
+        ISubscribeTickerSocket,
+        ISubscribeTradesSocket,
+        ISubscribeKlinesSocket,
+        ISubscribeOrderBookSocket,
+        ISubscribeBalancesSocket,
+        ISubscribeSpotOrdersSocket,
+        ISubscribeUserTradesSocket
     {
     }
 }

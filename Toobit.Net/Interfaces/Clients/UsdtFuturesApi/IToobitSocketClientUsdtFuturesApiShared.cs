@@ -23,13 +23,13 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
     /// exchange client libraries.
     /// </summary>
     public interface IToobitSocketClientUsdtFuturesSharedApi :
-        ISubscribeTickerOperation,
-        ISubscribeTradesOperation,
-        ISubscribeBalancesOperation,
-        ISubscribeKlinesOperation,
-        ISubscribeOrderBookOperation,
-        ISubscribeFuturesOrdersOperation,
-        ISubscribePositionsOperation,
-        ISubscribeUserTradesOperation
+        ISubscribeTickerSocket,
+        ISubscribeTradesSocket,
+        ISubscribeBalancesSocket,
+        ISubscribeKlinesSocket,
+        ISubscribeOrderBookSocket,
+        ISubscribeFuturesOrdersSocket,
+        ISubscribePositionsSocket,
+        ISubscribeUserTradesSocket
     { }
 }
