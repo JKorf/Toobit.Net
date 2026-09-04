@@ -15,7 +15,11 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 {
     internal partial class ToobitRestClientUsdtFuturesSharedApi
     {
-        #region Order Book client
+        #region Get Order Book
+
+        async Task<ICallResult<SharedOrderBook>> IGetOrderBook.GetOrderBookAsync(GetOrderBookRequest request, CancellationToken ct)
+            => await GetOrderBookAsync(request, ct).ConfigureAwait(false);
+
         public GetOrderBookOptions GetOrderBookOptions { get; } = new GetOrderBookOptions(_exchangeName, new[] { 5, 10, 20, 50, 100, 500, 1000 }, false);
         public async Task<HttpResult<SharedOrderBook>> GetOrderBookAsync(GetOrderBookRequest request, CancellationToken ct)
         {
@@ -34,5 +38,6 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         }
 
         #endregion
+
     }
 }

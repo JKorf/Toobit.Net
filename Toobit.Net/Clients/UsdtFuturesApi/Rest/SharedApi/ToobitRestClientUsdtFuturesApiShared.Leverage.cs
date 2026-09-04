@@ -15,7 +15,11 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 {
     internal partial class ToobitRestClientUsdtFuturesSharedApi
     {
-        #region Leverage client
+        #region Get Leverage
+
+        async Task<ICallResult<SharedLeverage>> IGetLeverage.GetLeverageAsync(GetLeverageRequest request, CancellationToken ct)
+            => await GetLeverageAsync(request, ct).ConfigureAwait(false);
+
         public SharedLeverageSettingMode LeverageSettingType => SharedLeverageSettingMode.PerSymbol;
 
         public GetLeverageOptions GetLeverageOptions { get; } = new GetLeverageOptions(_exchangeName, true);
@@ -32,6 +36,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return HttpResult.Ok(result, new SharedLeverage(result.Data.Leverage));
         }
 
+        #endregion
+
+        #region Set Leverage
+
+        async Task<ICallResult<SharedLeverage>> ISetLeverage.SetLeverageAsync(SetLeverageRequest request, CancellationToken ct)
+            => await SetLeverageAsync(request, ct).ConfigureAwait(false);
+
         public SetLeverageOptions SetLeverageOptions { get; } = new SetLeverageOptions(_exchangeName);
         public async Task<HttpResult<SharedLeverage>> SetLeverageAsync(SetLeverageRequest request, CancellationToken ct)
         {
@@ -45,6 +56,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
             return HttpResult.Ok(result, new SharedLeverage(result.Data.Leverage));
         }
+
         #endregion
     }
 }

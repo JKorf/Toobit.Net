@@ -28,6 +28,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         public ToobitRestClientUsdtFuturesSharedApi(ToobitRestClientUsdtFuturesApi api)
             : base(
+                  SharedTransport.Rest,
                   api.Exchange,
                   [TradingMode.PerpetualLinear],
                   () => api.Authenticated,

@@ -15,7 +15,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 {
     internal partial class ToobitSocketClientUsdtFuturesSharedApi
     {
-        #region Order Book client
+        #region Subscribe Order Book
+
         public SubscribeOrderBookOptions SubscribeOrderBookOptions { get; } = new SubscribeOrderBookOptions(_exchangeName, false, new[] { 5, 10, 20 })
         {
             SupportsMultipleSymbols = true
@@ -33,6 +34,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
             return result;
         }
+
         #endregion
     }
 }

@@ -15,7 +15,11 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 {
     internal partial class ToobitRestClientUsdtFuturesSharedApi
     {
-        #region Trigger Order Client
+        #region Place Futures Trigger Order
+
+        async Task<ICallResult<SharedId>> IPlaceFuturesTriggerOrder.PlaceFuturesTriggerOrderAsync(PlaceFuturesTriggerOrderRequest request, CancellationToken ct)
+            => await PlaceFuturesTriggerOrderAsync(request, ct).ConfigureAwait(false);
+
         public PlaceFuturesTriggerOrderOptions PlaceFuturesTriggerOrderOptions { get; } = new PlaceFuturesTriggerOrderOptions(_exchangeName, false);
         public async Task<HttpResult<SharedId>> PlaceFuturesTriggerOrderAsync(PlaceFuturesTriggerOrderRequest request, CancellationToken ct)
         {
@@ -40,6 +44,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             // Return
             return HttpResult.Ok(result, new SharedId(result.Data.OrderId.ToString()));
         }
+
+        #endregion
+
+        #region Get Futures Trigger Order
+
+        async Task<ICallResult<SharedFuturesTriggerOrder>> IGetFuturesTriggerOrder.GetFuturesTriggerOrderAsync(GetOrderRequest request, CancellationToken ct)
+            => await GetFuturesTriggerOrderAsync(request, ct).ConfigureAwait(false);
 
         public GetFuturesTriggerOrderOptions GetFuturesTriggerOrderOptions { get; } = new GetFuturesTriggerOrderOptions(_exchangeName, true);
         public async Task<HttpResult<SharedFuturesTriggerOrder>> GetFuturesTriggerOrderAsync(GetOrderRequest request, CancellationToken ct)
@@ -83,6 +94,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             });
         }
 
+        #endregion
+
         private SharedTriggerOrderStatus ParseTriggerStatus(ToobitFuturesOrder data)
         {
             if (data.Status == OrderStatus.Filled)
@@ -101,6 +114,11 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return SharedTriggerOrderStatus.Unknown;
         }
 
+        #region Cancel Futures Trigger Order
+
+        async Task<ICallResult<SharedId>> ICancelFuturesTriggerOrder.CancelFuturesTriggerOrderAsync(CancelOrderRequest request, CancellationToken ct)
+            => await CancelFuturesTriggerOrderAsync(request, ct).ConfigureAwait(false);
+
         public CancelFuturesTriggerOrderOptions CancelFuturesTriggerOrderOptions { get; } = new CancelFuturesTriggerOrderOptions(_exchangeName, true);
         public async Task<HttpResult<SharedId>> CancelFuturesTriggerOrderAsync(CancelOrderRequest request, CancellationToken ct)
         {
@@ -118,6 +136,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return HttpResult.Ok(order, new SharedId(order.Data.OrderId.ToString()));
         }
 
+        #endregion
+
         private FuturesOrderSide GetTriggerOrderSide(PlaceFuturesTriggerOrderRequest request)
         {
             if (request.PositionSide == SharedPositionSide.Long)
@@ -132,6 +152,5 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return FuturesOrderSide.BuyClose;
         }
 
-        #endregion
     }
 }

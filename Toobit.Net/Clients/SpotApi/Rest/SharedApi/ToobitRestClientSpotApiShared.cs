@@ -27,6 +27,7 @@ namespace Toobit.Net.Clients.SpotApi
 
         public ToobitRestClientSpotSharedApi(ToobitRestClientSpotApi api)
             : base(
+                  SharedTransport.Rest,
                   api.Exchange,
                   [TradingMode.Spot],
                   () => api.Authenticated,

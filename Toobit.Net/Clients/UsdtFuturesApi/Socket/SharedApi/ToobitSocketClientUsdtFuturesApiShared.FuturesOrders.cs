@@ -15,7 +15,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 {
     internal partial class ToobitSocketClientUsdtFuturesSharedApi
     {
-        #region Futures Order client
+
+        #region Subscribe Futures Orders
 
         async Task<WebSocketResult<UpdateSubscription>> IFuturesOrderSocketClient.SubscribeToFuturesOrderUpdatesAsync(SubscribeFuturesOrderRequest request, Action<DataEvent<SharedFuturesOrder[]>> handler, CancellationToken ct)
             => await SubscribeToFuturesOrderUpdatesAsync(request, x => handler(x.ToType<SharedFuturesOrder[]>(x.Data)), ct).ConfigureAwait(false);
@@ -69,6 +70,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return result;
         }
 
+        #endregion
+
         private SharedOrderStatus ParseOrderStatus(OrderStatus status)
         {
             if (status == Enums.OrderStatus.Canceled || status == Enums.OrderStatus.Rejected || status == OrderStatus.PartiallyCanceled)
@@ -81,6 +84,5 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return SharedOrderStatus.Unknown;
         }
 
-        #endregion
     }
 }

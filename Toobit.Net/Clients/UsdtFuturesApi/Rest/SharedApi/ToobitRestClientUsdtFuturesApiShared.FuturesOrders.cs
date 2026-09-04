@@ -15,7 +15,11 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 {
     internal partial class ToobitRestClientUsdtFuturesSharedApi
     {
-        #region Futures Order Client
+
+        #region Place Futures Order
+
+        async Task<ICallResult<SharedId>> IPlaceFuturesOrder.PlaceFuturesOrderAsync(PlaceFuturesOrderRequest request, CancellationToken ct)
+            => await PlaceFuturesOrderAsync(request, ct).ConfigureAwait(false);
 
         public SharedFeeDeductionType FuturesFeeDeductionType => SharedFeeDeductionType.AddToCost;
         public SharedFeeAssetType FuturesFeeAssetType => SharedFeeAssetType.QuoteAsset;
@@ -61,6 +65,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return HttpResult.Ok(result, new SharedId(result.Data.OrderId.ToString()));
         }
 
+        #endregion
+
         private FuturesOrderSide GetOrderSide(PlaceFuturesOrderRequest request)
         {
             if (request.PositionSide == SharedPositionSide.Long)            
@@ -68,6 +74,11 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             
             return request.Side == SharedOrderSide.Buy ? FuturesOrderSide.BuyClose : FuturesOrderSide.SellOpen;
         }
+
+        #region Get Futures Order
+
+        async Task<ICallResult<SharedFuturesOrder>> IGetFuturesOrder.GetFuturesOrderAsync(GetOrderRequest request, CancellationToken ct)
+            => await GetFuturesOrderAsync(request, ct).ConfigureAwait(false);
 
         public GetFuturesOrderOptions GetFuturesOrderOptions { get; } = new GetFuturesOrderOptions(_exchangeName, true);
         public async Task<HttpResult<SharedFuturesOrder>> GetFuturesOrderAsync(GetOrderRequest request, CancellationToken ct)
@@ -103,6 +114,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             });
         }
 
+        #endregion
+
+        #region Get Open Futures Orders
+
+        async Task<ICallResult<SharedFuturesOrder[]>> IGetOpenFuturesOrders.GetOpenFuturesOrdersAsync(GetOpenOrdersRequest request, CancellationToken ct)
+            => await GetOpenFuturesOrdersAsync(request, ct).ConfigureAwait(false);
+
         public GetOpenFuturesOrdersOptions GetOpenFuturesOrdersOptions { get; } = new GetOpenFuturesOrdersOptions(_exchangeName, true);
         public async Task<HttpResult<SharedFuturesOrder[]>> GetOpenFuturesOrdersAsync(GetOpenOrdersRequest request, CancellationToken ct)
         {
@@ -134,6 +152,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 PositionSide = x.OrderSide == FuturesOrderSide.BuyOpen || x.OrderSide == FuturesOrderSide.SellClose ? SharedPositionSide.Long : SharedPositionSide.Short
             }).ToArray());
         }
+
+        #endregion
+
+        #region Get Closed Futures Orders
+
+        async Task<ICallResult<SharedFuturesOrder[]>> IGetClosedFuturesOrders.GetClosedFuturesOrdersAsync(GetClosedOrdersRequest request, PageRequest? pageRequest, CancellationToken ct)
+            => await GetClosedFuturesOrdersAsync(request, pageRequest, ct).ConfigureAwait(false);
 
         public GetFuturesClosedOrdersOptions GetClosedFuturesOrdersOptions { get; } = new GetFuturesClosedOrdersOptions(_exchangeName, false, true, true, 1000);
         public async Task<HttpResult<SharedFuturesOrder[]>> GetClosedFuturesOrdersAsync(GetClosedOrdersRequest request, PageRequest? pageRequest, CancellationToken ct)
@@ -185,6 +210,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                     }).ToArray(), nextPageRequest);
         }
 
+        #endregion
+
+        #region Get Futures Order Trades
+
+        async Task<ICallResult<SharedUserTrade[]>> IGetFuturesOrderTrades.GetFuturesOrderTradesAsync(GetOrderTradesRequest request, CancellationToken ct)
+            => await GetFuturesOrderTradesAsync(request, ct).ConfigureAwait(false);
+
         public GetFuturesOrderTradesOptions GetFuturesOrderTradesOptions { get; } = new GetFuturesOrderTradesOptions(_exchangeName, true)
         {
             RequestNotes = "The API does not support filtering trades based on order id. Because of this filtering is done client side with the most recent trades. This might mean trades are not returned if there are a lot more recent trades."
@@ -217,6 +249,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 Role = x.IsMaker ? SharedRole.Maker : SharedRole.Taker
             }).ToArray());
         }
+
+        #endregion
+
+        #region Get Futures User Trade History
+
+        async Task<ICallResult<SharedUserTrade[]>> IGetFuturesUserTradeHistory.GetFuturesUserTradeHistoryAsync(GetUserTradesRequest request, PageRequest? pageRequest, CancellationToken ct)
+            => await GetFuturesUserTradeHistoryAsync(request, pageRequest, ct).ConfigureAwait(false);
 
         Task<HttpResult<SharedUserTrade[]>> IFuturesOrderRestClient.GetFuturesUserTradesAsync(GetUserTradesRequest request, PageRequest? pageRequest, CancellationToken ct)
             => GetFuturesUserTradeHistoryAsync(request, pageRequest, ct);
@@ -269,6 +308,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                     }).ToArray(), nextPageRequest);
         }
 
+        #endregion
+
+        #region Cancel Futures Order
+
+        async Task<ICallResult<SharedId>> ICancelFuturesOrder.CancelFuturesOrderAsync(CancelOrderRequest request, CancellationToken ct)
+            => await CancelFuturesOrderAsync(request, ct).ConfigureAwait(false);
+
         public CancelFuturesOrderOptions CancelFuturesOrderOptions { get; } = new CancelFuturesOrderOptions(_exchangeName, true);
         public async Task<HttpResult<SharedId>> CancelFuturesOrderAsync(CancelOrderRequest request, CancellationToken ct)
         {
@@ -285,6 +331,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
             return HttpResult.Ok(order, new SharedId(order.Data.OrderId.ToString()));
         }
+
+        #endregion
+
+        #region Get Positions
+
+        async Task<ICallResult<SharedPosition[]>> IGetPositions.GetPositionsAsync(GetPositionsRequest request, CancellationToken ct)
+            => await GetPositionsAsync(request, ct).ConfigureAwait(false);
 
         public GetPositionsOptions GetPositionsOptions { get; } = new GetPositionsOptions(_exchangeName, true);
         public async Task<HttpResult<SharedPosition[]>> GetPositionsAsync(GetPositionsRequest request, CancellationToken ct)
@@ -314,6 +367,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 }).ToArray());
         }
 
+        #endregion
+
+        #region Close Position
+
+        async Task<ICallResult<SharedId>> IClosePosition.ClosePositionAsync(ClosePositionRequest request, CancellationToken ct)
+            => await ClosePositionAsync(request, ct).ConfigureAwait(false);
+
         public ClosePositionOptions ClosePositionOptions { get; } = new ClosePositionOptions(_exchangeName, true)
         {
             RequiredRequestParameters = [
@@ -340,6 +400,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
             return HttpResult.Ok(result, new SharedId(result.Data.OrderId.ToString()));
         }
+
+        #endregion
 
         private TimeInForce? GetTimeInForce(SharedOrderType type, SharedTimeInForce? tif)
         {
@@ -383,9 +445,10 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             return null;
         }
 
-        #endregion
+        #region Get Futures Order By Client Order Id
 
-        #region Futures Client Id Order Client
+        async Task<ICallResult<SharedFuturesOrder>> IGetFuturesOrderByClientOrderId.GetFuturesOrderByClientOrderIdAsync(GetOrderRequest request, CancellationToken ct)
+            => await GetFuturesOrderByClientOrderIdAsync(request, ct).ConfigureAwait(false);
 
         public GetFuturesOrderByClientOrderIdOptions GetFuturesOrderByClientOrderIdOptions { get; } = new GetFuturesOrderByClientOrderIdOptions(_exchangeName, true);
         public async Task<HttpResult<SharedFuturesOrder>> GetFuturesOrderByClientOrderIdAsync(GetOrderRequest request, CancellationToken ct)
@@ -418,6 +481,13 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             });
         }
 
+        #endregion
+
+        #region Cancel Futures Order By Client Order Id
+
+        async Task<ICallResult<SharedId>> ICancelFuturesOrderByClientOrderId.CancelFuturesOrderByClientOrderIdAsync(CancelOrderRequest request, CancellationToken ct)
+            => await CancelFuturesOrderByClientOrderIdAsync(request, ct).ConfigureAwait(false);
+
         public CancelFuturesOrderByClientOrderIdOptions CancelFuturesOrderByClientOrderIdOptions { get; } = new CancelFuturesOrderByClientOrderIdOptions(_exchangeName, true);
         public async Task<HttpResult<SharedId>> CancelFuturesOrderByClientOrderIdAsync(CancelOrderRequest request, CancellationToken ct)
         {
@@ -431,6 +501,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
             return HttpResult.Ok(order, new SharedId(order.Data.OrderId.ToString()));
         }
+
         #endregion
     }
 }

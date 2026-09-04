@@ -15,7 +15,11 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 {
     internal partial class ToobitRestClientUsdtFuturesSharedApi
     {
-        #region Fee Client
+        #region Get Fees
+
+        async Task<ICallResult<SharedFee>> IGetFees.GetFeesAsync(GetFeeRequest request, CancellationToken ct)
+            => await GetFeesAsync(request, ct).ConfigureAwait(false);
+
         public GetFeeOptions GetFeeOptions { get; } = new GetFeeOptions(_exchangeName, true);
 
         public async Task<HttpResult<SharedFee>> GetFeesAsync(GetFeeRequest request, CancellationToken ct)
@@ -34,6 +38,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             // Return
             return HttpResult.Ok(result, new SharedFee(result.Data.OpenMakerFee * 100, result.Data.OpenTakerFee * 100));
         }
+
         #endregion
     }
 }

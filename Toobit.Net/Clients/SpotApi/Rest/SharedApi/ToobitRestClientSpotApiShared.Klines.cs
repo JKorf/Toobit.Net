@@ -15,7 +15,11 @@ namespace Toobit.Net.Clients.SpotApi
 {
     internal partial class ToobitRestClientSpotSharedApi
     {
-        #region Klines Client
+
+        #region Get Klines
+
+        async Task<ICallResult<SharedKline[]>> IGetKlines.GetKlinesAsync(GetKlinesRequest request, PageRequest? pageRequest, CancellationToken ct)
+            => await GetKlinesAsync(request, pageRequest, ct).ConfigureAwait(false);
 
         public GetKlinesOptions GetKlinesOptions { get; } = new GetKlinesOptions(_exchangeName, false, true, true, 1000, false);
 
@@ -66,5 +70,6 @@ namespace Toobit.Net.Clients.SpotApi
         }
 
         #endregion
+
     }
 }

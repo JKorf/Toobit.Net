@@ -15,7 +15,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 {
     internal partial class ToobitSocketClientUsdtFuturesSharedApi
     {
-        #region Kline client
+        #region Subscribe Klines
+
         public SubscribeKlineOptions SubscribeKlineOptions { get; } = new SubscribeKlineOptions(_exchangeName, false)
         {
             SupportsMultipleSymbols = true
@@ -41,6 +42,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
             return result;
         }
+
         #endregion
     }
 }

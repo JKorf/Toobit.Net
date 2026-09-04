@@ -14,7 +14,8 @@ namespace Toobit.Net.Clients.SpotApi
 {
     internal partial class ToobitSocketClientSpotSharedApi
     {
-        #region Order Book client
+        #region Subscribe Order Book
+
         public SubscribeOrderBookOptions SubscribeOrderBookOptions { get; } = new SubscribeOrderBookOptions(_exchangeName, false, new[] { 300 })
         {
             SupportsMultipleSymbols = true
@@ -32,6 +33,7 @@ namespace Toobit.Net.Clients.SpotApi
 
             return result;
         }
+
         #endregion
     }
 }

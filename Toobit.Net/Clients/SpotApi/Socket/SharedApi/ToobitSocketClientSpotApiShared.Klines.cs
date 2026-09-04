@@ -14,7 +14,8 @@ namespace Toobit.Net.Clients.SpotApi
 {
     internal partial class ToobitSocketClientSpotSharedApi
     {
-        #region Kline client
+        #region Subscribe Klines
+
         public SubscribeKlineOptions SubscribeKlineOptions { get; } = new SubscribeKlineOptions(_exchangeName, false)
         {
             SupportsMultipleSymbols = true
@@ -46,6 +47,7 @@ namespace Toobit.Net.Clients.SpotApi
 
             return result;
         }
+
         #endregion
     }
 }

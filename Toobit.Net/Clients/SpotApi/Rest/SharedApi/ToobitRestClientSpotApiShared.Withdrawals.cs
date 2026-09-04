@@ -15,7 +15,11 @@ namespace Toobit.Net.Clients.SpotApi
 {
     internal partial class ToobitRestClientSpotSharedApi
     {
-        #region Withdrawal client
+
+        #region Get Withdrawal History
+
+        async Task<ICallResult<SharedWithdrawal[]>> IGetWithdrawalHistory.GetWithdrawalHistoryAsync(GetWithdrawalsRequest request, PageRequest? pageRequest, CancellationToken ct)
+            => await GetWithdrawalHistoryAsync(request, pageRequest, ct).ConfigureAwait(false);
 
         Task<HttpResult<SharedWithdrawal[]>> IWithdrawalRestClient.GetWithdrawalsAsync(GetWithdrawalsRequest request, PageRequest? pageRequest, CancellationToken ct)
             => GetWithdrawalHistoryAsync(request, pageRequest, ct);
@@ -71,9 +75,13 @@ namespace Toobit.Net.Clients.SpotApi
                     })
                 .ToArray(), nextPageRequest);
         }
+
         #endregion
 
-        #region Withdraw client
+        #region Withdraw
+
+        async Task<ICallResult<SharedId>> IWithdraw.WithdrawAsync(WithdrawRequest request, CancellationToken ct)
+            => await WithdrawAsync(request, ct).ConfigureAwait(false);
 
         public WithdrawOptions WithdrawOptions { get; } = new WithdrawOptions(_exchangeName);
         public async Task<HttpResult<SharedId>> WithdrawAsync(WithdrawRequest request, CancellationToken ct)
@@ -97,5 +105,6 @@ namespace Toobit.Net.Clients.SpotApi
         }
 
         #endregion
+
     }
 }

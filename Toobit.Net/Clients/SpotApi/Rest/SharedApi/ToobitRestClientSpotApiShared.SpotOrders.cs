@@ -15,7 +15,11 @@ namespace Toobit.Net.Clients.SpotApi
 {
     internal partial class ToobitRestClientSpotSharedApi
     {
-        #region Spot Order Client
+
+        #region Place Spot Order
+
+        async Task<ICallResult<SharedId>> IPlaceSpotOrder.PlaceSpotOrderAsync(PlaceSpotOrderRequest request, CancellationToken ct)
+            => await PlaceSpotOrderAsync(request, ct).ConfigureAwait(false);
 
         public SharedFeeDeductionType SpotFeeDeductionType => SharedFeeDeductionType.DeductFromOutput;
         public SharedFeeAssetType SpotFeeAssetType => SharedFeeAssetType.OutputAsset;
@@ -52,6 +56,13 @@ namespace Toobit.Net.Clients.SpotApi
             return HttpResult.Ok(result, new SharedId(result.Data.OrderId.ToString()));
         }
 
+        #endregion
+
+        #region Get Spot Order
+
+        async Task<ICallResult<SharedSpotOrder>> IGetSpotOrder.GetSpotOrderAsync(GetOrderRequest request, CancellationToken ct)
+            => await GetSpotOrderAsync(request, ct).ConfigureAwait(false);
+
         public GetSpotOrderOptions GetSpotOrderOptions { get; } = new GetSpotOrderOptions(_exchangeName, true);
         public async Task<HttpResult<SharedSpotOrder>> GetSpotOrderAsync(GetOrderRequest request, CancellationToken ct)
         {
@@ -85,6 +96,13 @@ namespace Toobit.Net.Clients.SpotApi
             });
         }
 
+        #endregion
+
+        #region Get Open Spot Orders
+
+        async Task<ICallResult<SharedSpotOrder[]>> IGetOpenSpotOrders.GetOpenSpotOrdersAsync(GetOpenOrdersRequest request, CancellationToken ct)
+            => await GetOpenSpotOrdersAsync(request, ct).ConfigureAwait(false);
+
         public GetOpenSpotOrdersOptions GetOpenSpotOrdersOptions { get; } = new GetOpenSpotOrdersOptions(_exchangeName, true);
         public async Task<HttpResult<SharedSpotOrder[]>> GetOpenSpotOrdersAsync(GetOpenOrdersRequest request, CancellationToken ct)
         {
@@ -115,6 +133,13 @@ namespace Toobit.Net.Clients.SpotApi
                 UpdateTime = x.UpdateTime
             }).ToArray());
         }
+
+        #endregion
+
+        #region Get Closed Spot Orders
+
+        async Task<ICallResult<SharedSpotOrder[]>> IGetClosedSpotOrders.GetClosedSpotOrdersAsync(GetClosedOrdersRequest request, PageRequest? pageRequest, CancellationToken ct)
+            => await GetClosedSpotOrdersAsync(request, pageRequest, ct).ConfigureAwait(false);
 
         public GetSpotClosedOrdersOptions GetClosedSpotOrdersOptions { get; } = new GetSpotClosedOrdersOptions(_exchangeName, false, true, true, 1000);
         public async Task<HttpResult<SharedSpotOrder[]>> GetClosedSpotOrdersAsync(GetClosedOrdersRequest request, PageRequest? pageRequest, CancellationToken ct)
@@ -167,6 +192,13 @@ namespace Toobit.Net.Clients.SpotApi
                 .ToArray(), nextPageRequest);
         }
 
+        #endregion
+
+        #region Get Spot Order Trades
+
+        async Task<ICallResult<SharedUserTrade[]>> IGetSpotOrderTrades.GetSpotOrderTradesAsync(GetOrderTradesRequest request, CancellationToken ct)
+            => await GetSpotOrderTradesAsync(request, ct).ConfigureAwait(false);
+
         public GetSpotOrderTradesOptions GetSpotOrderTradesOptions { get; } = new GetSpotOrderTradesOptions(_exchangeName, true)
         {
             RequestNotes = "The API does not support filtering trades based on order id. Because of this filtering is done client side with the most recent trades. This might mean trades are not returned if there are a lot more recent trades."
@@ -200,6 +232,12 @@ namespace Toobit.Net.Clients.SpotApi
             }).ToArray());
         }
 
+        #endregion
+
+        #region Get Spot User Trade History
+
+        async Task<ICallResult<SharedUserTrade[]>> IGetSpotUserTradeHistory.GetSpotUserTradeHistoryAsync(GetUserTradesRequest request, PageRequest? pageRequest, CancellationToken ct)
+            => await GetSpotUserTradeHistoryAsync(request, pageRequest, ct).ConfigureAwait(false);
 
         Task<HttpResult<SharedUserTrade[]>> ISpotOrderRestClient.GetSpotUserTradesAsync(GetUserTradesRequest request, PageRequest? pageRequest, CancellationToken ct)
             => GetSpotUserTradeHistoryAsync(request, pageRequest, ct);
@@ -253,6 +291,13 @@ namespace Toobit.Net.Clients.SpotApi
                 .ToArray(), nextPageRequest);
         }
 
+        #endregion
+
+        #region Cancel Spot Order
+
+        async Task<ICallResult<SharedId>> ICancelSpotOrder.CancelSpotOrderAsync(CancelOrderRequest request, CancellationToken ct)
+            => await CancelSpotOrderAsync(request, ct).ConfigureAwait(false);
+
         public CancelSpotOrderOptions CancelSpotOrderOptions { get; } = new CancelSpotOrderOptions(_exchangeName, true);
         public async Task<HttpResult<SharedId>> CancelSpotOrderAsync(CancelOrderRequest request, CancellationToken ct)
         {
@@ -269,6 +314,8 @@ namespace Toobit.Net.Clients.SpotApi
 
             return HttpResult.Ok(order, new SharedId(order.Data.OrderId.ToString()));
         }
+
+        #endregion
 
         private Enums.TimeInForce? GetTimeInForce(SharedTimeInForce? tif, SharedOrderType type)
         {
@@ -310,9 +357,10 @@ namespace Toobit.Net.Clients.SpotApi
             return null;
         }
 
-        #endregion
+        #region Get Spot Order By Client Order Id
 
-        #region Spot Client Id Order Client
+        async Task<ICallResult<SharedSpotOrder>> IGetSpotOrderByClientOrderId.GetSpotOrderByClientOrderIdAsync(GetOrderRequest request, CancellationToken ct)
+            => await GetSpotOrderByClientOrderIdAsync(request, ct).ConfigureAwait(false);
 
         public GetSpotOrderByClientOrderIdOptions GetSpotOrderByClientOrderIdOptions { get; } = new GetSpotOrderByClientOrderIdOptions(_exchangeName, true);
         public async Task<HttpResult<SharedSpotOrder>> GetSpotOrderByClientOrderIdAsync(GetOrderRequest request, CancellationToken ct)
@@ -344,6 +392,13 @@ namespace Toobit.Net.Clients.SpotApi
             });
         }
 
+        #endregion
+
+        #region Cancel Spot Order By Client Order Id
+
+        async Task<ICallResult<SharedId>> ICancelSpotOrderByClientOrderId.CancelSpotOrderByClientOrderIdAsync(CancelOrderRequest request, CancellationToken ct)
+            => await CancelSpotOrderByClientOrderIdAsync(request, ct).ConfigureAwait(false);
+
         public CancelSpotOrderByClientOrderIdOptions CancelSpotOrderByClientOrderIdOptions { get; } = new CancelSpotOrderByClientOrderIdOptions(_exchangeName, true);
         public async Task<HttpResult<SharedId>> CancelSpotOrderByClientOrderIdAsync(CancelOrderRequest request, CancellationToken ct)
         {
@@ -357,6 +412,7 @@ namespace Toobit.Net.Clients.SpotApi
 
             return HttpResult.Ok(order, new SharedId(order.Data.OrderId.ToString()));
         }
+
         #endregion
     }
 }

@@ -15,7 +15,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 {
     internal partial class ToobitSocketClientUsdtFuturesSharedApi
     {
-        #region Trade client
+
+        #region Subscribe Trades
 
         public SubscribeTradeOptions SubscribeTradeOptions { get; } = new SubscribeTradeOptions(_exchangeName, false)
         {
@@ -38,5 +39,6 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         }
 
         #endregion
+
     }
 }

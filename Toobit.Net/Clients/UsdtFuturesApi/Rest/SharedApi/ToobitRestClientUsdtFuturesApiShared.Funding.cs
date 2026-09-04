@@ -15,7 +15,11 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 {
     internal partial class ToobitRestClientUsdtFuturesSharedApi
     {
-        #region Funding Rate client
+        #region Get Funding Rate History
+
+        async Task<ICallResult<SharedFundingRate[]>> IGetFundingRateHistory.GetFundingRateHistoryAsync(GetFundingRateHistoryRequest request, PageRequest? pageRequest, CancellationToken ct)
+            => await GetFundingRateHistoryAsync(request, pageRequest, ct).ConfigureAwait(false);
+
         public GetFundingRateHistoryOptions GetFundingRateHistoryOptions { get; } = new GetFundingRateHistoryOptions(_exchangeName, false, true, false, 1000, false);
 
         public async Task<HttpResult<SharedFundingRate[]>> GetFundingRateHistoryAsync(GetFundingRateHistoryRequest request, PageRequest? pageRequest, CancellationToken ct)
@@ -50,6 +54,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                     new SharedFundingRate(x.FundingRate, x.FundingTime))
                 .ToArray(), nextPageRequest);
         }
+
         #endregion
     }
 }

@@ -15,7 +15,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 {
     internal partial class ToobitSocketClientUsdtFuturesSharedApi
     {
-        #region Balance client
+        #region Subscribe Balances
+
         public SubscribeBalanceOptions SubscribeBalanceOptions { get; } = new SubscribeBalanceOptions(_exchangeName, false);
         public async Task<WebSocketResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(SubscribeBalancesRequest request, Action<DataEvent<SharedBalance[]>> handler, CancellationToken ct)
         {
@@ -32,5 +33,6 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         }
 
         #endregion
+
     }
 }

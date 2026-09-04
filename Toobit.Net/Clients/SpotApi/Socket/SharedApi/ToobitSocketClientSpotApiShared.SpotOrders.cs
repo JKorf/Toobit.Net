@@ -14,7 +14,8 @@ namespace Toobit.Net.Clients.SpotApi
 {
     internal partial class ToobitSocketClientSpotSharedApi
     {
-        #region Spot Order client
+
+        #region Subscribe Spot Orders
 
         async Task<WebSocketResult<UpdateSubscription>> ISpotOrderSocketClient.SubscribeToSpotOrderUpdatesAsync(SubscribeSpotOrderRequest request, Action<DataEvent<SharedSpotOrder[]>> handler, CancellationToken ct)
             => await SubscribeToSpotOrderUpdatesAsync(request, x => handler(x.ToType<SharedSpotOrder[]>(x.Data)), ct).ConfigureAwait(false);
@@ -68,6 +69,8 @@ namespace Toobit.Net.Clients.SpotApi
             return result;
         }
 
+        #endregion
+
         private SharedOrderStatus ParseOrderStatus(OrderStatus status)
         {
             if (status == Enums.OrderStatus.Canceled || status == Enums.OrderStatus.Rejected || status == OrderStatus.PartiallyCanceled)
@@ -90,6 +93,5 @@ namespace Toobit.Net.Clients.SpotApi
 
             return SharedOrderType.Other;
         }
-        #endregion
     }
 }

@@ -15,7 +15,11 @@ namespace Toobit.Net.Clients.SpotApi
 {
     internal partial class ToobitRestClientSpotSharedApi
     {
-        #region Transfer client
+
+        #region Transfer
+
+        async Task<ICallResult<SharedId>> ITransfer.TransferAsync(TransferRequest request, CancellationToken ct)
+            => await TransferAsync(request, ct).ConfigureAwait(false);
 
         public TransferOptions TransferOptions { get; } = new TransferOptions(_exchangeName, [
             SharedAccountType.Spot,
@@ -58,6 +62,8 @@ namespace Toobit.Net.Clients.SpotApi
             return HttpResult.Ok(transfer, new SharedId(""));
         }
 
+        #endregion
+
         private AccountType? GetTransferType(SharedAccountType type)
         {
             if (type == SharedAccountType.Spot) return AccountType.Spot;
@@ -65,6 +71,5 @@ namespace Toobit.Net.Clients.SpotApi
             return null;
         }
 
-        #endregion
     }
 }

@@ -14,7 +14,8 @@ namespace Toobit.Net.Clients.SpotApi
 {
     internal partial class ToobitSocketClientSpotSharedApi
     {
-        #region Trade client
+
+        #region Subscribe Trades
 
         public SubscribeTradeOptions SubscribeTradeOptions { get; } = new SubscribeTradeOptions(_exchangeName, false)
         {
@@ -47,5 +48,6 @@ namespace Toobit.Net.Clients.SpotApi
         }
 
         #endregion
+
     }
 }
