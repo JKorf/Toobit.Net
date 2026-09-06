@@ -24,7 +24,7 @@ namespace Toobit.Net.Clients.SpotApi
         public GetDepositAddressesOptions GetDepositAddressesOptions { get; } = new GetDepositAddressesOptions(_exchangeName, true)
         {
             RequiredRequestParameters = [
-                RequestParameter<GetDepositAddressesRequest>.Required(x => x.Network, "Network to use", "ETH")
+                RequestParameterRule<GetDepositAddressesRequest>.Required(x => x.Network, "Network to use", "ETH")
             ]
         };
         public async Task<HttpResult<SharedDepositAddress[]>> GetDepositAddressesAsync(GetDepositAddressesRequest request, CancellationToken ct)

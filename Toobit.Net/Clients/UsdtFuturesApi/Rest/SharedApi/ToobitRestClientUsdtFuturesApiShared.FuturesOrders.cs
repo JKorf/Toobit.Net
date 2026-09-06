@@ -37,7 +37,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         public PlaceFuturesOrderOptions PlaceFuturesOrderOptions { get; } = new PlaceFuturesOrderOptions(_exchangeName, true)
         {
             RequiredRequestParameters = [
-                RequestParameter<PlaceFuturesOrderRequest>.Required(x => x.PositionSide, "Long or short position", SharedPositionSide.Long),
+                RequestParameterRule<PlaceFuturesOrderRequest>.Required(x => x.PositionSide, "Long or short position", SharedPositionSide.Long),
                 ]
         };
         public async Task<HttpResult<SharedId>> PlaceFuturesOrderAsync(PlaceFuturesOrderRequest request, CancellationToken ct)
@@ -377,8 +377,8 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         public ClosePositionOptions ClosePositionOptions { get; } = new ClosePositionOptions(_exchangeName, true)
         {
             RequiredRequestParameters = [
-                RequestParameter<ClosePositionRequest>.Required(x => x.PositionSide, "The position side to close", SharedPositionSide.Long),
-                RequestParameter<ClosePositionRequest>.Required(x => x.Quantity, "Quantity of the position is required", 0.1m)
+                RequestParameterRule<ClosePositionRequest>.Required(x => x.PositionSide, "The position side to close", SharedPositionSide.Long),
+                RequestParameterRule<ClosePositionRequest>.Required(x => x.Quantity, "Quantity of the position is required", 0.1m)
                 ]
         };
         public async Task<HttpResult<SharedId>> ClosePositionAsync(ClosePositionRequest request, CancellationToken ct)
