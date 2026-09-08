@@ -29,10 +29,9 @@ namespace Toobit.Net.Clients.SpotApi
             SharedAccountType.DeliveryInverseFutures,
             ])
         {
-            RequiredExchangeParameters = new List<ParameterDescription>
-            {
-                new ParameterDescription("AccountId", typeof(long), "User account id", 123123L)
-            }
+            ExchangeParameterRules = [
+                ExchangeParameterRule.Required("AccountId", "User account id", 123123L)
+            ]
         };
         public async Task<HttpResult<SharedId>> TransferAsync(TransferRequest request, CancellationToken ct)
         {

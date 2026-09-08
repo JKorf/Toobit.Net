@@ -31,8 +31,8 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
     public interface IToobitRestClientSpotSharedApi :
         IGetKlinesRest,
         IGetSpotSymbolsRest,
-        IGetSpotTickerRest,
-        IGetAllSpotTickersRest,
+        IGetTickerRest,
+        IGetAllTickersRest,
         IGetBookTickerRest,
         IGetRecentTradesRest,
         IGetOrderBookRest,
