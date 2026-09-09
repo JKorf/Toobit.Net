@@ -38,6 +38,9 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         {
             ParameterRuleOverwrites = [
                 RequestParameterRuleOverride<PlaceFuturesOrderRequest>.Required(x => x.PositionSide),
+                RequestParameterRuleOverride<PlaceFuturesOrderRequest>.NotSupported(x => x.Leverage),
+                RequestParameterRuleOverride<PlaceFuturesOrderRequest>.NotSupported(x => x.MarginMode),
+                RequestParameterRuleOverride<PlaceFuturesOrderRequest>.NotSupported(x => x.ReduceOnly),
                 ]
         };
         public async Task<HttpResult<SharedId>> PlaceFuturesOrderAsync(PlaceFuturesOrderRequest request, CancellationToken ct)

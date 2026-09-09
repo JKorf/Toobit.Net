@@ -29,6 +29,10 @@ namespace Toobit.Net.Clients.SpotApi
             SharedAccountType.DeliveryInverseFutures,
             ])
         {
+            ParameterRuleOverwrites = [
+                RequestParameterRuleOverride<TransferRequest>.NotSupported(x => x.FromSymbol),
+                RequestParameterRuleOverride<TransferRequest>.NotSupported(x => x.ToSymbol),
+                ],
             ExchangeParameterRules = [
                 ExchangeParameterRule.Required("AccountId", "User account id", 123123L)
             ]
