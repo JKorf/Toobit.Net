@@ -36,7 +36,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         public PlaceFuturesOrderOptions PlaceFuturesOrderOptions { get; } = new PlaceFuturesOrderOptions(_exchangeName, true)
         {
-            ParameterRuleOverwrites = [
+            ParameterRuleOverrides = [
                 RequestParameterRuleOverride<PlaceFuturesOrderRequest>.Required(x => x.PositionSide),
                 RequestParameterRuleOverride<PlaceFuturesOrderRequest>.NotSupported(x => x.Leverage),
                 RequestParameterRuleOverride<PlaceFuturesOrderRequest>.NotSupported(x => x.MarginMode),
@@ -376,7 +376,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         public ClosePositionOptions ClosePositionOptions { get; } = new ClosePositionOptions(_exchangeName, true)
         {
-            ParameterRuleOverwrites = [
+            ParameterRuleOverrides = [
                 RequestParameterRuleOverride<ClosePositionRequest>.Required(x => x.PositionSide),
                 RequestParameterRuleOverride<ClosePositionRequest>.Required(x => x.Quantity)
                 ]

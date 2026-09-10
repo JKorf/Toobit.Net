@@ -22,7 +22,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         public PlaceFuturesTriggerOrderOptions PlaceFuturesTriggerOrderOptions { get; } = new PlaceFuturesTriggerOrderOptions(_exchangeName, false)
         {
-            ParameterRuleOverwrites = [
+            ParameterRuleOverrides = [
                 RequestParameterRuleOverride<PlaceFuturesTriggerOrderRequest>.Required(x => x.PositionSide),
                 RequestParameterRuleOverride<PlaceFuturesTriggerOrderRequest>.NotSupported(x => x.Leverage),
                 RequestParameterRuleOverride<PlaceFuturesTriggerOrderRequest>.NotSupported(x => x.MarginMode),
