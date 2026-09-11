@@ -1,11 +1,14 @@
+using CryptoExchange.Net.SharedApis;
+using Microsoft.Extensions.Options;
 using Toobit.Net.Interfaces.Clients;
 using Toobit.Net.Interfaces.Clients.SpotApi;
 using Toobit.Net.Interfaces.Clients.UsdtFuturesApi;
+using Toobit.Net.Objects.Options;
 
 namespace Toobit.Net.Clients
 {
     /// <inheritdoc />
-    public class ToobitSharedApiClient : IToobitSharedApiClient
+    public class ToobitSharedApiClient : SharedApiClientBase, IToobitSharedApiClient
     {
         /// <inheritdoc />
         public IToobitRestClientSpotSharedApi SpotRest { get; }
@@ -21,7 +24,14 @@ namespace Toobit.Net.Clients
         /// </summary>
         public ToobitSharedApiClient(
             IToobitRestClient restClient,
-            IToobitSocketClient socketClient)
+            IToobitSocketClient socketClient,
+            IOptions<ToobitOptions> options)
+            : base(options.Value.SharedApi.PreferredTransport,
+                restClient.SpotApi.SharedApi,
+                restClient.UsdtFuturesApi.SharedApi,
+                socketClient.SpotApi.SharedApi,
+                socketClient.UsdtFuturesApi.SharedApi
+                )
         {
             SpotRest = restClient.SpotApi.SharedApi;
             FuturesRest = restClient.UsdtFuturesApi.SharedApi;
