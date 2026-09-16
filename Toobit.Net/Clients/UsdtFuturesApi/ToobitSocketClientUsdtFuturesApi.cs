@@ -292,7 +292,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         /// <inheritdoc />
         public Task<WebSocketResult<UpdateSubscription>> SubscribeToUserDataUpdatesAsync(
-            Action<DataEvent<ToobitAccountUpdate>>? onAccountMessage = null,
+            Action<DataEvent<ToobitAccountUpdate[]>>? onAccountMessage = null,
             Action<DataEvent<ToobitFuturesOrderUpdate[]>>? onOrderMessage = null,
             Action<DataEvent<ToobitPositionUpdate[]>>? onPositionMessage = null,
             Action<DataEvent<ToobitUserTradeUpdate[]>>? onUserTradeMessage = null,
@@ -302,7 +302,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         /// <inheritdoc />
         public async Task<WebSocketResult<UpdateSubscription>> SubscribeToUserDataUpdatesAsync(
             string? listenKey,
-            Action<DataEvent<ToobitAccountUpdate>>? onAccountMessage = null,
+            Action<DataEvent<ToobitAccountUpdate[]>>? onAccountMessage = null,
             Action<DataEvent<ToobitFuturesOrderUpdate[]>>? onOrderMessage = null,
             Action<DataEvent<ToobitPositionUpdate[]>>? onPositionMessage = null,
             Action<DataEvent<ToobitUserTradeUpdate[]>>? onUserTradeMessage = null,
@@ -317,7 +317,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 var leaseResult = await TokenManager.AcquireAsync(new TokenScope(
                     ToobitExchange.Metadata.Id,
                     EnvironmentName,
-                    "Futures",
+                    "UserData",
                     ApiCredentials!.Key), ct).ConfigureAwait(false);
                 if (!leaseResult.Success)
                     return WebSocketResult.Fail<UpdateSubscription>(Exchange, leaseResult.Error);
@@ -331,7 +331,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             {
                 TokenLease = lease
             };
-            return await SubscribeAsync(BaseAddress.AppendPath("/api/v1/ws/" + listenKey), subscription, ct).ConfigureAwait(false);
+            return await SubscribeAsync(BaseAddress.AppendPath("/api/v1/ws/" + lk), subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -340,17 +340,16 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
 
         protected override async Task<Uri?> GetReconnectUriAsync(ISocketConnection connection)
         {
-            if (!connection.HasAuthenticatedSubscription)
-                return await base.GetReconnectUriAsync(connection).ConfigureAwait(false);
-
-
             var subscriptions = ((SocketConnection)connection).Subscriptions.Where(x => x.TokenLease != null).ToList();
+            // Listen-key subscriptions authenticate in the URL and therefore have Authenticated=false.
+            if (subscriptions.Count == 0)
+                return await base.GetReconnectUriAsync(connection).ConfigureAwait(false);
 
             // We have authenticated subscription via the token manager
             var scope = new TokenScope(
                     ToobitExchange.Metadata.Id,
                     EnvironmentName,
-                    "Futures",
+                    "UserData",
                     ApiCredentials!.Key);
 
             var token = await TokenManager.AcquireAndReplaceAsync(subscriptions[0], scope).ConfigureAwait(false);

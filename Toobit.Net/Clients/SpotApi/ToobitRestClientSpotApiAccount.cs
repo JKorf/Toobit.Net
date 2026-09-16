@@ -118,7 +118,7 @@ namespace Toobit.Net.Clients.SpotApi
             parameters.Add("toUid", toUid);
             parameters.Add("fromAccountType", fromAccountType);
             parameters.Add("toAccountType", toAccountType);
-            parameters.Add("asset", asset);
+            parameters.Add("coin", asset);
             parameters.Add("quantity", quantity);
             var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "/api/v1/subAccount/transfer", ToobitExchange.RateLimiter.Toobit, 1, true);
             var result = await _baseClient.SendAsync<ToobitResult>(request, parameters, ct).ConfigureAwait(false);

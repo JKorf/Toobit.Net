@@ -31,7 +31,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         #region Place Order
 
         /// <inheritdoc />
-        public async Task<HttpResult<ToobitFuturesOrder>> PlaceOrderAsync(string symbol, FuturesOrderSide orderSide, FuturesNewOrderType orderType, long quantity, decimal? price = null, PriceType? priceType = null, decimal? stopPrice = null, TimeInForce? timeInForce = null, string? clientOrderId = null, decimal? takeProfit = null, TriggerType? takeProfitTriggerType = null, decimal? takeProfitLimitPrice = null, OrderType? takeProfitOrderType = null, decimal? stopLoss = null, TriggerType? stopLossTriggerType = null, decimal? stopLossLimitPrice = null, OrderType? stopLossOrderType = null, CancellationToken ct = default)
+        public async Task<HttpResult<ToobitFuturesOrder>> PlaceOrderAsync(string symbol, FuturesOrderSide orderSide, FuturesNewOrderType orderType, decimal quantity, decimal? price = null, PriceType? priceType = null, decimal? stopPrice = null, TimeInForce? timeInForce = null, string? clientOrderId = null, decimal? takeProfit = null, TriggerType? takeProfitTriggerType = null, decimal? takeProfitLimitPrice = null, OrderType? takeProfitOrderType = null, decimal? stopLoss = null, TriggerType? stopLossTriggerType = null, decimal? stopLossLimitPrice = null, OrderType? stopLossOrderType = null, CancellationToken ct = default)
         {
             var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
             parameters.Add("symbol", symbol);
@@ -241,9 +241,9 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             parameters.Add("symbol", symbol);
             parameters.Add("fromId", fromId);
             parameters.Add("toId", toId);
-            parameters.Add("", startTime);
-            parameters.Add("", endTime);
-            parameters.Add("", limit);
+            parameters.Add("startTime", startTime);
+            parameters.Add("endTime", endTime);
+            parameters.Add("limit", limit);
             var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/userTrades", ToobitExchange.RateLimiter.Toobit, 5, true);
             var result = await _baseClient.SendAsync<ToobitFuturesUserTrade[]>(request, parameters, ct).ConfigureAwait(false);
             return result;
