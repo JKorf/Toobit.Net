@@ -86,7 +86,10 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
             if (_interval != null)
                 request.Parameters.Add("klineType", EnumConverter.GetString(_interval.Value));
 
-            return new ToobitQuery<object>(_client, request, Authenticated, _waitForErrorTimeout);
+            return new ToobitQuery<object>(_client, request, Authenticated, _waitForErrorTimeout)
+            {
+                ExpectsResponse = false
+            };
         }
 
         /// <inheritdoc />
