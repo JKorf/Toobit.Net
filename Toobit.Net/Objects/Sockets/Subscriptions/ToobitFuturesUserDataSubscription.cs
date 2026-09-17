@@ -16,7 +16,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
     {
         private readonly ToobitSocketClientUsdtFuturesApi _client;
 
-        private readonly Action<DataEvent<ToobitAccountUpdate>>? _accountHandler;
+        private readonly Action<DataEvent<ToobitAccountUpdate[]>>? _accountHandler;
         private readonly Action<DataEvent<ToobitFuturesOrderUpdate[]>>? _orderHandler;
         private readonly Action<DataEvent<ToobitPositionUpdate[]>>? _positionHandler;
         private readonly Action<DataEvent<ToobitUserTradeUpdate[]>>? _userTradeHandler;
@@ -27,7 +27,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
         public ToobitFuturesUserDataSubscription(
             ILogger logger,
             ToobitSocketClientUsdtFuturesApi client,
-            Action<DataEvent<ToobitAccountUpdate>>? accountHandler = null,
+            Action<DataEvent<ToobitAccountUpdate[]>>? accountHandler = null,
             Action<DataEvent<ToobitFuturesOrderUpdate[]>>? orderHandler = null,
             Action<DataEvent<ToobitPositionUpdate[]>>? positionHandler = null,
             Action<DataEvent<ToobitUserTradeUpdate[]>>? tradeHandler = null) : base(logger, false)
@@ -60,7 +60,7 @@ namespace Toobit.Net.Objects.Sockets.Subscriptions
                 _client.UpdateTimeOffset(timestamp.Value);
 
             _accountHandler?.Invoke(
-                    new DataEvent<ToobitAccountUpdate>(ToobitExchange.ExchangeName, message.First(), receiveTime, originalData)
+                    new DataEvent<ToobitAccountUpdate[]>(ToobitExchange.ExchangeName, message, receiveTime, originalData)
                         .WithStreamId("FuturesAccount")
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithDataTimestamp(timestamp, _client.GetTimeOffset())

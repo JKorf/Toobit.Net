@@ -40,7 +40,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="stopLossLimitPrice">["<c>slLimitPrice</c>"] Stop loss limit price</param>
         /// <param name="stopLossOrderType">["<c>slOrderType</c>"] Stop loss order type</param>
         /// <param name="ct">Cancellation token</param>
-        Task<HttpResult<ToobitFuturesOrder>> PlaceOrderAsync(string symbol, FuturesOrderSide orderSide, FuturesNewOrderType orderType, long quantity, decimal? price = null, PriceType? priceType = null, decimal? stopPrice = null, TimeInForce? timeInForce = null, string? clientOrderId = null, decimal? takeProfit = null, TriggerType? takeProfitTriggerType = null, decimal? takeProfitLimitPrice = null, OrderType? takeProfitOrderType = null, decimal? stopLoss = null, TriggerType? stopLossTriggerType = null, decimal? stopLossLimitPrice = null, OrderType? stopLossOrderType = null, CancellationToken ct = default);
+        Task<HttpResult<ToobitFuturesOrder>> PlaceOrderAsync(string symbol, FuturesOrderSide orderSide, FuturesNewOrderType orderType, decimal quantity, decimal? price = null, PriceType? priceType = null, decimal? stopPrice = null, TimeInForce? timeInForce = null, string? clientOrderId = null, decimal? takeProfit = null, TriggerType? takeProfitTriggerType = null, decimal? takeProfitLimitPrice = null, OrderType? takeProfitOrderType = null, decimal? stopLoss = null, TriggerType? stopLossTriggerType = null, decimal? stopLossLimitPrice = null, OrderType? stopLossOrderType = null, CancellationToken ct = default);
 
         /// <summary>
         /// Place multiple new orders

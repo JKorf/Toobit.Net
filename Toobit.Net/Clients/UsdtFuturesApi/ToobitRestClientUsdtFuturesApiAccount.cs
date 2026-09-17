@@ -59,7 +59,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         {
             var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
             parameters.Add("symbol", symbol);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/accountLeverage", ToobitExchange.RateLimiter.Toobit, 1, true);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/accountLeverage", ToobitExchange.RateLimiter.Toobit, 5, true);
             var result = await _baseClient.SendAsync<ToobitLeverageInfo[]>(request, parameters, ct).ConfigureAwait(false);
             if (!result.Success)
                 return HttpResult.Fail<ToobitLeverageInfo>(result);
@@ -75,7 +75,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         public async Task<HttpResult<ToobitFuturesBalance[]>> GetBalancesAsync(CancellationToken ct = default)
         {
             var parameters = new Parameters(ToobitExchange._parameterSerializationSettings);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/balance", ToobitExchange.RateLimiter.Toobit, 1, true);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/balance", ToobitExchange.RateLimiter.Toobit, 5, true);
             var result = await _baseClient.SendAsync<ToobitFuturesBalance[]>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
@@ -111,7 +111,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
             parameters.Add("startTime", startTime);
             parameters.Add("endTime", endTime);
             parameters.Add("limit", limit);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/balanceFlow", ToobitExchange.RateLimiter.Toobit, 1, true);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "/api/v1/futures/balanceFlow", ToobitExchange.RateLimiter.Toobit, 5, true);
             var result = await _baseClient.SendAsync<ToobitFuturesTransaction[]>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }

@@ -269,7 +269,7 @@ namespace Toobit.Net.Clients.SpotApi
                 var leaseResult = await TokenManager.AcquireAsync(new TokenScope(
                     ToobitExchange.Metadata.Id,
                     EnvironmentName,
-                    "Spot",
+                    "UserData",
                     ApiCredentials!.Key), ct).ConfigureAwait(false);
                 if (!leaseResult.Success)
                     return WebSocketResult.Fail<UpdateSubscription>(Exchange, leaseResult.Error);
@@ -296,17 +296,16 @@ namespace Toobit.Net.Clients.SpotApi
 
         protected override async Task<Uri?> GetReconnectUriAsync(ISocketConnection connection)
         {
-            if (!connection.HasAuthenticatedSubscription)
-                return await base.GetReconnectUriAsync(connection).ConfigureAwait(false);
-
-            
             var subscriptions = ((SocketConnection)connection).Subscriptions.Where(x => x.TokenLease != null).ToList();
+            // Listen-key subscriptions authenticate in the URL and therefore have Authenticated=false.
+            if (subscriptions.Count == 0)
+                return await base.GetReconnectUriAsync(connection).ConfigureAwait(false);
 
             // We have authenticated subscription via the token manager
             var scope = new TokenScope(
                     ToobitExchange.Metadata.Id,
                     EnvironmentName,
-                    "Spot",
+                    "UserData",
                     ApiCredentials!.Key);
 
             var token = await TokenManager.AcquireAndReplaceAsync(subscriptions[0], scope).ConfigureAwait(false);
