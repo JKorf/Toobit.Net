@@ -28,7 +28,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
         public ToobitSocketClientUsdtFuturesSharedApi(ToobitSocketClientUsdtFuturesApi api)
             : base(
                   SharedTransport.Socket,
-                  api.Exchange,
+                  api,
                   [TradingMode.PerpetualLinear],
                   () => api.Authenticated,
                   api.FormatSymbol)
