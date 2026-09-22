@@ -107,7 +107,7 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         /// <param name="toUid">["<c>toUid</c>"] To user id</param>
         /// <param name="fromAccountType">["<c>fromAccountType</c>"] From account type</param>
         /// <param name="toAccountType">["<c>toAccountType</c>"] To account type</param>
-        /// <param name="asset">["<c>asset</c>"] The asset, for example `ETH`</param>
+        /// <param name="asset">["<c>coin</c>"] The asset, for example `ETH`</param>
         /// <param name="quantity">["<c>quantity</c>"] Quantity</param>
         /// <param name="ct">Cancellation token</param>
         Task<HttpResult> TransferAsync(long fromUid, long toUid, AccountType fromAccountType, AccountType toAccountType, string asset, decimal quantity, CancellationToken ct = default);

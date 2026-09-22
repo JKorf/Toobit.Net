@@ -95,15 +95,15 @@ namespace Toobit.Net.Objects.Models
         [JsonPropertyName("td")]
         public long? LastTradeId { get; set; }
         /// <summary>
-        /// ["<c>n</c>"] Fee
+        /// ["<c>n</c>"] Commission amount for the last execution, or null when not supplied
         /// </summary>
         [JsonPropertyName("n")]
-        public decimal Fee { get; set; }
+        public decimal? Fee { get; set; }
         /// <summary>
-        /// ["<c>N</c>"] Fee asset
+        /// ["<c>N</c>"] Fee asset, or null when no commission asset is supplied
         /// </summary>
         [JsonPropertyName("N")]
-        public string FeeAsset { get; set; } = string.Empty;
+        public string? FeeAsset { get; set; }
         /// <summary>
         /// ["<c>u</c>"] U
         /// </summary>

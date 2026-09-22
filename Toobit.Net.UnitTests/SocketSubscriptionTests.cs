@@ -59,7 +59,7 @@ namespace Toobit.Net.UnitTests
             });
             var tester = new SocketSubscriptionValidator<ToobitSocketClient>(client, "Subscriptions/UsdtFutures", "wss://stream.toobit.com");
 
-            await tester.ValidateAsync<ToobitAccountUpdate>((client, handler) => client.UsdtFuturesApi.SubscribeToUserDataUpdatesAsync("123", handler), "UserAccount", useFirstUpdateItem: true);
+            await tester.ValidateAsync<ToobitAccountUpdate[]>((client, handler) => client.UsdtFuturesApi.SubscribeToUserDataUpdatesAsync("123", handler), "UserAccount");
             await tester.ValidateAsync<ToobitFuturesOrderUpdate[]>((client, handler) => client.UsdtFuturesApi.SubscribeToUserDataUpdatesAsync("123", null, handler), "UserOrder", ignoreProperties: ["u"]);
             await tester.ValidateAsync<ToobitPositionUpdate[]>((client, handler) => client.UsdtFuturesApi.SubscribeToUserDataUpdatesAsync("123", null, null, handler), "UserPosition");
             await tester.ValidateAsync<ToobitUserTradeUpdate[]>((client, handler) => client.UsdtFuturesApi.SubscribeToUserDataUpdatesAsync("123", null, null, null, handler), "UserTrade");

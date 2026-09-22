@@ -228,7 +228,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         Task<WebSocketResult<UpdateSubscription>> SubscribeToUserDataUpdatesAsync(
-            Action<DataEvent<ToobitAccountUpdate>>? onAccountMessage = null,
+            Action<DataEvent<ToobitAccountUpdate[]>>? onAccountMessage = null,
             Action<DataEvent<ToobitFuturesOrderUpdate[]>>? onOrderMessage = null,
             Action<DataEvent<ToobitPositionUpdate[]>>? onPositionMessage = null,
             Action<DataEvent<ToobitUserTradeUpdate[]>>? onUserTradeMessage = null,
@@ -252,7 +252,7 @@ namespace Toobit.Net.Interfaces.Clients.UsdtFuturesApi
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         Task<WebSocketResult<UpdateSubscription>> SubscribeToUserDataUpdatesAsync(
             string listenKey,
-            Action<DataEvent<ToobitAccountUpdate>>? onAccountMessage = null,
+            Action<DataEvent<ToobitAccountUpdate[]>>? onAccountMessage = null,
             Action<DataEvent<ToobitFuturesOrderUpdate[]>>? onOrderMessage = null,
             Action<DataEvent<ToobitPositionUpdate[]>>? onPositionMessage = null,
             Action<DataEvent<ToobitUserTradeUpdate[]>>? onUserTradeMessage = null,
