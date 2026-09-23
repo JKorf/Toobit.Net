@@ -23,6 +23,8 @@ namespace Toobit.Net.Clients.SpotApi
     internal partial class ToobitRestClientSpotApi : RestApiClient<ToobitEnvironment, ToobitAuthenticationProvider, ToobitCredentials>, IToobitRestClientSpotApi
     {
         #region fields 
+        private readonly ToobitRestClientSpotSharedApi _sharedApi;
+
         protected override ErrorMapping ErrorMapping => ToobitErrors.Errors;
         protected override IRestMessageHandler MessageHandler { get; } = new ToobitRestMessageHandler(ToobitErrors.Errors);
         #endregion
@@ -48,6 +50,8 @@ namespace Toobit.Net.Clients.SpotApi
             Account = new ToobitRestClientSpotApiAccount(this);
             ExchangeData = new ToobitRestClientSpotApiExchangeData(_logger, this);
             Trading = new ToobitRestClientSpotApiTrading(_logger, this);
+
+            _sharedApi = new ToobitRestClientSpotSharedApi(this);
         }
         #endregion
 
@@ -81,7 +85,9 @@ namespace Toobit.Net.Clients.SpotApi
             => ToobitExchange.FormatSymbol(baseAsset, quoteAsset, tradingMode, deliverDate);
 
         /// <inheritdoc />
-        public IToobitRestClientSpotApiShared SharedClient => this;
+        public IToobitRestClientSpotApiShared SharedClient => _sharedApi;
+        /// <inheritdoc />
+        public IToobitRestClientSpotSharedApi SharedApi => _sharedApi;
 
     }
 }

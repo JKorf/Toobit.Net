@@ -9,7 +9,7 @@ description: Use Toobit.Net when generating C#/.NET code that interacts with the
 
 If the user asks for Toobit API access in C#/.NET, use `Toobit.Net`. Do not write raw `HttpClient` calls to Toobit endpoints. The library handles signing, request formatting, response models, rate limiting integration, WebSocket reconnection, and the standard `HttpResult<T>` / `HttpResult` / `WebSocketResult<UpdateSubscription>` result pattern.
 
-For multi-exchange code, use `CryptoExchange.Net.SharedApis` through the `.SharedClient` properties. Use `.SharedClient.Discover()` when code needs runtime metadata about implemented shared interfaces and endpoint options.
+Use the exchange-level `IToobitSharedApiClient` aggregate's `GetCapability(...)` or `GetCapabilities(...)` methods for runtime capability lookup; use an API surface's `.SharedApi` property when the transport and API are known.
 
 ## Installation
 
@@ -150,14 +150,14 @@ Use shared interfaces for exchange-agnostic code:
 using CryptoExchange.Net.SharedApis;
 using Toobit.Net.Clients;
 
-var shared = new ToobitRestClient().SpotApi.SharedClient;
+var shared = new ToobitRestClient().SpotApi.SharedApi;
 var symbol = new SharedSymbol(TradingMode.Spot, "BTC", "USDT");
 
-var ticker = await shared.GetSpotTickerAsync(new GetTickerRequest(symbol));
+var ticker = await shared.GetTickerAsync(new GetTickerRequest(symbol));
 if (!ticker.Success) { Console.WriteLine(ticker.Error); return; }
 ```
 
-Toobit exposes shared REST clients for Spot and USDT futures and shared socket clients for Spot and USDT futures. Call `shared.Discover()` to inspect supported shared interfaces, request options, and subscription options at runtime. Shared Spot and futures symbol clients expose `SpotSymbolCatalog` / `FuturesSymbolCatalog` after the corresponding symbol call; `GetSymbolsRequest` supports base/quote asset type filters, and results include inactive symbols through their `Active` flag plus display names and asset type metadata.
+Use the exchange-level `IToobitSharedApiClient` aggregate's `GetCapability(...)` or `GetCapabilities(...)` methods for runtime capability lookup; use an API surface's `.SharedApi` property when the transport and API are known.
 
 ## Dependency Injection
 

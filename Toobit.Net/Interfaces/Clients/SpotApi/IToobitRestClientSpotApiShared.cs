@@ -22,4 +22,37 @@ namespace Toobit.Net.Interfaces.Clients.SpotApi
         ITransferRestClient
     {
     }
+
+    /// <summary>
+    /// Shared API interface. Shared APIs provide a common,
+    /// exchange-independent contract for accessing functionality across different
+    /// exchange client libraries.
+    /// </summary>
+    public interface IToobitRestClientSpotSharedApi :
+        IGetKlinesRest,
+        IGetSpotSymbolsRest,
+        IGetTickerRest,
+        IGetAllTickersRest,
+        IGetBookTickerRest,
+        IGetRecentTradesRest,
+        IGetOrderBookRest,
+        IGetBalancesRest,
+        IPlaceSpotOrderRest,
+        IGetSpotOrderRest,
+        IGetOpenSpotOrdersRest,
+        IGetClosedSpotOrdersRest,
+        IGetSpotOrderTradesRest,
+        IGetSpotUserTradeHistoryRest,
+        ICancelSpotOrderRest,
+        IGetSpotOrderByClientOrderIdRest,
+        ICancelSpotOrderByClientOrderIdRest,
+        IGetAssetRest,
+        IGetAllAssetsRest,
+        IGetDepositAddressesRest,
+        IGetDepositHistoryRest,
+        IGetWithdrawalHistoryRest,
+        IWithdrawRest,
+        ITransferRest
+    {
+    }
 }

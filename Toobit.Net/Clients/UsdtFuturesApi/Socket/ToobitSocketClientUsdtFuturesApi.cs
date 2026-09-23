@@ -22,24 +22,25 @@ using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Toobit.Net.Clients.MessageHandlers;
+using Toobit.Net.Clients.SpotApi;
 using Toobit.Net.Enums;
-using Toobit.Net.Interfaces.Clients.SpotApi;
+using Toobit.Net.Interfaces.Clients.UsdtFuturesApi;
 using Toobit.Net.Objects.Models;
 using Toobit.Net.Objects.Options;
 using Toobit.Net.Objects.Sockets;
 using Toobit.Net.Objects.Sockets.Subscriptions;
 
-namespace Toobit.Net.Clients.SpotApi
+namespace Toobit.Net.Clients.UsdtFuturesApi
 {
     /// <summary>
-    /// Client providing access to the Toobit Spot websocket Api
+    /// Client providing access to the Toobit UsdtFutures websocket Api
     /// </summary>
-    internal partial class ToobitSocketClientSpotApi : SocketApiClient<ToobitEnvironment, ToobitAuthenticationProvider, ToobitCredentials>, IToobitSocketClientSpotApi
+    internal partial class ToobitSocketClientUsdtFuturesApi : SocketApiClient<ToobitEnvironment, ToobitAuthenticationProvider, ToobitCredentials>, IToobitSocketClientUsdtFuturesApi
     {
         #region fields
-        private readonly TimeSpan _waitForErrorTimeout;
+        private readonly ToobitSocketClientUsdtFuturesSharedApi _sharedApi;
 
-        protected override ErrorMapping ErrorMapping => ToobitErrors.Errors;
+        private readonly TimeSpan _waitForErrorTimeout;
         private readonly ILoggerFactory? _loggerFactory;
         private ToobitRestClient? _tokenClient;
         internal TokenManager TokenManager { get; }
@@ -68,11 +69,13 @@ namespace Toobit.Net.Clients.SpotApi
         /// <summary>
         /// ctor
         /// </summary>
-        internal ToobitSocketClientSpotApi(ILoggerFactory? loggerFactory, ToobitSocketOptions options) :
-            base(loggerFactory, ToobitExchange.Metadata.Id, options.Environment.SocketClientAddress!, options, options.SpotOptions)
+        internal ToobitSocketClientUsdtFuturesApi(ILoggerFactory? loggerFactory, ToobitSocketOptions options) :
+            base(loggerFactory, ToobitExchange.Metadata.Id, options.Environment.SocketClientAddress!, options, options.UsdtFuturesOptions)
         {
             _loggerFactory = loggerFactory;
             _waitForErrorTimeout = options.SubscribeMaxWaitForError;
+
+            _sharedApi = new ToobitSocketClientUsdtFuturesSharedApi(this);
 
             RegisterPeriodicQuery("Ping",
                 TimeSpan.FromSeconds(30),
@@ -90,7 +93,6 @@ namespace Toobit.Net.Clients.SpotApi
             AddSystemSubscription(new ToobitPingSubscription(_logger));
 
             RateLimiter = ToobitExchange.RateLimiter.ToobitSocket;
-
             TokenManager = new TokenManager(
                 ToobitExchange.Metadata.Id,
                 loggerFactory,
@@ -104,12 +106,16 @@ namespace Toobit.Net.Clients.SpotApi
 
         /// <inheritdoc />
         protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(ToobitExchange._serializerContext));
-
         public override ISocketMessageHandler CreateMessageConverter(WebSocketMessageType messageType) => new ToobitSocketFuturesMessageHandler();
 
         /// <inheritdoc />
         protected override ToobitAuthenticationProvider CreateAuthenticationProvider(ToobitCredentials credentials)
             => new ToobitAuthenticationProvider(credentials);
+
+        /// <inheritdoc />
+        public IToobitSocketClientUsdtFuturesApiShared SharedClient => _sharedApi;
+        /// <inheritdoc />
+        public IToobitSocketClientUsdtFuturesSharedApi SharedApi => _sharedApi;
 
         /// <inheritdoc />
         public Task<WebSocketResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<ToobitTradeUpdate[]>> onMessage, CancellationToken ct = default)
@@ -135,32 +141,27 @@ namespace Toobit.Net.Clients.SpotApi
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
         }
 
-        /// <inheritdoc />
-        public Task<WebSocketResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(string symbol, Action<DataEvent<ToobitTickerUpdate>> onMessage, CancellationToken ct = default)
-            => SubscribeToTickerUpdatesAsync([symbol], onMessage, ct);
+        ///// <inheritdoc />
+        //public Task<CallResult<UpdateSubscription>> SubscribeToMarkPriceUpdatesAsync(string symbol, Action<DataEvent<ToobitMarkPriceUpdate>> onMessage, CancellationToken ct = default)
+        //    => SubscribeToMarkPriceUpdatesAsync([symbol], onMessage, ct);
 
-        /// <inheritdoc />
-        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitTickerUpdate>> onMessage, CancellationToken ct = default)
-        {
-            var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitTickerUpdate[]>>((receiveTime, originalData, data) =>
-            {
-                UpdateTimeOffset(data.SendTime);
+        ///// <inheritdoc />
+        //public async Task<CallResult<UpdateSubscription>> SubscribeToMarkPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitMarkPriceUpdate>> onMessage, CancellationToken ct = default)
+        //{
+        //    var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitTradeUpdate[]>>((receiveTime, originalData, data) =>
+        //    {
+        //        onMessage(
+        //            new DataEvent<ToobitTradeUpdate[]>(data.Data, receiveTime, originalData)
+        //                .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
+        //                .WithDataTimestamp(data.SendTime)
+        //                .WithStreamId(data.Topic)
+        //                .WithSymbol(data.Symbol)
+        //            );
+        //    });
 
-                if (data.Data.Length > 0)
-                {
-                    onMessage(
-                        new DataEvent<ToobitTickerUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
-                            .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                            .WithDataTimestamp(data.SendTime, GetTimeOffset())
-                            .WithStreamId(data.Topic)
-                            .WithSymbol(data.Symbol)
-                        );
-                }
-            });
-
-            var subscription = new ToobitSubscription<ToobitTickerUpdate[]>(_logger, this, symbols.ToArray(), "realtimes", null, internalHandler, false, _waitForErrorTimeout);
-            return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
-        }
+        //    var subscription = new ToobitMarkPriceSubscription(_logger, this, symbols.ToArray(), onMessage, false, _waitForErrorTimeout);
+        //    return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
+        //}
 
         /// <inheritdoc />
         public Task<WebSocketResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(string symbol, KlineInterval interval, Action<DataEvent<ToobitKlineUpdate>> onMessage, CancellationToken ct = default)
@@ -243,20 +244,74 @@ namespace Toobit.Net.Clients.SpotApi
             return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
         }
 
+        /// <inheritdoc />
+        public Task<WebSocketResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(string symbol, Action<DataEvent<ToobitTickerUpdate>> onMessage, CancellationToken ct = default)
+            => SubscribeToTickerUpdatesAsync([symbol], onMessage, ct);
+
+        /// <inheritdoc />
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitTickerUpdate>> onMessage, CancellationToken ct = default)
+        {
+            var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitTickerUpdate[]>>((receiveTime, originalData, data) =>
+            {
+                UpdateTimeOffset(data.SendTime);
+
+                if (data.Data.Length > 0)
+                {
+                    onMessage(
+                        new DataEvent<ToobitTickerUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
+                            .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
+                            .WithDataTimestamp(data.SendTime, GetTimeOffset())
+                            .WithStreamId(data.Topic)
+                            .WithSymbol(data.Symbol)
+                        );
+                }
+            });
+
+            var subscription = new ToobitSubscription<ToobitTickerUpdate[]>(_logger, this, symbols.ToArray(), "realtimes", null, internalHandler, false, _waitForErrorTimeout);
+            return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public Task<WebSocketResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(string symbol, Action<DataEvent<ToobitIndexUpdate>> onMessage, CancellationToken ct = default)
+            => SubscribeToIndexPriceUpdatesAsync([symbol], onMessage, ct);
+
+        /// <inheritdoc />
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<ToobitIndexUpdate>> onMessage, CancellationToken ct = default)
+        {
+            var internalHandler = new Action<DateTime, string?, SocketUpdate<ToobitIndexUpdate[]>>((receiveTime, originalData, data) =>
+            {
+                UpdateTimeOffset(data.SendTime);
+
+                if (data.Data.Length > 0)
+                {
+                    onMessage(
+                        new DataEvent<ToobitIndexUpdate>(ToobitExchange.ExchangeName, data.Data.First(), receiveTime, originalData)
+                            .WithUpdateType(data.First ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
+                            .WithDataTimestamp(data.SendTime, GetTimeOffset())
+                            .WithStreamId(data.Topic)
+                            .WithSymbol(data.Symbol)
+                        );
+                }
+            });
+            var subscription = new ToobitSubscription<ToobitIndexUpdate[]>(_logger, this, symbols.ToArray(), "index", null, internalHandler, false, _waitForErrorTimeout);
+            return await SubscribeAsync(BaseAddress.AppendPath("/quote/ws/v1"), subscription, ct).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         public Task<WebSocketResult<UpdateSubscription>> SubscribeToUserDataUpdatesAsync(
-            Action<DataEvent<ToobitAccountUpdate>>? onAccountMessage = null,
-            Action<DataEvent<ToobitOrderUpdate[]>>? onOrderMessage = null,
+            Action<DataEvent<ToobitAccountUpdate[]>>? onAccountMessage = null,
+            Action<DataEvent<ToobitFuturesOrderUpdate[]>>? onOrderMessage = null,
+            Action<DataEvent<ToobitPositionUpdate[]>>? onPositionMessage = null,
             Action<DataEvent<ToobitUserTradeUpdate[]>>? onUserTradeMessage = null,
             CancellationToken ct = default)
-            => SubscribeToUserDataUpdatesAsync(null, onAccountMessage, onOrderMessage, onUserTradeMessage, ct);
+            => SubscribeToUserDataUpdatesAsync(null, onAccountMessage, onOrderMessage, onPositionMessage, onUserTradeMessage, ct);
 
         /// <inheritdoc />
         public async Task<WebSocketResult<UpdateSubscription>> SubscribeToUserDataUpdatesAsync(
             string? listenKey,
-            Action<DataEvent<ToobitAccountUpdate>>? onAccountMessage = null,
-            Action<DataEvent<ToobitOrderUpdate[]>>? onOrderMessage = null,
+            Action<DataEvent<ToobitAccountUpdate[]>>? onAccountMessage = null,
+            Action<DataEvent<ToobitFuturesOrderUpdate[]>>? onOrderMessage = null,
+            Action<DataEvent<ToobitPositionUpdate[]>>? onPositionMessage = null,
             Action<DataEvent<ToobitUserTradeUpdate[]>>? onUserTradeMessage = null,
             CancellationToken ct = default)
         {
@@ -279,7 +334,7 @@ namespace Toobit.Net.Clients.SpotApi
 
             var lk = listenKey ?? lease!.Token.Token;
 
-            var subscription = new ToobitUserDataSubscription(_logger, this, onAccountMessage, onOrderMessage, onUserTradeMessage)
+            var subscription = new ToobitFuturesUserDataSubscription(_logger, this, onAccountMessage, onOrderMessage, onPositionMessage, onUserTradeMessage)
             {
                 TokenLease = lease
             };
@@ -287,12 +342,8 @@ namespace Toobit.Net.Clients.SpotApi
         }
 
         /// <inheritdoc />
-        public IToobitSocketClientSpotApiShared SharedClient => this;
-
-        /// <inheritdoc />
         public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverDate = null)
             => ToobitExchange.FormatSymbol(baseAsset, quoteAsset, tradingMode, deliverDate);
-
 
         protected override async Task<Uri?> GetReconnectUriAsync(ISocketConnection connection)
         {
@@ -317,7 +368,7 @@ namespace Toobit.Net.Clients.SpotApi
 
         private async Task<CallResult<string>> StartListenKeyAsync(TokenScope tokenScope, CancellationToken ct)
         {
-            var result = await TokenClient.SpotApi.Account.StartUserStreamAsync(ct).ConfigureAwait(false);
+            var result = await TokenClient.UsdtFuturesApi.Account.StartUserStreamAsync(ct).ConfigureAwait(false);
             if (!result.Success)
                 return CallResult.Fail<string>(result.Error);
 
@@ -326,7 +377,7 @@ namespace Toobit.Net.Clients.SpotApi
 
         private async Task<CallResult> KeepAliveListenKeyAsync(TokenInfo token, CancellationToken ct)
         {
-            var result = await TokenClient.SpotApi.Account.KeepAliveUserStreamAsync(token.Token, ct).ConfigureAwait(false);
+            var result = await TokenClient.UsdtFuturesApi.Account.KeepAliveUserStreamAsync(token.Token, ct).ConfigureAwait(false);
             if (!result.Success)
                 return CallResult.Fail<string>(result.Error);
 
@@ -335,7 +386,7 @@ namespace Toobit.Net.Clients.SpotApi
 
         private async Task<CallResult> StopListenKeyAsync(TokenInfo token, CancellationToken ct)
         {
-            var result = await TokenClient.SpotApi.Account.StopUserStreamAsync(token.Token, ct).ConfigureAwait(false);
+            var result = await TokenClient.UsdtFuturesApi.Account.StopUserStreamAsync(token.Token, ct).ConfigureAwait(false);
             if (!result.Success)
                 return CallResult.Fail<string>(result.Error);
 
