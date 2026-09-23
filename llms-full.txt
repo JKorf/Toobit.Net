@@ -30,7 +30,7 @@ Primary documentation:
 - Store WebSocket subscriptions and unsubscribe during shutdown.
 - Do not call `.Result` or `.Wait()` on async methods.
 - Do not invent endpoint names. If unsure, inspect `Toobit.Net/Interfaces/Clients/**`.
-- For multi-exchange code, use `CryptoExchange.Net.SharedApis` interfaces from each exchange's `.SharedClient`; use `.SharedClient.Discover()` to inspect implemented shared interfaces and endpoint/subscription options at runtime.
+- Use the exchange-level `IToobitSharedApiClient` aggregate's `GetCapability(...)` or `GetCapabilities(...)` methods for runtime capability lookup; use an API surface's `.SharedApi` property when the transport and API are known.
 - Use Toobit futures contract symbols such as `ETH-SWAP-USDT` for USDT futures trading examples.
 - Use `UsdtFuturesApi`, not `UsdFuturesApi`.
 - Toobit.Net has no top-level `GeneralApi`, `CoinFuturesApi`, margin API, options API, brokerage API, earn API, loan API, or NFT API.
@@ -162,7 +162,7 @@ Interface namespace:
 using Toobit.Net.Interfaces.Clients;
 ```
 
-DI registers shared REST/socket interfaces for both Spot and USDT futures through the `.SharedClient` properties.
+DI registers shared REST/socket interfaces for both Spot and USDT futures through the `.SharedApi` properties.
 
 ## Result Handling Pattern
 
@@ -215,12 +215,12 @@ ToobitRestClient
     .ExchangeData
     .Account
     .Trading
-    .SharedClient
+    .SharedApi
   .UsdtFuturesApi
     .ExchangeData
     .Account
     .Trading
-    .SharedClient
+    .SharedApi
 ```
 
 WebSocket:
@@ -230,11 +230,11 @@ ToobitSocketClient
   .SpotApi
     public market subscriptions
     user data subscriptions
-    .SharedClient
+    .SharedApi
   .UsdtFuturesApi
     public market subscriptions
     user data subscriptions
-    .SharedClient
+    .SharedApi
 ```
 
 Important: Toobit.Net does not expose Binance-style `GeneralApi`, `UsdFuturesApi`, `CoinFuturesApi`, or `SpotApi.ExchangeData.GetTickerAsync`. Use the actual Toobit branches and method names.
@@ -687,10 +687,10 @@ Use CryptoExchange.Net.SharedApis when the user asks for code that can work agai
 using Toobit.Net.Clients;
 using CryptoExchange.Net.SharedApis;
 
-ISpotTickerRestClient tickerClient = new ToobitRestClient().SpotApi.SharedClient;
+IGetTickerRest tickerClient = new ToobitRestClient().SpotApi.SharedApi;
 var symbol = new SharedSymbol(TradingMode.Spot, "BTC", "USDT");
 
-var ticker = await tickerClient.GetSpotTickerAsync(new GetTickerRequest(symbol));
+var ticker = await tickerClient.GetTickerAsync(new GetTickerRequest(symbol));
 if (!ticker.Success)
 {
     Console.WriteLine(ticker.Error);
@@ -703,22 +703,21 @@ Console.WriteLine(ticker.Data.LastPrice);
 Shared REST clients:
 
 ```csharp
-var spotRestShared = new ToobitRestClient().SpotApi.SharedClient;
-var futuresRestShared = new ToobitRestClient().UsdtFuturesApi.SharedClient;
+var spotRestShared = new ToobitRestClient().SpotApi.SharedApi;
+var futuresRestShared = new ToobitRestClient().UsdtFuturesApi.SharedApi;
 ```
 
 Shared socket clients:
 
 ```csharp
-var spotSocketShared = new ToobitSocketClient().SpotApi.SharedClient;
-var futuresSocketShared = new ToobitSocketClient().UsdtFuturesApi.SharedClient;
+var spotSocketShared = new ToobitSocketClient().SpotApi.SharedApi;
+var futuresSocketShared = new ToobitSocketClient().UsdtFuturesApi.SharedApi;
 ```
 
-Shared clients expose `Discover()` for runtime metadata about implemented shared interfaces, supported request options, and supported subscription options.
+Use the exchange-level `IToobitSharedApiClient` aggregate's `GetCapability(...)` or `GetCapabilities(...)` methods for runtime capability lookup; use an API surface's `.SharedApi` property when the transport and API are known.
 
 ```csharp
-var info = spotRestShared.Discover();
-Console.WriteLine(string.Join(", ", info.Features.Where(x => x.Supported).Select(x => x.EndpointName)));
+// Use the exchange-level `IToobitSharedApiClient` aggregate's `GetCapability(...)` or `GetCapabilities(...)` methods for runtime capability lookup; use an API surface's `.SharedApi` property when the transport and API are known.
 ```
 
 Shared Spot and futures symbol clients expose catalogs and enriched symbol metadata:
@@ -743,7 +742,7 @@ Shared REST methods return `HttpResult<T>` or `HttpResult`. Shared symbol/cache 
 
 ```csharp
 var socketClient = new ToobitSocketClient();
-ITickerSocketClient tickerSocket = socketClient.SpotApi.SharedClient;
+ISubscribeTickerSocket tickerSocket = socketClient.SpotApi.SharedApi;
 
 var sub = await tickerSocket.SubscribeToTickerUpdatesAsync(
     new SubscribeTickerRequest(new SharedSymbol(TradingMode.Spot, "BTC", "USDT")),
@@ -760,74 +759,72 @@ Console.ReadLine();
 await socketClient.UnsubscribeAsync(sub.Data);
 ```
 
-Do not call `tickerSocket.UnsubscribeAsync(...)` on `ITickerSocketClient`; that shared interface does not expose the method.
+Do not call `tickerSocket.UnsubscribeAsync(...)` on `ISubscribeTickerSocket`; that shared interface does not expose the method.
 
 ## Shared Interface Coverage
 
 Spot REST shared client implements:
 
 ```text
-IKlineRestClient
-ISpotSymbolRestClient
-ISpotTickerRestClient
-IBookTickerRestClient
-IRecentTradeRestClient
-IOrderBookRestClient
-IBalanceRestClient
-ISpotOrderRestClient
-ISpotOrderClientIdRestClient
-IAssetsRestClient
-IDepositRestClient
-IWithdrawalRestClient
-IWithdrawRestClient
-IListenKeyRestClient
-ITransferRestClient
+IGetKlinesRest
+IGetSpotSymbolsRest
+IGetTickerRest
+IGetBookTickerRest
+IGetRecentTradesRest
+IGetOrderBookRest
+IGetBalancesRest
+IPlaceSpotOrderRest
+IGetSpotOrderByClientOrderIdRest
+IGetAllAssetsRest
+IGetDepositHistoryRest
+IGetWithdrawalHistoryRest
+IWithdrawRest
+ITransferRest
 ```
 
 USDT futures REST shared client implements:
 
 ```text
-IKlineRestClient
-IMarkPriceKlineRestClient
-IIndexPriceKlineRestClient
-IFuturesSymbolRestClient
-IFuturesTickerRestClient
-IBookTickerRestClient
-IRecentTradeRestClient
-IFuturesOrderRestClient
-IFuturesOrderClientIdRestClient
-ILeverageRestClient
-IOrderBookRestClient
-IFundingRateRestClient
-IBalanceRestClient
-IListenKeyRestClient
-IFeeRestClient
-IFuturesTriggerOrderRestClient
+IGetKlinesRest
+IGetMarkPriceKlinesRest
+IGetIndexPriceKlinesRest
+IGetFuturesSymbolsRest
+IGetTickerRest
+IGetBookTickerRest
+IGetRecentTradesRest
+IPlaceFuturesOrderRest
+IGetFuturesOrderByClientOrderIdRest
+ISetLeverageRest
+IGetOrderBookRest
+IGetFundingRateHistoryRest
+IGetBalancesRest
+IGetFeesRest
+IPlaceFuturesTriggerOrderRest
 ```
 
 Spot socket shared client implements:
 
 ```text
-ITickerSocketClient
-ITradeSocketClient
-IKlineSocketClient
-IOrderBookSocketClient
-IBalanceSocketClient
-ISpotOrderSocketClient
-IUserTradeSocketClient
+ISubscribeTickerSocket
+ISubscribeTradesSocket
+ISubscribeKlinesSocket
+ISubscribeOrderBookSocket
+ISubscribeBalancesSocket
+ISubscribeSpotOrdersSocket
+ISubscribeUserTradesSocket
 ```
 
 USDT futures socket shared client implements:
 
 ```text
-ITickerSocketClient
-ITradeSocketClient
-IBalanceSocketClient
-IKlineSocketClient
-IOrderBookSocketClient
-IFuturesOrderSocketClient
-IPositionSocketClient
-IUserTradeSocketClient
+ISubscribeTickerSocket
+ISubscribeTradesSocket
+ISubscribeBalancesSocket
+ISubscribeKlinesSocket
+ISubscribeOrderBookSocket
+ISubscribeFuturesOrdersSocket
+ISubscribePositionsSocket
+ISubscribeUserTradesSocket
 ```
 
 ## Symbol And Filter Handling

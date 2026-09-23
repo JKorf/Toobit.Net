@@ -129,22 +129,22 @@ Use SharedApis for exchange-agnostic code across Toobit and other CryptoExchange
 
 | User intent | Toobit.Net member or interface |
 |---|---|
-| Shared spot REST client | `new ToobitRestClient().SpotApi.SharedClient` |
-| Shared USDT futures REST client | `new ToobitRestClient().UsdtFuturesApi.SharedClient` |
-| Shared spot socket client | `new ToobitSocketClient().SpotApi.SharedClient` |
-| Shared USDT futures socket client | `new ToobitSocketClient().UsdtFuturesApi.SharedClient` |
-| Discover shared capabilities | `client.SpotApi.SharedClient.Discover()` |
-| Shared Spot symbol catalog | `client.SpotApi.SharedClient.SpotSymbolCatalog` |
-| Shared futures symbol catalog | `client.UsdtFuturesApi.SharedClient.FuturesSymbolCatalog` |
-| Get enriched shared Spot symbols | `ISpotSymbolRestClient.GetSpotSymbolsAsync(new GetSymbolsRequest())` |
-| Get enriched shared futures symbols | `IFuturesSymbolRestClient.GetFuturesSymbolsAsync(new GetSymbolsRequest())` |
+| Shared spot REST client | `new ToobitRestClient().SpotApi.SharedApi` |
+| Shared USDT futures REST client | `new ToobitRestClient().UsdtFuturesApi.SharedApi` |
+| Shared spot socket client | `new ToobitSocketClient().SpotApi.SharedApi` |
+| Shared USDT futures socket client | `new ToobitSocketClient().UsdtFuturesApi.SharedApi` |
+| Resolve a runtime-selected Shared API capability | `IToobitSharedApiClient.GetCapability(...)` |
+| Shared Spot symbol catalog | `client.SpotApi.SharedApi.SpotSymbolCatalog` |
+| Shared futures symbol catalog | `client.UsdtFuturesApi.SharedApi.FuturesSymbolCatalog` |
+| Get enriched shared Spot symbols | `IGetSpotSymbolsRest.GetSpotSymbolsAsync(new GetSymbolsRequest())` |
+| Get enriched shared futures symbols | `IGetFuturesSymbolsRest.GetFuturesSymbolsAsync(new GetSymbolsRequest())` |
 | Filter shared symbols by asset class | `new GetSymbolsRequest(baseAssetType: SharedAssetType.TradFi, baseAssetSubType: SharedAssetSubType.Equity)` |
-| Shared spot ticker REST | `ISpotTickerRestClient.GetSpotTickerAsync(new GetTickerRequest(symbol))` |
-| Shared spot order REST | `ISpotOrderRestClient.PlaceSpotOrderAsync(...)` |
-| Shared futures order REST | `IFuturesOrderRestClient.PlaceFuturesOrderAsync(...)` |
-| Shared balance REST | `IBalanceRestClient.GetBalancesAsync(...)` |
-| Shared ticker socket | `ITickerSocketClient.SubscribeToTickerUpdatesAsync(...)` |
-| Shared order book socket | `IOrderBookSocketClient.SubscribeToOrderBookUpdatesAsync(...)` |
+| Shared spot ticker REST | `IGetTickerRest.GetTickerAsync(new GetTickerRequest(symbol))` |
+| Shared spot order REST | `IPlaceSpotOrderRest.PlaceSpotOrderAsync(...)` |
+| Shared futures order REST | `IPlaceFuturesOrderRest.PlaceFuturesOrderAsync(...)` |
+| Shared balance REST | `IGetBalancesRest.GetBalancesAsync(...)` |
+| Shared ticker socket | `ISubscribeTickerSocket.SubscribeToTickerUpdatesAsync(...)` |
+| Shared order book socket | `ISubscribeOrderBookSocket.SubscribeToOrderBookUpdatesAsync(...)` |
 
 Shared REST methods return `HttpResult<T>` or `HttpResult`. Shared socket subscriptions return `WebSocketResult<UpdateSubscription>`. Shared symbol/cache helper methods can return `ExchangeCallResult<T>`.
 
@@ -176,5 +176,5 @@ For shared socket subscriptions, keep the concrete socket client and unsubscribe
 | `SpotApi.ExchangeData.GetPriceAsync(...)` | `SpotApi.ExchangeData.GetPricesAsync(...)` |
 | Binance futures symbol `ETHUSDT` | Toobit futures symbol `ETH-SWAP-USDT` |
 | `.Data` without `.Success` check | Check `.Success` first |
-| `ITickerSocketClient.UnsubscribeAsync(...)` | Keep the concrete socket client and call `socketClient.UnsubscribeAsync(subscription.Data)` |
+| Unsubscribe from a shared subscription | Keep the concrete socket client and call `socketClient.UnsubscribeAsync(subscription.Data)` |
 | Testnet environment | `ToobitEnvironment.Live` or `ToobitEnvironment.CreateCustom(...)` |

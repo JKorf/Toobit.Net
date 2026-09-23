@@ -40,7 +40,7 @@ var price = tickers.Data.Single().LastPrice;
 - `restClient.UsdtFuturesApi.{ExchangeData|Account|Trading}`
 - `socketClient.SpotApi` for spot WebSocket subscriptions
 - `socketClient.UsdtFuturesApi` for USDT futures WebSocket subscriptions
-- `.SharedClient` on each API root for CryptoExchange.Net SharedApis
+- `.SharedApi` on each API root for CryptoExchange.Net SharedApis
 
 ## Order Placement
 
@@ -80,13 +80,13 @@ await socketClient.UnsubscribeAsync(sub.Data);
 
 ## Multi-Exchange Code
 
-For exchange-agnostic code, use `CryptoExchange.Net.SharedApis` from `.SharedClient`.
+For exchange-agnostic code, use `CryptoExchange.Net.SharedApis` from `.SharedApi`.
 
 ```csharp
 using CryptoExchange.Net.SharedApis;
 
-var shared = new ToobitRestClient().SpotApi.SharedClient;
-var ticker = await shared.GetSpotTickerAsync(
+var shared = new ToobitRestClient().SpotApi.SharedApi;
+var ticker = await shared.GetTickerAsync(
     new GetTickerRequest(new SharedSymbol(TradingMode.Spot, "BTC", "USDT")));
 ```
 

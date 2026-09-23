@@ -82,13 +82,13 @@ Authenticated user streams require a listen key from `StartUserStreamAsync`.
 
 ## Cross-Exchange
 
-For exchange-agnostic code, use `CryptoExchange.Net.SharedApis` from `.SharedClient`:
+For exchange-agnostic code, use `CryptoExchange.Net.SharedApis` from `.SharedApi`:
 
 ```csharp
 using CryptoExchange.Net.SharedApis;
 
-var shared = new ToobitRestClient().SpotApi.SharedClient;
-var ticker = await shared.GetSpotTickerAsync(
+var shared = new ToobitRestClient().SpotApi.SharedApi;
+var ticker = await shared.GetTickerAsync(
     new GetTickerRequest(new SharedSymbol(TradingMode.Spot, "BTC", "USDT")));
 ```
 
