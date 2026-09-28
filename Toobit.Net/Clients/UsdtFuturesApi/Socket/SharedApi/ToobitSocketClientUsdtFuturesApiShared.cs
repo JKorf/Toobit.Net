@@ -47,5 +47,7 @@ namespace Toobit.Net.Clients.UsdtFuturesApi
                 );
         }
 
+        /// <inheritdoc />
+        public Task UnsubscribeAllAsync() => _api.UnsubscribeAllAsync();
     }
 }
