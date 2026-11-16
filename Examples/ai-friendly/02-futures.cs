@@ -9,7 +9,7 @@ using Toobit.Net;
 using Toobit.Net.Clients;
 using Toobit.Net.Enums;
 
-var client = new ToobitRestClient(options =>
+using var client = new ToobitRestClient(options =>
 {
     options.ApiCredentials = new ToobitCredentials("API_KEY", "API_SECRET");
 });
@@ -37,7 +37,7 @@ if (!orderResult.Success)
     return;
 }
 
-Console.WriteLine($"Opened futures order id: {orderResult.Data.OrderId}");
+Console.WriteLine($"Submitted futures order id: {orderResult.Data.OrderId}");
 
 var positionsResult = await client.UsdtFuturesApi.Trading.GetPositionsAsync(symbol);
 if (!positionsResult.Success)

@@ -97,24 +97,12 @@ var tickerSubscriptionResult = socketClient.SpotApi.SubscribeToTickerUpdatesAsyn
 
 For more examples and explanations, continue with the [Toobit.Net documentation](https://cryptoexchange.jkorf.dev/docs/exchange-clients?library=Toobit.Net) or browse the [compilable repository examples](https://github.com/JKorf/Toobit.Net/tree/main/Examples).
 
-## For AI Coding Assistants
+## AI / LLM documentation
 
-This library provides first-class support for AI coding assistants. The relevant instruction and context files are in this repository:
-
-- **Agents**: `AGENTS.md` (auto-detected at repo root)
-- **Cursor**: `.cursor/rules/toobit-net.mdc`
-- **GitHub Copilot**: `.github/copilot-instructions.md`
-- **Other tools** (Windsurf, Codex, Continue, Aider, etc.): `llms.txt` at repo root
-- **Full LLM context**: `llms-full.txt`
-- **API quick map**: `docs/ai-api-map.md`
-- **Compilable examples**: `Examples/ai-friendly/`
-
-**Quick prompt to verify your assistant is using these:**
-> "Show me a minimal example of placing a limit buy order on Toobit Spot using Toobit.Net, including authentication setup."
-
-The expected output should use `ToobitRestClient`, `ToobitCredentials`, and the `HttpResult` pattern.
-
-See [cryptoexchange-skills-hub](https://github.com/JKorf/cryptoexchange-skills-hub) for installable skills.
+- [Consumer skill](.claude/skills/toobit-net/SKILL.md): library usage and API references.
+- [Repository development](AGENTS.md): implementation and validation instructions.
+- [Documentation index](llms.txt): local discovery links.
+- [Compilable examples](Examples/ai-friendly/): complete consumer programs.
 
 ## Shared / unified API
 

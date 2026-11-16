@@ -1,47 +1,52 @@
-// 04-multi-exchange.cs
-//
-// Demonstrates: writing exchange-agnostic code using CryptoExchange.Net.SharedApis.
-// The same pattern works against other CryptoExchange.Net exchange libraries.
-//
+// Demonstrates portable REST and socket ticker capabilities through Shared API V2.
 // Setup: dotnet add package Toobit.Net
 
-using CryptoExchange.Net.SharedApis;
 using Toobit.Net.Clients;
+using CryptoExchange.Net.SharedApis;
 
-ISpotTickerRestClient toobitShared = new ToobitRestClient().SpotApi.SharedClient;
+using var restClient = new ToobitRestClient();
+IGetTickerRest ticker = restClient.SpotApi.SharedApi;
+var symbol = new SharedSymbol(TradingMode.Spot, "BTC", "USDT");
+await PrintTickerAsync(ticker, symbol);
 
-var btcusdt = new SharedSymbol(TradingMode.Spot, "BTC", "USDT");
-
-// Use Discover() when you need runtime capability and option metadata.
-var capabilities = toobitShared.Discover();
-Console.WriteLine($"Shared features: {capabilities.Features.Count(x => x.Supported)}");
-
-await PrintTicker(toobitShared, btcusdt);
-
-async Task PrintTicker(ISpotTickerRestClient client, SharedSymbol symbol)
+IGetSpotSymbolsRest symbolsClient = restClient.SpotApi.SharedApi;
+var symbols = await symbolsClient.GetSpotSymbolsAsync(new GetSymbolsRequest());
+if (!symbols.Success)
 {
-    var result = await client.GetSpotTickerAsync(new GetTickerRequest(symbol));
-    if (!result.Success)
-    {
-        Console.WriteLine($"[{client.Exchange}] Failed: {result.Error}");
-        return;
-    }
-
-    Console.WriteLine($"[{client.Exchange}] {result.Data.Symbol}: {result.Data.LastPrice}");
-}
-
-var socketClient = new ToobitSocketClient();
-ITickerSocketClient tickerSocket = socketClient.SpotApi.SharedClient;
-
-// Shared socket subscriptions return WebSocketResult<UpdateSubscription>.
-var sub = await tickerSocket.SubscribeToTickerUpdatesAsync(
-    new SubscribeTickerRequest(btcusdt),
-    update => Console.WriteLine($"[{tickerSocket.Exchange}] {update.Data.Symbol}: {update.Data.LastPrice}"));
-
-if (!sub.Success)
-{
-    Console.WriteLine($"Subscribe failed: {sub.Error}");
+    Console.WriteLine(symbols.Error);
     return;
 }
+foreach (var item in symbols.Data.Take(5))
+    Console.WriteLine($"{item.Name}: {item.BaseAsset}/{item.QuoteAsset}");
+var catalog = symbolsClient.SpotSymbolCatalog;
 
-await socketClient.UnsubscribeAsync(sub.Data);
+using var socketClient = new ToobitSocketClient();
+ISubscribeTickerSocket tickerSocket = socketClient.SpotApi.SharedApi;
+var subscription = await tickerSocket.SubscribeToTickerUpdatesAsync(
+    new SubscribeTickerRequest(symbol),
+    update => Console.WriteLine(update.Data.LastPrice));
+if (!subscription.Success)
+{
+    Console.WriteLine(subscription.Error);
+    return;
+}
+try
+{
+    await Task.Delay(TimeSpan.FromSeconds(30));
+}
+finally
+{
+    await socketClient.UnsubscribeAsync(subscription.Data);
+}
+
+// Another exchange can supply IGetTickerRest without changing this function.
+static async Task PrintTickerAsync(IGetTickerRest client, SharedSymbol symbol)
+{
+    var result = await client.GetTickerAsync(new GetTickerRequest(symbol));
+    if (!result.Success)
+    {
+        Console.WriteLine(result.Error);
+        return;
+    }
+    Console.WriteLine($"{result.Data.Symbol}: {result.Data.LastPrice}");
+}

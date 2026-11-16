@@ -10,7 +10,7 @@ using Toobit.Net;
 using Toobit.Net.Clients;
 using Toobit.Net.Enums;
 
-var client = new ToobitRestClient(options =>
+using var client = new ToobitRestClient(options =>
 {
     options.ApiCredentials = new ToobitCredentials("API_KEY", "API_SECRET");
 });
@@ -29,6 +29,7 @@ else
     Console.WriteLine($"Transient: {result.Error?.IsTransient}");
 }
 
+// Public reads only: reconcile uncertain account changes before resubmitting.
 async Task<HttpResult<T>> WithRetry<T>(
     Func<Task<HttpResult<T>>> call,
     int maxAttempts = 3)

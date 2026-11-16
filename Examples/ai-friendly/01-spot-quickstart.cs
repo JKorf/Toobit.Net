@@ -9,7 +9,7 @@ using Toobit.Net;
 using Toobit.Net.Clients;
 using Toobit.Net.Enums;
 
-var publicClient = new ToobitRestClient();
+using var publicClient = new ToobitRestClient();
 
 // Public market data does not require API credentials.
 var tickerResult = await publicClient.SpotApi.ExchangeData.GetTickersAsync("BTCUSDT");
@@ -23,7 +23,7 @@ var ticker = tickerResult.Data.Single();
 Console.WriteLine($"{ticker.Symbol} last price: {ticker.LastPrice}");
 
 // Private endpoints require ToobitCredentials.
-var restClient = new ToobitRestClient(options =>
+using var restClient = new ToobitRestClient(options =>
 {
     options.ApiCredentials = new ToobitCredentials("API_KEY", "API_SECRET");
 });

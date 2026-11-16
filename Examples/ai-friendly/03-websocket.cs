@@ -9,7 +9,7 @@ using Toobit.Net;
 using Toobit.Net.Clients;
 using Toobit.Net.Enums;
 
-var socketClient = new ToobitSocketClient();
+using var socketClient = new ToobitSocketClient();
 
 var tickerSub = await socketClient.SpotApi.SubscribeToTickerUpdatesAsync(
     "BTCUSDT",
@@ -33,7 +33,7 @@ if (!klineSub.Success)
     return;
 }
 
-var restClient = new ToobitRestClient(options =>
+using var restClient = new ToobitRestClient(options =>
 {
     options.ApiCredentials = new ToobitCredentials("API_KEY", "API_SECRET");
 });

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Toobit.Net"
+  short_description: "Build C# Toobit spot and futures integrations."
+  default_prompt: "Use $toobit-net to implement a Toobit.Net REST, websocket, account, or trading workflow."

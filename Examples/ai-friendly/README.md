@@ -1,29 +1,15 @@
-# AI-Friendly Examples
+# Toobit.Net examples
 
-These examples are optimized for AI coding assistants and quick onboarding. Each file is:
+Each file is an independent console program. Install `Toobit.Net` in a console project and copy one program to `Program.cs`.
 
-- **Compilable**: drop into a console project with `dotnet add package Toobit.Net` and it builds.
-- **Self-contained**: single file, no external setup, no shared helpers.
-- **Commented**: explains why the Toobit.Net pattern matters.
-- **Idiomatic**: follows the current Toobit.Net client shape.
-
-## Files
-
-| File | What it shows |
+| Program | Workflow |
 |---|---|
-| `01-spot-quickstart.cs` | Client setup, public ticker, authenticated balances, place limit order, query order status |
-| `02-futures.cs` | USDT futures: set leverage, place limit order, get position, close order pattern |
-| `03-websocket.cs` | Subscribe to ticker updates, klines, user data stream, with proper teardown |
-| `04-multi-exchange.cs` | `CryptoExchange.Net.SharedApis` pattern for exchange-agnostic code |
-| `05-error-handling.cs` | `HttpResult` patterns, retry, common error scenarios |
+| [01-spot-quickstart.cs](01-spot-quickstart.cs) | Spot data, accounts and order workflow |
+| [02-futures.cs](02-futures.cs) | USDT Futures leverage, orders and positions |
+| [03-websocket.cs](03-websocket.cs) | Public/private streams and cleanup |
+| [04-multi-exchange.cs](04-multi-exchange.cs) | Shared API V2 ticker, catalog and subscription |
+| [05-error-handling.cs](05-error-handling.cs) | Results, test-order handling and public-read retries |
 
-## Running
+Replace key/secret placeholders for intended private operations. Review each program before execution: trading and leverage changes affect live account state; cancellation can race with fills. Read [operational considerations](../../.claude/skills/toobit-net/references/safety.md) and the [usage snippets](../../.claude/skills/toobit-net/references/usage.md) first.
 
-```bash
-dotnet new console -n MyToobitApp
-cd MyToobitApp
-dotnet add package Toobit.Net
-# Copy the example .cs file content into Program.cs
-# Replace API_KEY / API_SECRET placeholders for private endpoints
-dotnet run
-```
+`AiExampleCompileTests` compiles these programs without executing exchange operations.
