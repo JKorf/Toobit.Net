@@ -53,17 +53,17 @@ namespace Toobit.Net
             var restClient = _serviceProvider?.GetRequiredService<IToobitRestClient>() ?? new ToobitRestClient();
             var socketClient = _serviceProvider?.GetRequiredService<IToobitSocketClient>() ?? new ToobitSocketClient();
 
-            IKlineRestClient sharedRestClient;
-            IKlineSocketClient sharedSocketClient;
+            IGetKlinesRest sharedRestClient;
+            ISubscribeKlinesSocket sharedSocketClient;
             if (symbol.TradingMode == TradingMode.Spot)
             {
-                sharedRestClient = restClient.SpotApi.SharedClient;
-                sharedSocketClient = socketClient.SpotApi.SharedClient;
+                sharedRestClient = restClient.SpotApi.SharedApi;
+                sharedSocketClient = socketClient.SpotApi.SharedApi;
             }
             else
             {
-                sharedRestClient = restClient.UsdtFuturesApi.SharedClient;
-                sharedSocketClient = socketClient.UsdtFuturesApi.SharedClient;
+                sharedRestClient = restClient.UsdtFuturesApi.SharedApi;
+                sharedSocketClient = socketClient.UsdtFuturesApi.SharedApi;
             }
 
             return new KlineTracker(
@@ -83,19 +83,19 @@ namespace Toobit.Net
             var restClient = _serviceProvider?.GetRequiredService<IToobitRestClient>() ?? new ToobitRestClient();
             var socketClient = _serviceProvider?.GetRequiredService<IToobitSocketClient>() ?? new ToobitSocketClient();
 
-            IRecentTradeRestClient? sharedRestClient;
-            ITradeSocketClient sharedSocketClient;
+            IGetRecentTradesRest? sharedRestClient;
+            ISubscribeTradesSocket sharedSocketClient;
             TradeQuantityType tradeQuantityType;
             if (symbol.TradingMode == TradingMode.Spot)
             {
-                sharedRestClient = restClient.SpotApi.SharedClient;
-                sharedSocketClient = socketClient.SpotApi.SharedClient;
+                sharedRestClient = restClient.SpotApi.SharedApi;
+                sharedSocketClient = socketClient.SpotApi.SharedApi;
                 tradeQuantityType = TradeQuantityType.BaseAsset;
             }
             else
             {
-                sharedRestClient = restClient.UsdtFuturesApi.SharedClient;
-                sharedSocketClient = socketClient.UsdtFuturesApi.SharedClient;
+                sharedRestClient = restClient.UsdtFuturesApi.SharedApi;
+                sharedSocketClient = socketClient.UsdtFuturesApi.SharedApi;
                 tradeQuantityType = TradeQuantityType.Contracts;
             }
 
