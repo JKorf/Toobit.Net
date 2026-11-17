@@ -1,0 +1,18 @@
+{
+  "baseBranch": "main",
+  "sdk": "11.0.100",
+  "packages": [
+    {
+      "key": "toobit",
+      "project": "Toobit.Net/Toobit.Net.csproj",
+      "testProjects": [
+        "Toobit.Net.UnitTests/Toobit.Net.UnitTests.csproj"
+      ],
+      "packageId": "Toobit.Net",
+      "readme": "README.md",
+      "tagPrefix": "Toobit.Net.",
+      "releaseIntegrationTests": false,
+      "publishToGitHubPackages": true
+    }
+  ]
+}
